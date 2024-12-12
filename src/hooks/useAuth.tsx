@@ -5,25 +5,25 @@ import { useNavigate } from "react-router-dom";
 
 export const useAuth = () => {
     // we can re export the user methods or object from this hook
-    const { user, addUser, removeUser, setUser } = useUser();
+    const { userAuth, addUserAuth, removeUserAuth, setUserAuth } = useUser();
     const { getItem } = useLocalStorage();
     const navigate = useNavigate()
 
     useEffect(() => {
-        const user = getItem("user");
+        const user = getItem("userAuth");
         if (user) {
-            addUser(JSON.parse(user));
+            addUserAuth(JSON.parse(user));
         }
-    }, [addUser, getItem]);
+    }, [addUserAuth, getItem]);
 
-    const login = (user: User) => {
-        addUser(user);
+    const loginAuth = (user: User) => {
+        addUserAuth(user);
     };
 
-    const logout = () => {
-        removeUser();
+    const logoutAuth = () => {
+        removeUserAuth();
         navigate("/login");
     };
 
-    return { user, login, logout, setUser };
+    return { userAuth, loginAuth, logoutAuth, setUserAuth };
 };

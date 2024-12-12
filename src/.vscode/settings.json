@@ -3,12 +3,16 @@
             "node_modules/bootstrap/dist/css/bootstrap.css",
             "src/**/*.scss",
             "src/**/*.css",
-            
       ],
       "css.enabledLanguages": [
             "html",
             "ts",
             "tsx",
             "jsx"
-      ]
+      ],
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+            "source.fixAll": true
+      },
+      "eslint.format.enable": true,
 }

@@ -4,25 +4,27 @@ import { AuthContext } from "../contexts/ContextProvider";
 
 // NOTE: optimally move this into a separate file
 export interface User {
-    id: string;
-    name: string;
-    email: string;
-    authToken?: string;
+    isAuthenticated: boolean,
+    Email?: string,
+    FullName?: string,
+    isAdmin?: boolean,
+    UserName?: string,
+    token?: string
 }
 
 export const useUser = () => {
-    const { user, setUser } = useContext(AuthContext);
-    const { setItem } = useLocalStorage();
+    const { userAuth, setUserAuth } = useContext(AuthContext);
+    const { setItem, removeItem } = useLocalStorage();
 
-    const addUser = (user: User) => {
-        setUser(user);
-        setItem("user", JSON.stringify(user));
+    const addUserAuth = (userAuth: User) => {
+        setUserAuth(userAuth);
+        setItem("user", JSON.stringify(userAuth));
     };
 
-    const removeUser = () => {
-        setUser(null);
-        setItem("user", "");
+    const removeUserAuth = () => {
+        setUserAuth(null);
+        removeItem("user")
     };
 
-    return { user, addUser, removeUser, setUser };
+    return { userAuth, addUserAuth, removeUserAuth, setUserAuth };
 };

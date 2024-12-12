@@ -1,28 +1,31 @@
 import "./auth.css";
-import React, { useContext, useEffect, useState } from "react";
-import { Card } from "react-bootstrap";
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { decrypt } from "../../utilities/EncryptDecryptManager";
+import React, { useState } from "react";
+import ToastContainerComponent from '../../components/common/ToastContainerComponent'
+import { Card } from "react-bootstrap";
+import { encrypt } from "../../utilities/EncryptDecryptManager";
 import AccountController from "../../controllers/AccountController";
-import { Users } from "../../types/Users";
-import { LoginType } from "../../types/Auth";
+import { UserLogged } from "../../types/Users";
 import { useAuth } from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import { useShowMessageToast } from "../../hooks/useShowMessageToast";
+import { MESSAGE_TOAST_ERROR_TYPE } from "../../utilities/Constants.d";
+import { LoginViewModel } from "../../types/AccountTypes";
+import { ILoginResult } from "../../interfaces/IAccount";
 import { User } from "../../hooks/useUser";
-import { useNavigate, useNavigation } from "react-router-dom";
 
 const Login = () => {
     const controller = new AccountController()
-    const { login } = useAuth();
+    const { loginAuth } = useAuth();
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [data, setData] = useState<string[] | null | undefined>(null);
-    const [user, setUser] = useState<Users | null>(null);
+    const [userLogged, setUserLogged] = useState<string>();
+
+    const [loginResponse, setLoginResponse] = useState<ILoginResult>();
+
     const navigate = useNavigate()
 
-    useEffect(() => {
-        getData()
-    }, []);
+    const { ShowMessageToast } = useShowMessageToast()
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
@@ -32,67 +35,26 @@ const Login = () => {
         setPassword(e.target.value);
     };
 
-    const getData = async () => {
-        await controller.GetAllUsers()
-            .then((response => {
-                if (typeof response === "object") {
-                    setData(response);
-                }
-            }));
+    async function onLogin(): Promise<ILoginResult | undefined> {
+        const loginVewModel: LoginViewModel = { Id: "", Email: email, Password: encrypt(password) }
+        await controller.Login(loginVewModel).then((response => {
+            setLoginResponse(response);
+            setUserLogged(JSON.stringify(response))
+            loginAuth(response as User);
+            if (response?.token) {
+                navigate('/');
+            }
+            else {
+                ShowMessageToast('Usuario o contraseña incorrecta.', MESSAGE_TOAST_ERROR_TYPE.ERROR);
+                return;
+            }
+        }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const users: Users[] = JSON.parse(JSON.stringify(data))
-        const user = users?.find(f => f.email == email)
-        if (user !== undefined) {
-
-            setUser(user)
-            const userLogged: LoginType = {
-                email: user.email,
-                password: user.passwordHash,
-                remember_me: false
-            };
-
-            //console.log('userLogged: ' + JSON.stringify(userLogged))
-
-            if (password != decrypt(user.passwordHash)) {
-                toast.error('Usuario o contraseña incorrecta.', {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                });
-                return;
-            }
-            else {
-                const usuario: User = {
-                    id: "123",
-                    name: 'orlando',
-                    email: 'opinto@gmail.com',
-                    authToken: '1232342342342'
-                }
-                login(usuario);
-                navigate('/');
-
-                // toast.success('usuario válido!', {
-                //     position: "top-right",
-                //     autoClose: 3000,
-                //     hideProgressBar: true,
-                //     closeOnClick: true,
-                //     pauseOnHover: true,
-                //     draggable: true,
-                //     progress: undefined,
-                //     theme: "colored",
-                // });
-                // return;
-            }
-        }
+        onLogin();
     }
 
     return (
@@ -113,18 +75,7 @@ const Login = () => {
                     </form>
                 </Card>
             </div>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-            />
+            <ToastContainerComponent />
         </section>
     );
 };

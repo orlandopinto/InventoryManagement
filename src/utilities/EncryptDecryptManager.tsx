@@ -1,24 +1,15 @@
 import { AES, enc } from 'crypto-js';
 import { secretKey } from './Constants.d';
 
-export const encrypt = (plainText: CryptoJS.lib.CipherParams | string): CryptoJS.lib.CipherParams | string => {
-    const cipherText = AES.encrypt(plainText.toString(), secretKey).toString()
-    return cipherText
+var key = enc.Hex.parse(secretKey);
+var iv = enc.Hex.parse(secretKey);
+
+export const encrypt = (value) => {
+    var ciphertext = AES.encrypt(value, key, { iv: iv }).toString();
+    return ciphertext;
 }
 
-export const decrypt = (cipherText: CryptoJS.lib.CipherParams | string) => {
-    const bytes = AES.decrypt(cipherText, secretKey)
-    const plainText = bytes.toString(enc.Utf8)
-    return plainText
+export const decrypt = (ciphertext) => {
+    var decryptStr = AES.decrypt(ciphertext, key, { iv: iv }).toString(enc.Utf8);
+    return decryptStr;
 }
-
-export const generateSecretKey = (): string => {
-    const keyLength = 32; // 32 bytes = 256 bits (AES-256)
-    const buffer = new Uint8Array(keyLength);
-    crypto.getRandomValues(buffer);
-    const sk = Array.from(buffer, (byte) =>
-        byte.toString(16).padStart(2, '0')
-    ).join('');
-    console.log('secret key: ' + sk)
-    return sk;
-};

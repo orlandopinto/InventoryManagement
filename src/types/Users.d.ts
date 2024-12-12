@@ -1,3 +1,5 @@
+import { ILoginResult } from "../interfaces/IAccount"
+
 export type Users = {
     id: string
     userName: string | null
@@ -20,3 +22,5 @@ export type Users = {
     isAdmin: boolean
     roleId: string | null
 }
+
+export interface UserLogged extends ILoginResult { }

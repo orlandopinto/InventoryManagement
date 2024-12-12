@@ -1,13 +1,19 @@
 
-export const API = {
-    URL_BASE: 'https://localhost/users/api/'
-}
+export const API_ACOOUNT = { URL_BASE: 'https://localhost:4433/account/api/' }
+export const API = { URL_BASE: 'https://localhost/users/api/' }
 
 export const METHOD = {
     GET: 'GET',
     POST: 'POST',
     PUT: 'PUT',
     DELETE: 'DELETE'
+}
+
+export const MESSAGE_TOAST_ERROR_TYPE = {
+    ERROR: 'ERROR',
+    INFO: 'INFO',
+    SUCCESS: 'SUCCESS',
+    WARNING: 'WARNING'
 }
 
 export enum AllowedMethods {
