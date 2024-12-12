@@ -32,7 +32,7 @@
 import React, { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useLocalStorage } from "../utilities/useLocalStorage";
-import { AuthContext } from "../contexts/AuthProvider";
+import { AuthContext } from "../contexts/UserContext";
 
 const ProtectedRoutes = (props) => {
     // const { isAuthenticated } = useContext(AuthContext)

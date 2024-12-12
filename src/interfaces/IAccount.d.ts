@@ -4,7 +4,7 @@ export interface ILoginResult {
      isAuthenticated: boolean,
      Email?: string,
      FullName?: string,
-     isAdmin?: string,
+     isAdmin?: boolean,
      UserName?: string,
      token?: string
 }
@@ -13,9 +13,8 @@ export type LoginResult = {
      isAuthenticated: boolean,
      Email?: string,
      FullName?: string,
-     isAdmin?: string,
+     isAdmin?: boolean,
      UserName?: string,
-     token?: string
 }
 
 

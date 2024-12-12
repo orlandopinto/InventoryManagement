@@ -5,27 +5,23 @@ import ToastContainerComponent from '../../components/common/ToastContainerCompo
 import { Card } from "react-bootstrap";
 import { encrypt } from "../../utilities/EncryptDecryptManager";
 import AccountController from "../../controllers/AccountController";
-import { UserLogged } from "../../types/Users";
-import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useShowMessageToast } from "../../hooks/useShowMessageToast";
 import { MESSAGE_TOAST_ERROR_TYPE } from "../../utilities/Constants.d";
 import { LoginViewModel } from "../../types/AccountTypes";
-import { ILoginResult } from "../../interfaces/IAccount";
+import { LoginResult } from "../../interfaces/IAccount";
 import { User } from "../../hooks/useUser";
+import { AuthLoginResult } from "../../types/Auth";
+import { useAuth } from "../../contexts/UserContext";
 
 const Login = () => {
+    const navigate = useNavigate()
     const controller = new AccountController()
-    const { loginAuth } = useAuth();
+    const { ShowMessageToast } = useShowMessageToast()
+    const { loginUser } = useAuth()
+
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [userLogged, setUserLogged] = useState<string>();
-
-    const [loginResponse, setLoginResponse] = useState<ILoginResult>();
-
-    const navigate = useNavigate()
-
-    const { ShowMessageToast } = useShowMessageToast()
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
@@ -35,13 +31,18 @@ const Login = () => {
         setPassword(e.target.value);
     };
 
-    async function onLogin(): Promise<ILoginResult | undefined> {
+    async function onLogin(): Promise<LoginResult> {
+        let respuesta: LoginResult = { isAuthenticated: false };
         const loginVewModel: LoginViewModel = { Id: "", Email: email, Password: encrypt(password) }
         await controller.Login(loginVewModel).then((response => {
-            setLoginResponse(response);
-            setUserLogged(JSON.stringify(response))
-            loginAuth(response as User);
-            if (response?.token) {
+            if ((response as User).token) {
+                const authLoginResult: AuthLoginResult = {
+                    isAuthenticated: (response as User).token === "" ? false : true,
+                    Email: email,
+                    FullName: (response as User).fullName,
+                    UserName: (response as User).userName
+                }
+                loginUser(authLoginResult, (response as User).token);
                 navigate('/');
             }
             else {
@@ -49,11 +50,11 @@ const Login = () => {
                 return;
             }
         }));
+        return respuesta;
     };
-
+    
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         onLogin();
     }
 

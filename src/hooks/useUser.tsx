@@ -5,10 +5,10 @@ import { AuthContext } from "../contexts/ContextProvider";
 // NOTE: optimally move this into a separate file
 export interface User {
     isAuthenticated: boolean,
-    Email?: string,
-    FullName?: string,
+    email?: string,
+    fullName?: string,
     isAdmin?: boolean,
-    UserName?: string,
+    userName?: string,
     token?: string
 }
 
@@ -22,7 +22,7 @@ export const useUser = () => {
     };
 
     const removeUserAuth = () => {
-        setUserAuth(null);
+        setUserAuth({ isAuthenticated: false });
         removeItem("user")
     };
 

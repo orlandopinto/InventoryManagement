@@ -10,3 +10,10 @@ export interface ProviderProps {
     login (data: LoginType ): void,
     logout() :void,
 }
+
+export type AuthLoginResult = {
+    isAuthenticated: boolean,
+    Email?: string,
+    FullName?: string,
+    UserName?: string,
+}
