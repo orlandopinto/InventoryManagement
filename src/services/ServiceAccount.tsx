@@ -1,12 +1,12 @@
 import { _Headers, _Method, _Body, METHOD, API_ACOOUNT } from "../utilities/Constants.d";
 import { ErrorInfo } from "../types/types";
-import { IAccount, ILoginResult } from "../interfaces/IAccount";
+import { IAccount, LoginResult } from "../interfaces/IAccount";
 import { LoginViewModel, RegisterViewModel } from "../types/AccountTypes";
 
 export default class ServiceAccount implements IAccount {
 
      headers: _Headers = { 'Content-type': 'application/json' };
-     loginResult: ILoginResult;
+     loginResult: LoginResult;
      registerResult: boolean;
      response = new Response();
      body?: any;
@@ -15,7 +15,7 @@ export default class ServiceAccount implements IAccount {
           this.body = body;
      }
 
-     public async Login(entity: LoginViewModel): Promise<ILoginResult> {
+     public async Login(entity: LoginViewModel): Promise<LoginResult> {
           try {
                this.body = JSON.stringify(entity);
                this.response = await fetch(`${API_ACOOUNT.URL_BASE}Login`, { method: METHOD.POST, headers: this.headers, body: this.body });

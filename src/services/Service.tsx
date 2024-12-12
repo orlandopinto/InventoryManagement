@@ -1,18 +1,27 @@
 import { IBaseTransactions } from "../interfaces/IBaseTransactions";
 import { _Headers, API, _Method, _Body, METHOD } from "../utilities/Constants.d";
 import { ErrorInfo } from "../types/types";
+import { IUsers } from "../interfaces/IUsers";
 
-export default class Service implements IBaseTransactions {
+export default class Service implements IUsers {
 
-    headers: _Headers = { 'Content-type': 'application/json' };
+    headers: _Headers = new Headers();
     stringData: string = "";
     booleanData: boolean = false;
     arrayData: Array<string> = new Array<string>();
     response = new Response();
     body?: any;
+    token: string;
 
-    constructor(body?: _Body) {
+    constructor(token: string, body?: _Body) {
         this.body = body;
+        this.token = token;
+
+        this.headers = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': "Bearer " + this.token,
+        };
     }
 
     public async Get(): Promise<Array<string>> {

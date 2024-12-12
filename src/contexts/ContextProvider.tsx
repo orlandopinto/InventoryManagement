@@ -2,13 +2,13 @@ import { Children, createContext, useContext, useState } from "react";
 import { User } from "../hooks/useUser";
 
 interface AuthContext {
-    userAuth: User | null;
-    setUserAuth: (user: User | null) => void;
+    userAuth: User;
+    setUserAuth: (user: User) => void;
     setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const AuthContext = createContext<AuthContext>({
-    userAuth: null,
+    userAuth: { isAuthenticated: false },
     setUserAuth: () => { },
     setIsAuthenticated: () => { },
 });
