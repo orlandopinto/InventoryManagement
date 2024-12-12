@@ -2,7 +2,7 @@ import { NavDropdown, Image } from 'react-bootstrap'
 import * as Icon from "react-bootstrap-icons";
 import { Link, useNavigate } from 'react-router-dom';
 import foto from '../assets/images/foto.jpg'
-import { useAuth } from '../contexts/UserContext';
+import { useAuth } from '../contexts/useAuth';
 
 function CustomToggle() {
     const UserMenu = (<Image src={foto} alt="UserName profile image" roundedCircle style={{ width: '33px' }} />)
@@ -11,7 +11,7 @@ function CustomToggle() {
 
     const handleLogout = () => {
         logout();
-        navigate('/login')
+        navigate('/acceso')
     };
     
     return (

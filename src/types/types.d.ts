@@ -14,3 +14,8 @@ export type ApiRequestOptions<T> = {
     id?: string,
     entity?: T
 }
+
+export type UserProfile = {
+    userName: string;
+    email: string;
+};

@@ -16,9 +16,9 @@ const SideBar = () => {
                 </Sidebar.Header>
                 <Sidebar.Body>
                     <Sidebar.Nav>
-                        <Link data-rb-event-key="menu_title" className='sidebar-menu-nav-link' to="/">
+                        <Link data-rb-event-key="menu_title" className='sidebar-menu-nav-link' to="/dashboard">
                             <span className="sidebar-menu-nav-icon"><Icon.House size={20} /></span>
-                            <span className="sidebar-menu-nav-title">Home</span>
+                            <span className="sidebar-menu-nav-title">Dashboard</span>
                         </Link>
                         <Link data-rb-event-key="menu_title" className='sidebar-menu-nav-link' to="/about">
                             <span className="sidebar-menu-nav-icon"><Icon.QuestionCircle size={20} /></span>

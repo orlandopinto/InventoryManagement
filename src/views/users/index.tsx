@@ -5,7 +5,7 @@ import { useShowMessageToast } from "../../hooks/useShowMessageToast";
 import { MESSAGE_TOAST_ERROR_TYPE } from "../../utilities/Constants.d";
 import { useNavigate } from 'react-router-dom';
 import { Users } from '../../types/Users';
-import { useAuth } from '../../contexts/UserContext';
+import { useAuth } from '../../contexts/useAuth';
 
 function index() {
      const { user, token } = useAuth()
@@ -35,7 +35,7 @@ function index() {
                     onGetUsers();
                }
                else {
-                    navigate('/login')
+                    navigate('/acceso')
                     return;
                }
           }

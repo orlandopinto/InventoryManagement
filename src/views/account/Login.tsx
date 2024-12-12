@@ -12,7 +12,7 @@ import { LoginViewModel } from "../../types/AccountTypes";
 import { LoginResult } from "../../interfaces/IAccount";
 import { User } from "../../hooks/useUser";
 import { AuthLoginResult } from "../../types/Auth";
-import { useAuth } from "../../contexts/UserContext";
+import { useAuth } from "../../contexts/useAuth";
 
 const Login = () => {
     const navigate = useNavigate()
