@@ -3,33 +3,34 @@ import 'react-toastify/dist/ReactToastify.css';
 import React, { useState } from "react";
 import { Card } from "react-bootstrap";
 import { useAuth } from "../../contexts/useAuth";
-import { UserProfile } from "../../types/types";
+import { AuthProfile } from "../../types/types";
 
 const Acceso = () => {
-     const { loginUser } = useAuth()
+     // const { loginUser } = useAuth()
 
-     const [email, setEmail] = useState<string>("");
-     const [password, setPassword] = useState<string>("");
+     // const [email, setEmail] = useState<string>("");
+     // const [password, setPassword] = useState<string>("");
 
-     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          setEmail(e.target.value);
-     };
+     // const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+     //      setEmail(e.target.value);
+     // };
 
-     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          setPassword(e.target.value);
-     };
+     // const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+     //      setPassword(e.target.value);
+     // };
 
-     function Accesso() {
-          const user: UserProfile = {
-               userName: 'opinto',
-               email: 'opinto@gmail.com'
-          }
-          loginUser(user, 'tokenFromLogin');
-     }
+     // function Accesso() {
+     //      const user: AuthProfile = {
+     //           userName: 'opinto',
+     //           email: 'opinto@gmail.com',
+     //           fullName: 'Orlando Pinto',
+     //           isAuthenticated: true
+     //      }
+     //      loginUser(user, 'tokenFromLogin');
+     // }
 
      const handleSubmit = (e: React.FormEvent) => {
           e.preventDefault();
-          Accesso()
      }
 
      return (

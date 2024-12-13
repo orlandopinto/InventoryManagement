@@ -1,4 +1,4 @@
-import { IAccount, ILoginResult, LoginResult } from '../interfaces/IAccount';
+import { IAccount, ILoginResult, LoginResult, TokenResult } from '../interfaces/IAccount';
 import ServiceAccount from '../services/ServiceAccount';
 import { LoginViewModel, RegisterViewModel } from '../types/AccountTypes';
 
@@ -18,6 +18,16 @@ class AccountController implements IAccount {
             console.log(error)
         }
         return result as LoginResult;
+    }
+
+    public async RefreshToken(entity: TokenResult): Promise<TokenResult> {
+        let result: TokenResult = {};
+        try {
+            result = await this.service.RefreshToken(entity);
+        } catch (error) {
+            console.log(error)
+        }
+        return result as TokenResult;
     }
 
     public async Register(entity: RegisterViewModel): Promise<boolean> {

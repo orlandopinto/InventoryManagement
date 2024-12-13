@@ -11,7 +11,7 @@ function CustomToggle() {
 
     const handleLogout = () => {
         logout();
-        navigate('/acceso')
+        navigate('/login')
     };
     
     return (

@@ -1,20 +1,20 @@
 import { IUsers } from '../interfaces/IUsers';
-import Service from '../services/service';
+import Service from '../services/Service';
 import { Users } from '../types/Users';
 import { _Body } from '../utilities/Constants.d';
 
 export class UsersController implements IUsers {
 
      body?: any;
-     token: string;
      service: Service;
 
      constructor(token: string, body?: _Body) {
           this.service = new Service(token, body);
      }
 
-     public async Get(): Promise<Array<string>> {
-          let result: Array<string> = new Array<string>();
+     public async Get(): Promise<string> {
+          let result: string = "";
+
           try {
                result = await this.service.Get();
           } catch (error) {

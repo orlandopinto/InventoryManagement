@@ -1,22 +1,24 @@
-import { IBaseTransactions } from "../interfaces/IBaseTransactions";
 import { _Headers, API, _Method, _Body, METHOD } from "../utilities/Constants.d";
 import { ErrorInfo } from "../types/types";
 import { IUsers } from "../interfaces/IUsers";
+import { data } from "react-router-dom";
+import { useState } from "react";
 
 export default class Service implements IUsers {
 
     headers: _Headers = new Headers();
     stringData: string = "";
     booleanData: boolean = false;
-    arrayData: Array<string> = new Array<string>();
     response = new Response();
     body?: any;
     token: string;
+    arrayData: string = "";
 
     constructor(token: string, body?: _Body) {
         this.body = body;
         this.token = token;
-
+        const [data, setData] = useState<string>('')
+        this.arrayData = ''
         this.headers = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
@@ -24,14 +26,22 @@ export default class Service implements IUsers {
         };
     }
 
-    public async Get(): Promise<Array<string>> {
+
+    public async Get(): Promise<string> {
         try {
-            this.response = await fetch(API.URL_BASE, { method: METHOD.GET, headers: this.headers, body: this.body });
+            await fetch(API.URL_BASE, { method: METHOD.GET, headers: this.headers, body: this.body })
+                .then((res) => {
+                    return res.json();
+                })
+                .then((data) => {
+                    this.arrayData = JSON.stringify(data);
+                });
+
             if (!this.response.ok) {
                 const error = new CustomError({ message: 'Unable to fetch data', name: 'Custom Error', status: this.response.status, statusText: this.response.statusText });
                 throw error.throwCustomError()
             }
-            this.arrayData = await this.response.json();
+
         } catch (error: any) {
             console.log('error:' + error)
         }

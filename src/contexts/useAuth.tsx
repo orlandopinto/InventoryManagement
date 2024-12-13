@@ -1,13 +1,15 @@
-import { createContext, useContext, useEffect, useState } from "react"
-import { UserProfile } from "../types/types";
+import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react"
+import { AuthProfile } from "../types/types";
 import { useNavigate } from "react-router-dom";
+import { TokenResult } from "../interfaces/IAccount";
 
 type Props = { children: React.ReactNode }
 
 type UserContextType = {
-     user: UserProfile | null;
-     token: string | null;
-     loginUser: (user: UserProfile, token: string) => void;
+     user: AuthProfile | null;
+     //setUser: () => Dispatch<SetStateAction<string>> | null;
+     tokenResult: TokenResult | null;
+     loginUser: (user: AuthProfile, tokenResult: TokenResult) => void;
      logout: () => void;
      isLoggedIn: () => boolean;
 };
@@ -16,25 +18,25 @@ const UserContext = createContext<UserContextType>({} as UserContextType);
 
 export const UserProvider = ({ children }: Props) => {
      const navigate = useNavigate();
-     const [token, setToken] = useState<string | null>(null);
-     const [user, setUser] = useState<UserProfile | null>(null);
+     const [tokenResult, setTokenResult] = useState<TokenResult | null>(null);
+     const [user, setUser] = useState<AuthProfile | null>(null);
      const [isReady, setIsReady] = useState(false)
 
      useEffect(() => {
           const user = localStorage.getItem("user")
-          const token = localStorage.getItem("token")
-          if (user && token) {
+          const tokenResult = localStorage.getItem("tokenResult")
+          if (user && tokenResult) {
                setUser(JSON.parse(user));
-               setToken(token);
+               setTokenResult(tokenResult as TokenResult);
           }
           setIsReady(true)
      }, [])
 
-     const loginUser = (user: UserProfile, token: string) => {
+     const loginUser = (user: AuthProfile, tokenResult: TokenResult) => {
           localStorage.setItem("user", JSON.stringify(user))
-          localStorage.setItem("token", token)
+          localStorage.setItem("tokenResult", JSON.stringify(tokenResult))
           setUser(user);
-          setToken(token)
+          setTokenResult(tokenResult as TokenResult)
           navigate("/dashboard");
      }
 
@@ -45,13 +47,13 @@ export const UserProvider = ({ children }: Props) => {
 
      const logout = () => {
           localStorage.removeItem("user")
-          localStorage.removeItem("token")
+          localStorage.removeItem("tokenResult")
           setUser(null)
-          setToken(null)
-          navigate("/");
+          setTokenResult(null)
+          navigate("/login");
      }
 
-     return <UserContext.Provider value={{ loginUser, user, token, logout, isLoggedIn }}>
+     return <UserContext.Provider value={{ loginUser, user, tokenResult, logout, isLoggedIn }}>
           {isReady ? children : null}
      </UserContext.Provider>
 }

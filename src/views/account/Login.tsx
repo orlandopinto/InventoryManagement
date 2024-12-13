@@ -9,10 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { useShowMessageToast } from "../../hooks/useShowMessageToast";
 import { MESSAGE_TOAST_ERROR_TYPE } from "../../utilities/Constants.d";
 import { LoginViewModel } from "../../types/AccountTypes";
-import { LoginResult } from "../../interfaces/IAccount";
-import { User } from "../../hooks/useUser";
-import { AuthLoginResult } from "../../types/Auth";
+import { LoginResult, TokenResult } from "../../interfaces/IAccount";
 import { useAuth } from "../../contexts/useAuth";
+import { AuthProfile } from "../../types/types";
 
 const Login = () => {
     const navigate = useNavigate()
@@ -35,15 +34,16 @@ const Login = () => {
         let respuesta: LoginResult = { isAuthenticated: false };
         const loginVewModel: LoginViewModel = { Id: "", Email: email, Password: encrypt(password) }
         await controller.Login(loginVewModel).then((response => {
-            if ((response as User).token) {
-                const authLoginResult: AuthLoginResult = {
-                    isAuthenticated: (response as User).token === "" ? false : true,
-                    Email: email,
-                    FullName: (response as User).fullName,
-                    UserName: (response as User).userName
+            if ((response as LoginResult).tokenResult !== null) {
+                const user: AuthProfile = {
+                    userName: email,
+                    email: email,
+                    fullName: response.FullName!,
+                    isAuthenticated: true,
+                    tokenResult: response.tokenResult!
                 }
-                loginUser(authLoginResult, (response as User).token);
-                navigate('/');
+                loginUser(user, response.tokenResult!);
+                navigate('/dashboard');
             }
             else {
                 ShowMessageToast('Usuario o contraseña incorrecta.', MESSAGE_TOAST_ERROR_TYPE.ERROR);
@@ -52,7 +52,7 @@ const Login = () => {
         }));
         return respuesta;
     };
-    
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         onLogin();

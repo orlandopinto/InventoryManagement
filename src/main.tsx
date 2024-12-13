@@ -8,9 +8,7 @@ import React from 'react';
 let root = createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
-    <React.StrictMode>
-        <RouterProvider router={AppRoutes}>
-            <App />
-        </RouterProvider>
-    </React.StrictMode>
+    <RouterProvider router={AppRoutes}>
+        <App />
+    </RouterProvider>
 );

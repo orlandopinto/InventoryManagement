@@ -21,7 +21,7 @@ export const AppRoutes = createBrowserRouter(
             path: "/",
             element: <App />,
             children: [
-                { path: "acceso", element: <Acceso /> },
+                { path: "login", element: <Login /> },
                 { path: "logout", element: <Logout /> },
                 { path: "register", element: <Register /> },
                 {

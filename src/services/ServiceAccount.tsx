@@ -1,25 +1,29 @@
 import { _Headers, _Method, _Body, METHOD, API_ACOOUNT } from "../utilities/Constants.d";
 import { ErrorInfo } from "../types/types";
-import { IAccount, LoginResult } from "../interfaces/IAccount";
+import { IAccount, LoginResult, TokenResult } from "../interfaces/IAccount";
 import { LoginViewModel, RegisterViewModel } from "../types/AccountTypes";
 
 export default class ServiceAccount implements IAccount {
 
      headers: _Headers = { 'Content-type': 'application/json' };
      loginResult: LoginResult;
+     tokenResult: TokenResult;
      registerResult: boolean;
      response = new Response();
      body?: any;
 
      constructor(body?: _Body) {
           this.body = body;
+          this.loginResult = {} as LoginResult
+          this.registerResult = false;
+          this.tokenResult = {} as TokenResult
      }
 
      public async Login(entity: LoginViewModel): Promise<LoginResult> {
           try {
                this.body = JSON.stringify(entity);
                this.response = await fetch(`${API_ACOOUNT.URL_BASE}Login`, { method: METHOD.POST, headers: this.headers, body: this.body });
-               
+
                if (!this.response.ok) {
                     const error = new CustomError({ message: 'Unable to fetch data', name: 'Custom Error', status: this.response.status, statusText: this.response.statusText });
                     throw error.throwCustomError()
@@ -44,6 +48,22 @@ export default class ServiceAccount implements IAccount {
                console.log('error:' + error)
           }
           return this.registerResult;
+     }
+
+     public async RefreshToken(entity: TokenResult): Promise<TokenResult> {
+          try {
+               this.body = JSON.stringify(entity);
+               this.response = await fetch(`${API_ACOOUNT.URL_BASE}refresh`, { method: METHOD.POST, headers: this.headers, body: this.body });
+
+               if (!this.response.ok) {
+                    const error = new CustomError({ message: 'Unable to fetch data', name: 'Custom Error', status: this.response.status, statusText: this.response.statusText });
+                    throw error.throwCustomError()
+               }
+               this.tokenResult = await this.response.json();
+          } catch (error: any) {
+               console.log('error:' + error)
+          }
+          return this.tokenResult;
      }
 }
 
