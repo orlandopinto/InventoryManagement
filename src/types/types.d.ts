@@ -1,10 +1,5 @@
 import { TokenResult } from "../interfaces/IAccount";
 
-export interface ErrorInfo extends Error {
-    status?: number;
-    statusText?: string;
-}
-
 export type ApiOptions = {
     method: string,
     headers: {},

@@ -12,10 +12,22 @@ body {
     left: -82px !important;
 }
 
-.dropdown-item{
+.dropdown-item {
     cursor: pointer;
 }
 
-.dropdown-item > span {
+.dropdown-item>span {
     padding-left: 1rem;
+}
+
+.sidebar-menu-footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+.header-page {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

@@ -1,17 +1,17 @@
 import "./styles.scss";
-import React from 'react'
 import { Link } from 'react-router-dom';
 import Sidebar from "react-bootstrap-sidebar-menu";
 import * as Icon from 'react-bootstrap-icons';
+import logo from '../assets/images/logo.png'
 
 const SideBar = () => {
-    const theme = "dark";
+    const theme = "light";
 
     return (
         <Sidebar variant={theme} bg={theme} expand="sm">
             <Sidebar.Collapse getScrollValue={290}>
                 <Sidebar.Header>
-                    <Sidebar.Brand>Logo</Sidebar.Brand>
+                    <Sidebar.Brand><img src={logo} alt="logo" style={{ width: 100 }} /></Sidebar.Brand>
                     <Sidebar.Toggle />
                 </Sidebar.Header>
                 <Sidebar.Body>
@@ -44,6 +44,11 @@ const SideBar = () => {
                         </Sidebar.Sub>
                     </Sidebar.Nav>
                 </Sidebar.Body>
+                <Sidebar.Footer>
+                    <div style={{ padding: '20px 5px', }}>
+                        Sidebar Footer
+                    </div>
+                </Sidebar.Footer>
             </Sidebar.Collapse>
         </Sidebar>
     )

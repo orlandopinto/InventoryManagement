@@ -1,4 +1,4 @@
-import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { AuthProfile } from "../types/types";
 import { useNavigate } from "react-router-dom";
 import { TokenResult } from "../interfaces/IAccount";
@@ -7,7 +7,6 @@ type Props = { children: React.ReactNode }
 
 type UserContextType = {
      user: AuthProfile | null;
-     //setUser: () => Dispatch<SetStateAction<string>> | null;
      tokenResult: TokenResult | null;
      loginUser: (user: AuthProfile, tokenResult: TokenResult) => void;
      logout: () => void;
@@ -43,7 +42,6 @@ export const UserProvider = ({ children }: Props) => {
      const isLoggedIn = () => {
           return !!user;
      };
-
 
      const logout = () => {
           localStorage.removeItem("user")

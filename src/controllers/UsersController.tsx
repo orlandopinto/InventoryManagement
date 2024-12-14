@@ -2,6 +2,7 @@ import { IUsers } from '../interfaces/IUsers';
 import Service from '../services/Service';
 import { Users } from '../types/Users';
 import { _Body } from '../utilities/Constants.d';
+import { CustomError } from '../models/CustomError';
 
 export class UsersController implements IUsers {
 
@@ -12,15 +13,12 @@ export class UsersController implements IUsers {
           this.service = new Service(token, body);
      }
 
-     public async Get(): Promise<string> {
-          let result: string = "";
-
+     public async Get(): Promise<any> {
           try {
-               result = await this.service.Get();
-          } catch (error) {
-               console.log(error)
+               return await this.service.Get();
+          } catch (err) {
+               throw err as CustomError
           }
-          return result;
      }
 
      public async GetById(id: string): Promise<string> {

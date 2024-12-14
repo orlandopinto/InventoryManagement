@@ -1,7 +1,7 @@
 import { Users } from "../types/Users";
 
 export interface IUsers  {
-     Get: () => Promise<string>;
+     Get: () => Promise<any>;
      GetById: (id: string) => Promise<string>;
      Post: (user: Users) => Promise<boolean>;
      Put: (user: Users) => Promise<boolean>;
