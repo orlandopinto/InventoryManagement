@@ -5,32 +5,39 @@ import { MESSAGE_TOAST_ERROR_TYPE } from "../../utilities/Constants.d";
 import { Users } from '../../types/Users';
 import { useAuth } from '../../contexts/useAuth';
 import { CustomError } from '../../models/CustomError';
-import { Button, Card, Table } from 'react-bootstrap';
+import { Button, Card, Form, Modal, Table } from 'react-bootstrap';
 import CustomPagination from './CustomPagination';
 import * as Icon from "react-bootstrap-icons";
-import { Form } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function index() {
-     /*** ..:: [ ROW PER PAGE ] ::.. ***/
-     const pageSize = 5;
-     /***********************************/
 
      const { tokenResult } = useAuth()
-     const controller = new UsersController(tokenResult as string, "")
+     let controller = new UsersController(tokenResult as string)
      const { ShowMessageToast } = useShowMessageToast()
+
+     /*** ..:: [ PAGE SIZE ] ::.. ***/
+     const [pageSize, setPageSize] = useState(6)
+     /***********************************/
 
      const [data, setData] = useState<Users[]>([]);
      const [searchFilter, setSearchFilter] = useState('');
      const [currentPage, setCurrentPage] = useState(1);
+     const [show, setShow] = useState(false);
+     const [idToDelete, setIdToDelete] = useState('')
 
      useEffect(() => {
+          onGetData();
+     }, [])
+
+     const onGetData = () => {
           controller.Get().then((data => {
-               setData(data.result as Users[])
+               setData(data.result as Users[]);
           })).catch((err) => {
-               const error = err as CustomError
+               const error = err as CustomError;
                ShowMessageToast(error.message, MESSAGE_TOAST_ERROR_TYPE.ERROR);
           });
-     }, [])
+     }
 
      const handleFilter = async (e: React.ChangeEvent<HTMLInputElement>) => {
           e.preventDefault();
@@ -48,43 +55,85 @@ function index() {
           currentPage * pageSize
      );
 
+     const handleOnchangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+          const _target = e.target as HTMLSelectElement;
+          const pageSize: any = _target.value
+          setPageSize(pageSize)
+     }
+
+     const handleDelete = async () => {
+          await controller.Delete(idToDelete).then((data => {
+               onGetData();
+               ShowMessageToast("Usuario eliminado satisfactoriamente!", MESSAGE_TOAST_ERROR_TYPE.SUCCESS);
+               setShow(false);
+          })).catch((err) => {
+               const error = err as CustomError
+               ShowMessageToast(error.message, MESSAGE_TOAST_ERROR_TYPE.ERROR);
+          });
+     }
+
+     const handleClose = () => setShow(false);
+     const handleShow = (id: string) => {
+          setShow(true);
+          setIdToDelete(id);
+     }
+
      return (
           <>
                <div>
                     <div className='header-page'>
                          <div>
-                              <h2>Lista de Usuarios</h2>
-                              <p>Administra tus usuarios</p>
+                              <h4>Lista de Usuarios</h4>
+                              <p>Gestione sus usuarios</p>
                          </div>
                          <div>
-                              <Button variant="primary"><Icon.Plus size={20}></Icon.Plus>Agregar usuario</Button>
+                              <Link to="/users/adduser" className='btn btn-primary'><Icon.Plus size={20} /><span>Agregar usuario</span></Link>
                          </div>
                     </div>
                     <div>
                          <Card>
                               <div className='container-fluid pt-2'>
-                                   <input
-                                        style={{ width: "200px" }}
-                                        className='form-control mb-2'
-                                        placeholder='Search'
-                                        value={searchFilter}
-                                        onChange={handleFilter}
-                                   />
-                                   <Table striped bordered hover id='table'>
-                                        <tbody>
+                                   <div className='search-bar'>
+                                        <div>
+                                             <input
+                                                  style={{ width: "200px" }}
+                                                  className='form-control mb-2'
+                                                  placeholder='Buscar'
+                                                  value={searchFilter}
+                                                  onChange={handleFilter}
+                                             />
+                                        </div>
+                                        <div className="search-bar-right-icons">
+                                             <Icon.FilePdf size={20}></Icon.FilePdf>
+                                             <Icon.FileSpreadsheet size={20}></Icon.FileSpreadsheet>
+                                             <Icon.PrinterFill size={20}></Icon.PrinterFill>
+                                        </div>
+                                   </div>
+
+                                   <Table className='table-xl'>
+                                        <thead className='thead-dark'>
                                              <tr>
-                                                  <th style={{ width: '4%' }}>#</th>
                                                   <th>Nombre de Usuario</th>
+                                                  <th>Email</th>
                                                   <th>Nombre</th>
                                                   <th>Apellido</th>
+                                                  <th className='table-header-icons'></th>
                                              </tr>
+                                        </thead>
+                                        <tbody>
                                              {paginatedData.length > 0 ? (
                                                   paginatedData.map((user, i) => (
-                                                       <tr key={i} style={{ background: '#fff' }}>
-                                                            <td>{(currentPage - 1) * pageSize + i + 1}</td>
+                                                       <tr key={i}>
                                                             <td>{user.userName}</td>
+                                                            <td>{user.email}</td>
                                                             <td>{user.firstName}</td>
                                                             <td>{user.lastName}</td>
+                                                            <td style={{ width: 100 }} >
+                                                                 <div className='table-row-icons'>
+                                                                      <Link to={`/users/AddUser/${user.id}`}><Icon.PencilSquare className='table-row-icon' size={20}></Icon.PencilSquare></Link>
+                                                                      <Icon.Trash size={20} onClick={() => { handleShow(user.id) }}></Icon.Trash>
+                                                                 </div>
+                                                            </td>
                                                        </tr>
                                                   ))
                                              ) : (
@@ -94,21 +143,58 @@ function index() {
                                              )}
                                         </tbody>
                                    </Table>
-                                   {filteredData.length > 0 &&
-                                        <>
-                                             <CustomPagination
-                                                  itemsCount={filteredData.length}
-                                                  itemsPerPage={pageSize}
-                                                  currentPage={currentPage}
-                                                  setCurrentPage={setCurrentPage}
-                                                  alwaysShown={true}
-                                             />
-                                        </>
-                                   }
+                                   <div className='pagination-footer'>
+                                        <div className='show-per-page'>
+                                             <div>
+                                                  Mostrar por página:
+                                             </div>
+                                             <div>
+                                                  <Form.Select size="sm" onChange={handleOnchangeSelect}>
+                                                       <option value={3}>3</option>
+                                                       <option value={4}>4</option>
+                                                       <option value={6}>6</option>
+                                                  </Form.Select>
+                                             </div>
+                                        </div>
+                                        <div>
+                                             {filteredData.length > 0 &&
+                                                  <>
+                                                       <CustomPagination
+                                                            itemsCount={filteredData.length}
+                                                            itemsPerPage={pageSize}
+                                                            currentPage={currentPage}
+                                                            setCurrentPage={setCurrentPage}
+                                                            alwaysShown={true}
+                                                       />
+                                                  </>
+                                             }
+                                        </div>
+
+                                   </div>
                               </div>
                          </Card>
                     </div>
                </div>
+               <Modal show={show} onHide={handleClose} centered backdrop="static" keyboard={false} className='modal-custom modal-md'>
+                    <Modal.Header closeButton></Modal.Header>
+                    <Modal.Body>
+                         <div className="modal-custom-content-container">
+                              <div className='modal-custom-image'>
+                                   <Icon.XCircle size={75} />
+                              </div>
+                              <div className='modal-custom-header-content'>
+                                   ¿Realmente quiere eliminar el usuario?
+                              </div>
+                              <div className='modal-custom-message-content'>
+                                   El proceso es irreversible, presione 'Eliminar' para continuar
+                              </div>
+                         </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                         <Button variant="secondary" onClick={handleClose}>Cancelar</Button>
+                         <Button variant="danger" onClick={handleDelete}>Eliminar</Button>
+                    </Modal.Footer>
+               </Modal>
           </>
      )
 }

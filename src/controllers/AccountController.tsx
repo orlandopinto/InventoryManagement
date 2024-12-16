@@ -1,43 +1,39 @@
-import { IAccount, ILoginResult, LoginResult, TokenResult } from '../interfaces/IAccount';
+import { IAccount, TokenResult } from '../interfaces/IAccount';
+import { CustomError } from '../models/CustomError';
 import ServiceAccount from '../services/ServiceAccount';
 import { LoginViewModel, RegisterViewModel } from '../types/AccountTypes';
+import { _Body } from '../utilities/Constants.d';
 
 class AccountController implements IAccount {
 
-    private readonly service = new ServiceAccount();
+    service: ServiceAccount;
 
     constructor() {
-
+        this.service = new ServiceAccount();
     }
 
-    public async Login(entity: LoginViewModel): Promise<LoginResult> {
-        let result: LoginResult = { isAuthenticated: false };
+    public async Login(entity: LoginViewModel): Promise<string> {
         try {
-            result = await this.service.Login(entity);
-        } catch (error) {
-            console.log(error)
+            return await this.service.Login(entity);
+        } catch (err) {
+            throw err as CustomError
         }
-        return result as LoginResult;
     }
 
-    public async RefreshToken(entity: TokenResult): Promise<TokenResult> {
-        let result: TokenResult = {};
+    public async RefreshToken(entity: TokenResult): Promise<string> {
         try {
-            result = await this.service.RefreshToken(entity);
-        } catch (error) {
-            console.log(error)
+            return await this.service.RefreshToken(entity);
+        } catch (err) {
+            throw err as CustomError
         }
-        return result as TokenResult;
     }
 
-    public async Register(entity: RegisterViewModel): Promise<boolean> {
-        let result: boolean = false
+    public async Register(entity: RegisterViewModel): Promise<string> {
         try {
-            result = await this.service.Register(entity);
-        } catch (error) {
-            console.log(error)
+            return await this.service.Register(entity);
+        } catch (err) {
+            throw err as CustomError
         }
-        return result;
     }
 }
 

@@ -1,11 +1,16 @@
 @import "/node_modules/bootstrap/dist/css/bootstrap.min.css";
 
+
 html,
 body {
     padding: 0;
     margin: 0;
     font-size: 14px;
     overflow: hidden;
+}
+
+main {
+    background-color: var(--bs-main);
 }
 
 .profile-dropdown>div.dropdown-menu.show {
@@ -30,4 +35,84 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.table-header-icons {
+
+    width: 4%;
+}
+
+.bi.bi-trash {
+    color: red;
+}
+
+.table-row-icons {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.pagination-footer,
+.search-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.show-per-page,
+.search-bar-right-icons {
+    display: flex;
+    gap: 15px;
+    cursor: pointer;
+}
+
+.form-control:focus {
+    box-shadow: none !important;
+}
+
+.buttons-section {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+}
+
+.buttons-section>button,
+.buttons-section>.btn {
+    min-width: 10rem !important;
+}
+
+.modal-custom>.modal-dialog>.modal-content>.modal-header {
+    border-bottom: none;
+}
+
+.modal-custom>.modal-dialog>.modal-content>.modal-footer {
+    border-top: none;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 2.5rem;
+}
+
+.modal-custom-content-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-custom-header-content {
+    padding: 1rem;
+    font-size: 2rem;
+    text-align: center;
+    color: var(--bs-gray-700);
+}
+
+.modal-md {
+    --bs-modal-width: 400px !important;
+}
+
+.modal-custom-content-container>.modal-custom-image>svg {
+    color: #dc3545;
 }

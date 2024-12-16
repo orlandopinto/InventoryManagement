@@ -1,7 +1,6 @@
 import "./auth.css";
 import 'react-toastify/dist/ReactToastify.css';
 import React, { useState } from "react";
-import ToastContainerComponent from '../../components/common/ToastContainerComponent'
 import { Card } from "react-bootstrap";
 import { encrypt } from "../../utilities/EncryptDecryptManager";
 import AccountController from "../../controllers/AccountController";
@@ -9,13 +8,13 @@ import { useNavigate } from "react-router-dom";
 import { useShowMessageToast } from "../../hooks/useShowMessageToast";
 import { MESSAGE_TOAST_ERROR_TYPE } from "../../utilities/Constants.d";
 import { LoginViewModel } from "../../types/AccountTypes";
-import { LoginResult, TokenResult } from "../../interfaces/IAccount";
 import { useAuth } from "../../contexts/useAuth";
 import { AuthProfile } from "../../types/types";
+import { CustomError } from "../../models/CustomError";
 
 const Login = () => {
     const navigate = useNavigate()
-    const controller = new AccountController()
+    let controller;
     const { ShowMessageToast } = useShowMessageToast()
     const { loginUser } = useAuth()
 
@@ -30,27 +29,27 @@ const Login = () => {
         setPassword(e.target.value);
     };
 
-    async function onLogin(): Promise<LoginResult> {
-        let respuesta: LoginResult = { isAuthenticated: false };
+    async function onLogin() {
         const loginVewModel: LoginViewModel = { Id: "", Email: email, Password: encrypt(password) }
-        await controller.Login(loginVewModel).then((response => {
-            if ((response as LoginResult).tokenResult !== null) {
-                const user: AuthProfile = {
-                    userName: email,
-                    email: email,
-                    fullName: response.FullName!,
-                    isAuthenticated: true,
-                    tokenResult: response.tokenResult!
-                }
-                loginUser(user, response.tokenResult!);
-                navigate('/dashboard');
+        controller = new AccountController()
+        await controller.Login(loginVewModel).then(data => {
+            if (!data.isAuthenticated) {
+                ShowMessageToast('Usuario o contraseña invalida.', MESSAGE_TOAST_ERROR_TYPE.ERROR);
+                return
             }
-            else {
-                ShowMessageToast('Usuario o contraseña incorrecta.', MESSAGE_TOAST_ERROR_TYPE.ERROR);
-                return;
+            const user: AuthProfile = {
+                userName: data.userName,
+                email: email,
+                fullName: data.fullName!,
+                isAuthenticated: true,
+                tokenResult: data.tokenResult!
             }
-        }));
-        return respuesta;
+            loginUser(user, data.tokenResult!);
+            navigate('/dashboard');
+        }).catch(err => {
+            const error = err as CustomError
+            ShowMessageToast(error.message, MESSAGE_TOAST_ERROR_TYPE.ERROR);
+        })
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -76,7 +75,6 @@ const Login = () => {
                     </form>
                 </Card>
             </div>
-            {/* <ToastContainerComponent /> */}
         </section>
     );
 };

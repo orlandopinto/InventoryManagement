@@ -23,4 +23,27 @@ export type Users = {
     roleId: string | null
 }
 
+export const initializedUser = {
+    id: "",
+    userName: null,
+    normalizedUserName: null,
+    email: "",
+    normalizedEmail: "",
+    emailConfirmed: true,
+    passwordHash: "",
+    phoneNumber: null,
+    phoneNumberConfirmed: true,
+    twoFactorEnabled: false,
+    lockoutEnd: null,
+    lockoutEnabled: false,
+    accessFailedCount: 0,
+    address: null,
+    birthDate: null,
+    firstName: null,
+    lastName: null,
+    zipCode: null,
+    isAdmin: false,
+    roleId: null
+}
+
 export interface UserLogged extends ILoginResult { }

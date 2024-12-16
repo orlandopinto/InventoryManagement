@@ -3,14 +3,15 @@ import Service from '../services/Service';
 import { Users } from '../types/Users';
 import { _Body } from '../utilities/Constants.d';
 import { CustomError } from '../models/CustomError';
+import { encrypt } from '../utilities/EncryptDecryptManager';
 
 export class UsersController implements IUsers {
 
      body?: any;
      service: Service;
 
-     constructor(token: string, body?: _Body) {
-          this.service = new Service(token, body);
+     constructor(token: string) {
+          this.service = new Service(token);
      }
 
      public async Get(): Promise<any> {
@@ -22,42 +23,39 @@ export class UsersController implements IUsers {
      }
 
      public async GetById(id: string): Promise<string> {
-          let result: string = "";
           try {
-               result = await this.service.GetById(id);
-          } catch (error) {
-               console.log(error)
+               return await this.service.GetById(id);
+          } catch (err) {
+               throw err as CustomError
           }
-          return result
      }
 
-     public async Post(user: Users): Promise<boolean> {
-          let result: boolean = false
+     public async Post(user: Users): Promise<string> {
           try {
-               result = await this.service.Post(user);
-          } catch (error) {
-               console.log(error)
+               user.id = self.crypto.randomUUID();
+               user.passwordHash = encrypt(user.passwordHash);
+               user.userName = user.email;
+               user.normalizedUserName = user.email;
+               user.normalizedEmail = user.email;
+               return await this.service.Post(user);
+          } catch (err) {
+               throw err as CustomError
           }
-          return result;
      }
 
-     public async Put(user: Users): Promise<boolean> {
-          let result: boolean = false
+     public async Put(user: Users): Promise<string> {
           try {
-               result = await this.service.Put(user);
-          } catch (error) {
-               console.log(error)
+               return await this.service.Put(user);
+          } catch (err) {
+               throw err as CustomError
           }
-          return result;
      }
 
-     public async Delete(id: string): Promise<boolean> {
-          let result: boolean = false
+     public async Delete(id: string): Promise<string> {
           try {
-               result = await this.service.Delete(id);
-          } catch (error) {
-               console.log(error)
+               return await this.service.Delete(id);
+          } catch (err) {
+               throw err as CustomError
           }
-          return result;
      }
 }

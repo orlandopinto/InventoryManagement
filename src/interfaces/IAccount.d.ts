@@ -24,7 +24,7 @@ export type TokenResult = {
 }
 
 export interface IAccount {
-     Login: (entity: LoginViewModel) => Promise<ILoginResult | undefined>;
-     Register: (entity: RegisterViewModel) => Promise<boolean | undefined>;
-     RefreshToken: (entity: TokenResult) => Promise<TokenResult | undefined>;
+     Login: (loginViewModel: LoginViewModel) => Promise<string>;
+     Register: (registerViewModel: RegisterViewModel) => Promise<string>;
+     RefreshToken: (tokenResult: TokenResult) => Promise<string>;
 }
