@@ -44,3 +44,13 @@ main {
     outline: 0;
     box-shadow: 0 0 0 0.02rem;
 }
+
+/* validar cuando este cerrao el sidebar*/
+.sidebar-menu-sub-toggle>.sidebar-menu-nav-title {
+    width: 100%;
+}
+
+/* validar cuando este cerrao el sidebar*/
+/* .sidebar-menu-sub-collapse>.sidebar-menu-nav {
+    padding-left: 1rem;
+} */

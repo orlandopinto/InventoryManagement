@@ -29,10 +29,6 @@ export default class Service implements IService {
         return Promise.resolve((
             fetch(API.URL_BASE + id, { method: METHOD.GET, headers: this.headers })
                 .then(res => res.json())
-                .then(response => {
-                    const respuest = response
-                    return response
-                })
                 .catch(err => {
                     const error = new CustomError({ message: err.toString(), name: 'API Error' });
                     throw error.throwCustomError()

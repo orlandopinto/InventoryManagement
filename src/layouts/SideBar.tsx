@@ -1,4 +1,5 @@
 import "./styles.scss";
+import "./sidebar.css";
 import { Link } from 'react-router-dom';
 import Sidebar from "react-bootstrap-sidebar-menu";
 import * as Icon from 'react-bootstrap-icons';
@@ -24,21 +25,22 @@ const SideBar = () => {
                             <span className="sidebar-menu-nav-icon"><Icon.QuestionCircle size={20} /></span>
                             <span className="sidebar-menu-nav-title">Acerca de</span>
                         </Link>
-                        <Link data-rb-event-key="menu_title" className='sidebar-menu-nav-link' to="/users">
-                            <span className="sidebar-menu-nav-icon"><Icon.QuestionCircle size={20} /></span>
-                            <span className="sidebar-menu-nav-title">Lista de usuarios</span>
-                        </Link>
                         <Sidebar.Sub eventKey={0}>
-                            <Sidebar.Sub.Toggle>
+                            <Sidebar.Sub.Toggle className="collapsed">
+                                <Icon.People size={20} />
+                                <Sidebar.Nav.Title>Usuarios</Sidebar.Nav.Title>
                                 <Sidebar.Nav.Icon />
-                                <Sidebar.Nav.Title>Submenu</Sidebar.Nav.Title>
                             </Sidebar.Sub.Toggle>
                             <Sidebar.Sub.Collapse>
                                 <Sidebar.Nav>
-                                    <Sidebar.Nav.Link eventKey="sum_menu_title">
+                                    <Sidebar.Nav.Link eventKey="sum_menu_title" href="/users">
                                         <Sidebar.Nav.Icon><Icon.Printer size={20} /></Sidebar.Nav.Icon>
-                                        <Sidebar.Nav.Title>Sub menu item</Sidebar.Nav.Title>
+                                        <Sidebar.Nav.Title>User list Sidebar.Nav.Link </Sidebar.Nav.Title>
                                     </Sidebar.Nav.Link>
+                                    <Link data-rb-event-key="sum_menu_title" className='sidebar-menu-nav-link active' to="/users" role="button" tabIndex={0} hrefLang="/users">
+                                        <span className="sidebar-menu-nav-icon"><Icon.QuestionCircle size={20} /></span>
+                                        <span className="sidebar-menu-nav-title">Lista de usuarios</span>
+                                    </Link>
                                 </Sidebar.Nav>
                             </Sidebar.Sub.Collapse>
                         </Sidebar.Sub>
@@ -50,7 +52,7 @@ const SideBar = () => {
                     </div>
                 </Sidebar.Footer>
             </Sidebar.Collapse>
-        </Sidebar>
+        </Sidebar >
     )
 }
 

@@ -5,15 +5,15 @@ import foto from '../assets/images/foto.jpg'
 import { useAuth } from '../contexts/useAuth';
 
 function CustomToggle() {
-    const UserMenu = (<Image src={foto} alt="UserName profile image" roundedCircle style={{ width: '33px' }} />)
+    const UserMenu = (<Image src={foto} alt="UserName profile image" className='avatar' />)
     const { logout } = useAuth();
-    const navigate= useNavigate();
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         logout();
         navigate('/login')
     };
-    
+
     return (
         <NavDropdown title={UserMenu} className='profile-dropdown'>
             <Link to="/profile" className='dropdown-item'><Icon.Person size={20} /><span>Perfil</span></Link>

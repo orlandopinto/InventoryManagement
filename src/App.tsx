@@ -4,6 +4,7 @@ import { UserProvider } from './contexts/useAuth';
 import { ToastContainer } from 'react-toastify';
 import ToastContainerComponent from './components/common/ToastContainerComponent';
 import { QueryClient, QueryClientProvider } from 'react-query';
+
 const queryClient = new QueryClient();
 
 const App = () => {

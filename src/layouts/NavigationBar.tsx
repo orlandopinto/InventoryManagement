@@ -1,5 +1,6 @@
 import { Nav, Navbar } from 'react-bootstrap'
 import CustomToggle from '../components/CustomToggle'
+import ThemeSelection from './ThemeSelection'
 
 const NavigationBar = () => {
     return (
@@ -12,7 +13,10 @@ const NavigationBar = () => {
                         <Nav.Link href="#features">Features</Nav.Link>
                         <Nav.Link href="#pricing">Pricing</Nav.Link>
                     </Nav>
-                    <Nav className="">
+                    <Nav className='m-3'>
+                        <ThemeSelection />
+                    </Nav>
+                    <Nav>
                         <CustomToggle />
                     </Nav>
                 </div>

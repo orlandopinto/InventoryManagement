@@ -7,6 +7,7 @@ import { UsersController } from '../../controllers/UsersController';
 import { useAuth } from '../../contexts/useAuth';
 import { MESSAGE_TOAST_ERROR_TYPE, METHOD } from '../../utilities/Constants.d';
 import { useShowMessageToast } from '../../hooks/useShowMessageToast';
+import Loading from '../index/Loading';
 
 function AddUser() {
   let IsAddMode: boolean = true;
@@ -30,28 +31,29 @@ function AddUser() {
 
   if (id !== undefined) {
     IsAddMode = false;
-    const { data, isLoading } = useQuery({
+    const { isLoading } = useQuery({
       queryKey: ['id', id],
       queryFn: async ({ queryKey }) => {
         await controller.GetById(queryKey[1] as string).then(fetchData => {
-          if (fetchData == null) {
-            ShowMessageToast("Se produjo un error al consultar los datos del usuario, por favor intente de nuevo!", MESSAGE_TOAST_ERROR_TYPE.ERROR);
-            return;
+          if (fetchData !== null) {
+            const response = (fetchData as any).result as Users
+            setOriginalPasswordHash(response.passwordHash)
+            response.passwordHash = PASSWORD_HIDE
+            setFormData(response)
           }
-          const response = (fetchData as any).result as Users
-          setOriginalPasswordHash(response.passwordHash)
-          response.passwordHash = PASSWORD_HIDE
-          setFormData(response)
-
+          else {
+            ShowMessageToast("Se produjo un error al consultar los datos del usuario, por favor intente de nuevo!", MESSAGE_TOAST_ERROR_TYPE.ERROR);
+            //return;
+          }
         }).catch(error => {
           ShowMessageToast(error.mess, MESSAGE_TOAST_ERROR_TYPE.ERROR);
-          return;
+          //return;
         })
       },
     })
 
     if (isLoading) {
-      return <span>Loading...</span>
+      return <Loading />
     }
   }
 
