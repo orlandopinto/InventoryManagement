@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
-import CustomPagination from './CustomPagination';
+import CustomPagination from '../../components/common/CustomPagination';
 import { useAuth } from '../../contexts/useAuth';
 import { UsersController } from '../../controllers/UsersController';
 import { useShowMessageToast } from '../../hooks/useShowMessageToast';
@@ -35,7 +35,7 @@ export default function UsersTable() {
           setCurrentPage(1);
      }, [searchFilter]);
 
-     const handleFilter = (e:React.ChangeEvent<HTMLInputElement>) => {
+     const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
           setSearchFilter(e.target.value);
      };
 

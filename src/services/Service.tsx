@@ -1,7 +1,6 @@
 import { _Headers, API, _Method, _Body, METHOD } from "../utilities/Constants.d";
 import { CustomError } from "../models/CustomError";
 import { IService } from "../interfaces/IService";
-import { Users } from "../types/Users";
 
 export default class Service implements IService {
 
@@ -36,9 +35,9 @@ export default class Service implements IService {
         ))
     }
 
-    public async Post(user: Users): Promise<string> {
+    public async Post<T>(entity: T): Promise<string> {
         return Promise.resolve((
-            fetch(API.URL_BASE, { method: METHOD.POST, headers: this.headers, body: JSON.stringify(user) })
+            fetch(API.URL_BASE, { method: METHOD.POST, headers: this.headers, body: JSON.stringify(entity) })
                 .then(res => res.json())
                 .catch(err => {
                     const error = new CustomError({ message: err.toString(), name: 'API Error' });
@@ -47,9 +46,9 @@ export default class Service implements IService {
         ))
     }
 
-    public async Put(user: Users): Promise<string> {
+    public async Put<T>(entity: T): Promise<string> {
         return Promise.resolve((
-            fetch(API.URL_BASE, { method: METHOD.PUT, headers: this.headers, body: JSON.stringify(user) })
+            fetch(API.URL_BASE, { method: METHOD.PUT, headers: this.headers, body: JSON.stringify(entity) })
                 .then(res => res.json())
                 .catch(err => {
                     const error = new CustomError({ message: err.toString(), name: 'API Error' });

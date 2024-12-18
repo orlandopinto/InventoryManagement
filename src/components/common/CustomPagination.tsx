@@ -17,7 +17,6 @@ const CustomPagination = ({
      const changePage = (number: Number) => {
           if (currentPage === number) return;
           setCurrentPage(number);
-          // scrollToTop();
      };
      const onPageNumberClick = (pageNumber: Number) => {
           changePage(pageNumber);

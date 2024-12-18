@@ -5,13 +5,15 @@ import ThemeSelection from './ThemeSelection'
 const NavigationBar = () => {
     return (
         <div className="navbar-container">
-            <Navbar bg="primary" data-bs-theme="dark">
+            <Navbar id="topNavbar">
                 <div className='container-fluid'>
-                    <Navbar.Brand href="#home">Navbar</Navbar.Brand>
                     <Nav className="me-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#features">Features</Nav.Link>
-                        <Nav.Link href="#pricing">Pricing</Nav.Link>
+                        <div className='nav-container'>
+                            <div className="nav-title">
+                                <span>Buenas noches,</span> <span className='nav-user-name'>Orlando Pinto</span>
+                            </div>
+                            <div className="nav-subtitle">Resumen de tu desempeño esta semana</div>
+                        </div>
                     </Nav>
                     <Nav className='m-3'>
                         <ThemeSelection />

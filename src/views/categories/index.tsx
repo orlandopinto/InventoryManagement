@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { UsersController } from '../../controllers/UsersController';
+import { CategoriesController } from '../../controllers/CategoriesController';
 import { useShowMessageToast } from "../../hooks/useShowMessageToast";
 import { MESSAGE_TOAST_ERROR_TYPE } from "../../utilities/Constants.d";
-import { Users } from '../../types/Users';
+import { Categories } from '../../types/Categories';
 import { useAuth } from '../../contexts/useAuth';
 import { CustomError } from '../../models/CustomError';
 import { Button, Card, Form, Modal, Table } from 'react-bootstrap';
@@ -14,7 +14,7 @@ import Loading from '../index/Loading';
 function index() {
 
      const { tokenResult } = useAuth()
-     let controller = new UsersController(tokenResult as string)
+     let controller = new CategoriesController(tokenResult as string)
      const { ShowMessageToast } = useShowMessageToast()
 
      /*** ..:: [ PAGE SIZE ] ::.. ***/
@@ -22,7 +22,7 @@ function index() {
      /***********************************/
 
      const [isLoading, setIsLoading] = useState(false)
-     const [data, setData] = useState<Users[]>([]);
+     const [data, setData] = useState<Categories[]>([]);
      const [searchFilter, setSearchFilter] = useState('');
      const [currentPage, setCurrentPage] = useState(1);
      const [show, setShow] = useState(false);
@@ -35,7 +35,7 @@ function index() {
      const onGetData = () => {
           setIsLoading(true)
           controller.Get().then((data => {
-               setData(data.result as Users[]);
+               setData(data.result as Categories[]);
           })).catch((err) => {
                const error = err as CustomError;
                ShowMessageToast(error.message, MESSAGE_TOAST_ERROR_TYPE.ERROR);
@@ -49,11 +49,7 @@ function index() {
           setSearchFilter(e.target.value);
      };
 
-     const filteredData = data.filter(
-          (item) =>
-               item.firstName?.toLowerCase().includes(searchFilter.toLowerCase())
-               || item.lastName?.toLowerCase().includes(searchFilter.toLowerCase())
-     );
+     const filteredData = data.filter((item) => item.categoryName?.toLowerCase().includes(searchFilter.toLowerCase()));
 
      const paginatedData = filteredData.slice(
           (currentPage - 1) * pageSize,
@@ -69,7 +65,7 @@ function index() {
      const handleDelete = async () => {
           await controller.Delete(idToDelete).then((data => {
                onGetData();
-               ShowMessageToast("Usuario eliminado satisfactoriamente!", MESSAGE_TOAST_ERROR_TYPE.SUCCESS);
+               ShowMessageToast("categoría eliminada satisfactoriamente!", MESSAGE_TOAST_ERROR_TYPE.SUCCESS);
                setShow(false);
           })).catch((err) => {
                const error = err as CustomError
@@ -93,12 +89,10 @@ function index() {
                          <div>
                               <div className='header-page'>
                                    <div>
-                                        <h4>Lista de Usuarios</h4>
-                                        <p>Gestione sus usuarios</p>
+                                        <h4>Categorías</h4>
+                                        <p>Gestione sus categorías</p>
                                    </div>
-                                   <div>
-                                        <Link to="/users/adduser" className='btn btn-primary'><Icon.Plus size={20} /><span>Agregar usuario</span></Link>
-                                   </div>
+                                   <div><Link to="/categories/AddUpdateCategory" className='btn btn-primary'><Icon.Plus size={20} /><span>Agregar categoria</span></Link></div>
                               </div>
                               <div>
                                    <Card>
@@ -123,41 +117,37 @@ function index() {
                                              <Table className='table-xl'>
                                                   <thead className='thead-dark'>
                                                        <tr>
-                                                            <th>Nombre de Usuario</th>
-                                                            <th>Email</th>
-                                                            <th>Nombre</th>
-                                                            <th>Apellido</th>
+                                                            <th>Nombre de la categoría</th>
+                                                            <th>Código</th>
+                                                            <th>Descripción</th>
+                                                            <th>Fecha creación</th>
                                                             <th className='table-header-icons'></th>
                                                        </tr>
                                                   </thead>
                                                   <tbody>
                                                        {paginatedData.length > 0 ? (
-                                                            paginatedData.map((user, i) => (
+                                                            paginatedData.map((category, i) => (
                                                                  <tr key={i}>
-                                                                      <td>{user.userName}</td>
-                                                                      <td>{user.email}</td>
-                                                                      <td>{user.firstName}</td>
-                                                                      <td>{user.lastName}</td>
+                                                                      <td>{category.categoryName}</td>
+                                                                      <td>{category.categoryCode}</td>
+                                                                      <td>{category.categoryDescription}</td>
+                                                                      <td>{category.createBy}</td>
                                                                       <td style={{ width: 100 }} >
                                                                            <div className='table-row-icons'>
-                                                                                <Link to={`/users/AddUser/${user.id}`}><Icon.PencilSquare className='table-row-icon' size={20}></Icon.PencilSquare></Link>
-                                                                                <Icon.Trash size={20} onClick={() => { handleShow(user.id) }}></Icon.Trash>
+                                                                                <Link to={`/categories/AddUpdateCategory/${category.id}`}><Icon.PencilSquare className='table-row-icon' size={20}></Icon.PencilSquare></Link>
+                                                                                <Icon.Trash size={20} onClick={() => { handleShow(category.id) }}></Icon.Trash>
                                                                            </div>
                                                                       </td>
                                                                  </tr>
                                                             ))
                                                        ) : (
-                                                            <tr>
-                                                                 <td colSpan={3}>No data found</td>
-                                                            </tr>
+                                                            <tr><td colSpan={5}>No se encontraron datos</td></tr>
                                                        )}
                                                   </tbody>
                                              </Table>
                                              <div className='pagination-footer'>
                                                   <div className='show-per-page'>
-                                                       <div>
-                                                            Mostrar por página:
-                                                       </div>
+                                                       <div>Mostrar por página:</div>
                                                        <div>
                                                             <Form.Select size="sm" value={pageSize} onChange={handleOnchangeSelect}>
                                                                  <option value={3}>3</option>
@@ -195,7 +185,7 @@ function index() {
                                    <Icon.XCircle size={75} />
                               </div>
                               <div className='modal-custom-header-content'>
-                                   ¿Realmente quiere eliminar el usuario?
+                                   ¿Realmente quiere eliminar la categoría?
                               </div>
                               <div className='modal-custom-message-content'>
                                    El proceso es irreversible, presione 'Eliminar' para continuar

@@ -30,7 +30,7 @@ function ProSideBar() {
                          <MenuItem active={window.location.pathname === "/dashboard"} onClick={() => setIsActive(true)} icon={<Icon.House size={20} />} component={<Link to="/dashboard" className="link" />}> Dashboard </MenuItem>
                          <MenuItem active={window.location.pathname === "/about"} icon={<Icon.QuestionCircle size={20} />} component={<Link to="/about" className="link" />}> Acerca de </MenuItem>
                          <SubMenu
-                              defaultOpen
+                              defaultOpen={window.location.pathname === "/users" || window.location.pathname === "/users/adduser"}
                               icon={<Icon.CreditCard size={20} />}
                               label="Administración"
                               rootStyles={{
@@ -47,26 +47,28 @@ function ProSideBar() {
                                    },
                               }}
                          >
-                              <MenuItem active={window.location.pathname === "/users"} icon={<Icon.People size={20} />} component={<Link to="/users" className="link" />}> Usuarios </MenuItem>
+                              <MenuItem active={window.location.pathname === "/users" || window.location.pathname === "/users/adduser"} icon={<Icon.People size={20} />} component={<Link to="/users" className="link" />}> Usuarios </MenuItem>
                          </SubMenu>
-                         {/* <SubMenu label="Wallets">
-                              <MenuItem>Current Wallet</MenuItem>
-                              <MenuItem>Savings Wallet</MenuItem>
+                         <SubMenu
+                              defaultOpen={window.location.pathname === "/categories" || window.location.pathname === "/categories/AddUpdateCategory"}
+                              icon={<Icon.CreditCard size={20} />}
+                              label="Productos"
+                              rootStyles={{
+                                   ['& > .ps-submenu-content.ps-open']: {
+                                        backgroundColor: 'transparent',
+                                        //margin: '.5rem',
+                                        borderRadius: '.2rem',
+                                        '&:hover': {
+                                             //backgroundColor: '#eee',
+                                        },
+                                   },
+                                   ['.ps-submenu-content']: {
+                                        backgroundColor: 'transparent',
+                                   },
+                              }}
+                         >
+                              <MenuItem active={window.location.pathname === "/categories" || window.location.pathname === "/categories/AddUpdateCategory"} icon={<Icon.People size={20} />} component={<Link to="/categories" className="link" />}> Categorías </MenuItem>
                          </SubMenu>
-                         <MenuItem> Transactions </MenuItem>
-                         <SubMenu label="Settings">
-                              <MenuItem> Account </MenuItem>
-                              <MenuItem> Privacy </MenuItem>
-                              <MenuItem> Notifications </MenuItem>
-                         </SubMenu>
-                         <MenuItem> Logout </MenuItem> */}
-                         {/* <div className="footer-container border-top mx-2 mt-4">
-                              <div className="container">
-                                   <footer className="d-flex flex-wrap justify-content-between align-items-center py-3">
-                                        footer content
-                                   </footer>
-                              </div>
-                         </div> */}
                     </Menu>
                </Sidebar>
           </div>

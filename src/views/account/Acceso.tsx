@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import React, { useState } from "react";
 import { Card } from "react-bootstrap";
 import { useAuth } from "../../contexts/useAuth";
-import { AuthProfile } from "../../types/types";
+import { AuthProfile } from "../../types/AuthProfile";
 
 const Acceso = () => {
      // const { loginUser } = useAuth()

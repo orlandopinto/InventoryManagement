@@ -9,7 +9,7 @@ import { useShowMessageToast } from "../../hooks/useShowMessageToast";
 import { MESSAGE_TOAST_ERROR_TYPE } from "../../utilities/Constants.d";
 import { LoginViewModel } from "../../types/AccountTypes";
 import { useAuth } from "../../contexts/useAuth";
-import { AuthProfile } from "../../types/types";
+import { AuthProfile } from "../../types/AuthProfile";
 import { CustomError } from "../../models/CustomError";
 
 const Login = () => {

@@ -67,6 +67,7 @@ function AddUser() {
       }
       setFormData(initializedUser)
       inputRef.current?.focus();
+      ShowMessageToast("Usuario registrado satisfactoriamente!", MESSAGE_TOAST_ERROR_TYPE.SUCCESS);
     }).catch(error => {
       ShowMessageToast(error.mess, MESSAGE_TOAST_ERROR_TYPE.ERROR);
       return;

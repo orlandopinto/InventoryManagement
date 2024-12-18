@@ -11,8 +11,11 @@ export default function ThemeSelection() {
           const selectedTheme = localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
           document.documentElement.setAttribute('data-bs-theme', selectedTheme);
 
-          var preview = document.querySelectorAll("#ProSidebar");
-          preview[0].setAttribute("data-bs-theme", selectedTheme);
+          var ProSidebar = document.querySelectorAll("#ProSidebar");
+          ProSidebar[0].setAttribute("data-bs-theme", selectedTheme);
+
+          var topNavbar = document.querySelectorAll("#topNavbar");
+          topNavbar[0].setAttribute("data-bs-theme", selectedTheme);
 
           setTheme(selectedTheme);
           localStorage.setItem('theme', selectedTheme)
@@ -24,9 +27,9 @@ export default function ThemeSelection() {
                     {
                          localStorage.getItem('theme') === 'light'
                               ?
-                              <Icon.MoonStarsFill size={20} style={{ cursor: 'pointer', color: '#fff' }} onClick={() => handleTheme()}>{localStorage.getItem('theme') === 'dark' ? 'light' : 'dark'}</Icon.MoonStarsFill>
+                              <Icon.MoonStarsFill className="icon-theme" size={20} onClick={() => handleTheme()}>{localStorage.getItem('theme') === 'dark' ? 'light' : 'dark'}</Icon.MoonStarsFill>
                               :
-                              <Icon.SunFill size={25} style={{ cursor: 'pointer', color: '#fff' }} onClick={() => handleTheme()}>{localStorage.getItem('theme') === 'dark' ? 'light' : 'dark'}</Icon.SunFill>
+                              <Icon.SunFill className="icon-theme" size={25} onClick={() => handleTheme()}>{localStorage.getItem('theme') === 'dark' ? 'light' : 'dark'}</Icon.SunFill>
                     }
                </div>
           </>

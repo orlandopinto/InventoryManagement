@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react"
-import { AuthProfile } from "../types/types";
+import { AuthProfile } from "../types/AuthProfile";
 import { useNavigate } from "react-router-dom";
 import { TokenResult } from "../interfaces/IAccount";
 
