@@ -57,7 +57,7 @@ function AddUser() {
     }
   }
 
-  const handleAddUser = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleAddUser = async (event: any) => {
     event.preventDefault();
 
     await controller.Post(formData).then(fetchData => {
@@ -74,7 +74,7 @@ function AddUser() {
     })
   }
 
-  const handleUpdateUser = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleUpdateUser = async (event: any) => {
     event.preventDefault();
     formData.passwordHash = originalPasswordHash;
     await controller.Put(formData).then(fetchData => {

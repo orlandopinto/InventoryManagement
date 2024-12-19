@@ -13,6 +13,7 @@ import { AuthProfile } from "../../types/AuthProfile";
 import { CustomError } from "../../models/CustomError";
 import { AccountExistsResult, LoginResult, RegisterResult } from "../../interfaces/IAccount";
 import logo from '../../assets/images/logo.png'
+import LanguageSwitcher from "../../components/common/LanguageSwitcher";
 
 const Register = () => {
     const [validated, setValidated] = useState(false);
@@ -107,55 +108,60 @@ const Register = () => {
     };
 
     return (
-        <section className="login-section">
-            <div className="container">
-                <Card className="form-signin m-auto  p-5">
-                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                        <Row>
-                            <div className="w-100 pt-2 pb-5 text-center">
-                                <img src={logo} alt="logo" style={{ width: 150 }} />
-                            </div>
-                            <div>
-                                <h4><strong>Crear una cuenta</strong></h4>
-                                <p>Continúa donde lo dejaste</p>
-                            </div>
-                        </Row>
-                        <Row>
-                            <Col xl={12}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Correo electrónico:</Form.Label>
-                                    <Form.Control type="email" id="email" name="email" onChange={handleChange} required />
-                                </Form.Group>
-                            </Col >
-                        </Row>
-                        <Row>
-                            <Col xl={12}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Contraseña:</Form.Label>
-                                    <Form.Control type="password" id="password" name="password" onChange={handleChange} required />
-                                </Form.Group>
-                            </Col >
-                        </Row>
-                        <Row>
-                            <Col xl={12}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Contraseña:</Form.Label>
-                                    <Form.Control type="password" id="confirmPassword" name="confirmPassword" onChange={handleChange} required />
-                                </Form.Group>
-                            </Col >
-                        </Row>
-                        <Row>
-                            <Col xl={12} className="text-center">
-                                <Button className="w-100" size="lg" id="btnSubmit" type="submit" variant='primary'>Regístrate</Button>
-                            </Col>
-                            <div className="pt-2">
-                                ¿Ya eres usuario? <Link to={"/account/login"}>Inicia sesión</Link>
-                            </div>
-                        </Row>
-                    </Form>
-                </Card>
+        <>
+            <div className="w-100 d-flex justify-content-end p-2">
+                <LanguageSwitcher />
             </div>
-        </section>
+            <section className="register-section">
+                <div className="container">
+                    <Card className="form-signin m-auto  p-5">
+                        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                            <Row>
+                                <div className="w-100 pt-2 pb-5 text-center">
+                                    <img src={logo} alt="logo" style={{ width: 150 }} />
+                                </div>
+                                <div>
+                                    <h4><strong>Crear una cuenta</strong></h4>
+                                    <p>Continúa donde lo dejaste</p>
+                                </div>
+                            </Row>
+                            <Row>
+                                <Col xl={12}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Correo electrónico:</Form.Label>
+                                        <Form.Control type="email" id="email" name="email" onChange={handleChange} required />
+                                    </Form.Group>
+                                </Col >
+                            </Row>
+                            <Row>
+                                <Col xl={12}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Contraseña:</Form.Label>
+                                        <Form.Control type="password" id="password" name="password" onChange={handleChange} required />
+                                    </Form.Group>
+                                </Col >
+                            </Row>
+                            <Row>
+                                <Col xl={12}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Contraseña:</Form.Label>
+                                        <Form.Control type="password" id="confirmPassword" name="confirmPassword" onChange={handleChange} required />
+                                    </Form.Group>
+                                </Col >
+                            </Row>
+                            <Row>
+                                <Col xl={12} className="text-center">
+                                    <Button className="w-100" size="lg" id="btnSubmit" type="submit" variant='primary'>Regístrate</Button>
+                                </Col>
+                                <div className="pt-2">
+                                    ¿Ya eres usuario? <Link to={"/account/login"}>Inicia sesión</Link>
+                                </div>
+                            </Row>
+                        </Form>
+                    </Card>
+                </div>
+            </section>
+        </>
     );
 };
 

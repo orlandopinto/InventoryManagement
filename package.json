@@ -14,17 +14,20 @@
     "@types/node": "^22.10.2",
     "bootstrap": "^5.3.3",
     "crypto-js": "^4.2.0",
+    "i18next": "^24.1.2",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.6",
     "react-bootstrap-icons": "^1.11.5",
     "react-bootstrap-sidebar-menu": "^2.0.3",
     "react-dom": "^18.3.1",
+    "react-i18next": "^15.2.0",
     "react-pro-sidebar": "^1.1.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^7.0.2",
     "react-toastify": "^10.0.6",
     "supports-color": "^9.4.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vite-plugin-svgr": "^4.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",

@@ -41,8 +41,14 @@ body {
     color: #000;
 }
 
-.login-section {
+.login-section,
+.register-section {
     background: var(--bg-main);
+}
+
+.login-section>.container,
+.register-section>.container {
+    margin-top: -3.5rem !important;
 }
 
 .nav-container {
@@ -301,4 +307,13 @@ main {
     width: 37px;
     height: 37px;
     border-radius: 50%;
+}
+
+.dropdown-language:hover,
+.dropdown-language {
+    background: none;
+}
+
+.dropdown-language.dropdown-toggle::after {
+    display: none;
 }

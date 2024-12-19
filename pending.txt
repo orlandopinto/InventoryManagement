@@ -1,0 +1,3 @@
+modificar las rutas:
+- https://omarelhawary.me/blog/file-based-routing-with-react-router/
+- https://github.com/oedotme/generouted

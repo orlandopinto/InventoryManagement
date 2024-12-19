@@ -13,6 +13,7 @@ import { AuthProfile } from "../../types/AuthProfile";
 import { CustomError } from "../../models/CustomError";
 import { LoginResult } from "../../interfaces/IAccount";
 import logo from '../../assets/images/logo.png'
+import LanguageSwitcher from "../../components/common/LanguageSwitcher";
 
 const Login = () => {
     const [validated, setValidated] = useState(false);
@@ -71,50 +72,55 @@ const Login = () => {
     }
 
     return (
-        <section className="login-section">
-            <div className="container">
-                <Card className="form-signin m-auto  p-5">
-                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                        <Row>
-                            <div className="w-100 pt-2 pb-5 text-center">
-                                <img src={logo} alt="logo" style={{ width: 150 }} />
-                            </div>
-                            <div>
-                                <h4><strong>Iniciar sesión</strong></h4>
-                                <p>Por favor, inicie sesión en su cuenta</p>
-                            </div>
-                        </Row>
-                        <Row>
-                            <Col xl={12}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Correo electrónico:</Form.Label>
-                                    <Form.Control type="email" id="email" name="email" onChange={handleChange} required />
-                                </Form.Group>
-                            </Col >
-                        </Row>
-                        <Row>
-                            <Col xl={12}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Contraseña:</Form.Label>
-                                    <Form.Control type="password" id="password" name="password" onChange={handleChange} required />
-                                </Form.Group>
-                                <div>
-                                    <p>¿Has olvidado tu contraseña?</p>
-                                </div>
-                            </Col >
-                        </Row>
-                        <Row>
-                            <Col xl={12} className="text-center">
-                                <Button className="w-100" size="lg" id="btnSubmit" type="submit" variant='primary'>Iniciar sesión</Button>
-                            </Col>
-                            <div className="pt-2">
-                                ¿No tienes una cuenta? <Link to={"/account/register"}>Regístrate</Link>
-                            </div>
-                        </Row>
-                    </Form>
-                </Card>
+        <>
+            <div className="w-100 d-flex justify-content-end p-2">
+                <LanguageSwitcher />
             </div>
-        </section>
+            <section className="login-section">
+                <div className="container">
+                    <Card className="form-signin m-auto  p-5">
+                        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                            <Row>
+                                <div className="w-100 pt-2 pb-5 text-center">
+                                    <img src={logo} alt="logo" style={{ width: 150 }} />
+                                </div>
+                                <div>
+                                    <h4><strong>Iniciar sesión</strong></h4>
+                                    <p>Por favor, inicie sesión en su cuenta</p>
+                                </div>
+                            </Row>
+                            <Row>
+                                <Col xl={12}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Correo electrónico:</Form.Label>
+                                        <Form.Control type="email" id="email" name="email" onChange={handleChange} required />
+                                    </Form.Group>
+                                </Col >
+                            </Row>
+                            <Row>
+                                <Col xl={12}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Contraseña:</Form.Label>
+                                        <Form.Control type="password" id="password" name="password" onChange={handleChange} required />
+                                    </Form.Group>
+                                    <div>
+                                        <p>¿Has olvidado tu contraseña?</p>
+                                    </div>
+                                </Col >
+                            </Row>
+                            <Row>
+                                <Col xl={12} className="text-center">
+                                    <Button className="w-100" size="lg" id="btnSubmit" type="submit" variant='primary'>Iniciar sesión</Button>
+                                </Col>
+                                <div className="pt-2">
+                                    ¿No tienes una cuenta? <Link to={"/account/register"}>Regístrate</Link>
+                                </div>
+                            </Row>
+                        </Form>
+                    </Card>
+                </div>
+            </section>
+        </>
     );
 };
 
