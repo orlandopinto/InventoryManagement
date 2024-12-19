@@ -11,6 +11,7 @@ import UserIndex from "../views/users/index";
 import AddUser from "../views/users/AddUser";
 import CategoryIndex from "../views/categories/index";
 import AddUpdateCategory from '../views/categories/AddUpdateCategory'
+import PageNotFound from "../views/index/PageNotFound";
 
 const DashboardComponent = Layout(Dashboard);
 const AboutComponent = Layout(About);
@@ -25,9 +26,9 @@ export const AppRoutes = createBrowserRouter(
             path: "/",
             element: <App />,
             children: [
-                { path: "login", element: <Login /> },
-                { path: "logout", element: <Logout /> },
-                { path: "register", element: <Register /> },
+                { path: "/account/login", element: <Login /> },
+                { path: "/account/logout", element: <Logout /> },
+                { path: "/account/register", element: <Register /> },
                 {
                     path: "/about",
                     element: (<ProtectedRoutes><AboutComponent /></ProtectedRoutes>)
@@ -59,6 +60,10 @@ export const AppRoutes = createBrowserRouter(
                 {
                     path: "/categories/AddUpdateCategory/:id",
                     element: (<ProtectedRoutes><AddUpdateCategoryComponent /></ProtectedRoutes>)
+                },
+                {
+                    path: "*",
+                    element: (<PageNotFound />)
                 }
             ]
         }

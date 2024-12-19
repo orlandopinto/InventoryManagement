@@ -1,6 +1,7 @@
 
-export const API_ACOOUNT = { URL_BASE: 'https://localhost:4433/account/api/' }
-export const API = { URL_BASE: 'https://localhost:4433/Users/api/' }
+export const API_ACCOUNT = { URL_BASE: 'https://localhost:4433/account/api/' }
+export const API_USERS = { URL_BASE: 'https://localhost:4433/users/api/' }
+export const API_CATEGORIES = { URL_BASE: 'https://localhost:4433/categories/api/' }
 
 export const METHOD = {
     GET: 'GET',

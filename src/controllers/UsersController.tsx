@@ -1,7 +1,7 @@
 import { IUsers } from '../interfaces/IUsers';
 import Service from '../services/Service';
 import { Users } from '../types/Users';
-import { _Body } from '../utilities/Constants.d';
+import { _Body, API_USERS } from '../utilities/Constants.d';
 import { CustomError } from '../models/CustomError';
 import { encrypt } from '../utilities/EncryptDecryptManager';
 
@@ -11,7 +11,7 @@ export class UsersController implements IUsers {
      service: Service;
 
      constructor(token: string) {
-          this.service = new Service(token);
+          this.service = new Service(token, API_USERS.URL_BASE);
      }
 
      public async Get(): Promise<any> {

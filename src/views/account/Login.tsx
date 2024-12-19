@@ -1,50 +1,58 @@
 import "./auth.css";
 import 'react-toastify/dist/ReactToastify.css';
-import React, { useState } from "react";
-import { Card } from "react-bootstrap";
+import { ChangeEvent, SyntheticEvent, useState } from "react";
+import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 import { encrypt } from "../../utilities/EncryptDecryptManager";
 import AccountController from "../../controllers/AccountController";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useShowMessageToast } from "../../hooks/useShowMessageToast";
 import { MESSAGE_TOAST_ERROR_TYPE } from "../../utilities/Constants.d";
 import { LoginViewModel } from "../../types/AccountTypes";
 import { useAuth } from "../../contexts/useAuth";
 import { AuthProfile } from "../../types/AuthProfile";
 import { CustomError } from "../../models/CustomError";
+import { LoginResult } from "../../interfaces/IAccount";
+import logo from '../../assets/images/logo.png'
 
 const Login = () => {
+    const [validated, setValidated] = useState(false);
+
+    const initializeLogin = {
+        id: "",
+        email: "",
+        password: ""
+    }
+    const [formData, setFormData] = useState(initializeLogin);
+
+
     const navigate = useNavigate()
-    let controller;
     const { ShowMessageToast } = useShowMessageToast()
     const { loginUser } = useAuth()
 
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-    };
-
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setFormData({
+            ...formData,
+            [event.target.id]: event.target.value,
+        });
     };
 
     async function onLogin() {
-        const loginVewModel: LoginViewModel = { Id: "", Email: email, Password: encrypt(password) }
-        controller = new AccountController()
+        const loginVewModel: LoginViewModel = { id: "", email: formData.email, password: encrypt(formData.password) }
+        const controller = new AccountController()
         await controller.Login(loginVewModel).then(data => {
-            if (!data.isAuthenticated) {
+            const dataLoginresult: LoginResult = data as unknown as LoginResult
+            if (!dataLoginresult.isAuthenticated) {
                 ShowMessageToast('Usuario o contraseña invalida.', MESSAGE_TOAST_ERROR_TYPE.ERROR);
                 return
             }
             const user: AuthProfile = {
-                userName: data.userName,
-                email: email,
-                fullName: data.fullName!,
+                userName: dataLoginresult.userName as string,
+                email: loginVewModel.email as string,
+                fullName: dataLoginresult.fullName as string,
                 isAuthenticated: true,
-                tokenResult: data.tokenResult!
+                tokenResult: dataLoginresult.tokenResult!
             }
-            loginUser(user, data.tokenResult!);
+            loginUser(user, dataLoginresult.tokenResult!);
             navigate('/dashboard');
         }).catch(err => {
             const error = err as CustomError
@@ -52,27 +60,58 @@ const Login = () => {
         })
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        onLogin();
+        if (e.currentTarget.checkValidity() === false) {
+            setValidated(true);
+        }
+        else {
+            onLogin();
+        }
     }
 
     return (
-        <section>
+        <section className="login-section">
             <div className="container">
                 <Card className="form-signin m-auto  p-5">
-                    <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
-                        <h1 className="h3 mb-3 fw-normal">Login</h1>
-                        <div className="form-floating">
-                            <input type="email" className="form-control" id="email" placeholder="name@example.com" value={email} onChange={handleEmailChange} required />
-                            <label htmlFor="email">Email address</label>
-                        </div>
-                        <div className="form-floating">
-                            <input type="password" className="form-control" id="password" placeholder="Password" value={password} onChange={handlePasswordChange} required />
-                            <label htmlFor="password">Password</label>
-                        </div>
-                        <button className="btn btn-primary w-100 py-2" type="submit">Login</button>
-                    </form>
+                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                        <Row>
+                            <div className="w-100 pt-2 pb-5 text-center">
+                                <img src={logo} alt="logo" style={{ width: 150 }} />
+                            </div>
+                            <div>
+                                <h4><strong>Iniciar sesión</strong></h4>
+                                <p>Por favor, inicie sesión en su cuenta</p>
+                            </div>
+                        </Row>
+                        <Row>
+                            <Col xl={12}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Correo electrónico:</Form.Label>
+                                    <Form.Control type="email" id="email" name="email" onChange={handleChange} required />
+                                </Form.Group>
+                            </Col >
+                        </Row>
+                        <Row>
+                            <Col xl={12}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Contraseña:</Form.Label>
+                                    <Form.Control type="password" id="password" name="password" onChange={handleChange} required />
+                                </Form.Group>
+                                <div>
+                                    <p>¿Has olvidado tu contraseña?</p>
+                                </div>
+                            </Col >
+                        </Row>
+                        <Row>
+                            <Col xl={12} className="text-center">
+                                <Button className="w-100" size="lg" id="btnSubmit" type="submit" variant='primary'>Iniciar sesión</Button>
+                            </Col>
+                            <div className="pt-2">
+                                ¿No tienes una cuenta? <Link to={"/account/register"}>Regístrate</Link>
+                            </div>
+                        </Row>
+                    </Form>
                 </Card>
             </div>
         </section>

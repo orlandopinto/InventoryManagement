@@ -1,21 +1,31 @@
-import { LoginViewModel, RegisterViewModel } from "../types/AccountTypes";
+import { AccountViewModel, LoginViewModel, RegisterViewModel } from "../types/AccountTypes";
 
 export interface ILoginResult {
      isAuthenticated: boolean,
-     Email?: string,
-     FullName?: string,
+     email?: string,
+     fullName?: string,
      isAdmin?: boolean,
-     UserName?: string,
+     userName?: string,
      tokenResult?: TokenResult
 }
 
 export type LoginResult = {
      isAuthenticated: boolean,
-     Email?: string,
-     FullName?: string,
+     email?: string,
+     fullName?: string,
      isAdmin?: boolean,
-     UserName?: string,
+     userName?: string,
      tokenResult?: TokenResult
+}
+
+export type RegisterResult = {
+     isSuccess: boolean,
+     result: boolean
+}
+
+export type AccountExistsResult = {
+     isSuccess: boolean,
+     result: boolean
 }
 
 export type TokenResult = {
@@ -25,6 +35,7 @@ export type TokenResult = {
 
 export interface IAccount {
      Login: (loginViewModel: LoginViewModel) => Promise<string>;
+     AccountExists: (accountViewModel: AccountViewModel) => Promise<string>;
      Register: (registerViewModel: RegisterViewModel) => Promise<string>;
      RefreshToken: (tokenResult: TokenResult) => Promise<string>;
 }

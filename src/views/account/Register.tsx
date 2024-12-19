@@ -1,42 +1,104 @@
-import React, { useState } from "react";
 import "./auth.css";
-import { Card } from "react-bootstrap";
+import 'react-toastify/dist/ReactToastify.css';
+import { ChangeEvent, SyntheticEvent, useState } from "react";
+import { Button, Card, Col, Form, Row } from 'react-bootstrap'
+import { encrypt } from "../../utilities/EncryptDecryptManager";
+import AccountController from "../../controllers/AccountController";
+import { Link, useNavigate } from "react-router-dom";
+import { useShowMessageToast } from "../../hooks/useShowMessageToast";
+import { MESSAGE_TOAST_ERROR_TYPE } from "../../utilities/Constants.d";
+import { AccountViewModel, LoginViewModel, RegisterViewModel } from "../../types/AccountTypes";
+import { useAuth } from "../../contexts/useAuth";
+import { AuthProfile } from "../../types/AuthProfile";
+import { CustomError } from "../../models/CustomError";
+import { AccountExistsResult, LoginResult, RegisterResult } from "../../interfaces/IAccount";
+import logo from '../../assets/images/logo.png'
 
 const Register = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [validated, setValidated] = useState(false);
 
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
+    const initializeLogin = {
+        email: "",
+        password: "",
+        confirmPassword: ""
+    }
+    const [formData, setFormData] = useState(initializeLogin);
+
+
+    const navigate = useNavigate()
+    let controller;
+    const { ShowMessageToast } = useShowMessageToast()
+    //const { loginUser } = useAuth()
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setFormData({
+            ...formData,
+            [event.target.id]: event.target.value,
+        });
     };
 
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
+    async function onAccountExists(): Promise<boolean> {
+        let result: boolean = false;
+        const controller = new AccountController()
+        const accountViewModel: AccountViewModel = { account: formData.email }
+        await controller.AccountExists(accountViewModel).then(data => {
+            const dataRegisterResult: AccountExistsResult = data as unknown as AccountExistsResult;
+            if (!dataRegisterResult.result) {
+                ShowMessageToast('Se ha producido un error al verificar la cuenta, intente de nuevo!', MESSAGE_TOAST_ERROR_TYPE.ERROR);
+                return
+            }
+            result = dataRegisterResult.result;
+        })
+            .catch(err => {
+                const error = err as CustomError
+                ShowMessageToast(error.message, MESSAGE_TOAST_ERROR_TYPE.ERROR);
+            })
+        return result;
     };
 
-    const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setConfirmPassword(e.target.value);
+    async function onRegister() {
+        if (formData.password !== formData.confirmPassword) {
+            ShowMessageToast('las contraseñas no coinciden.', MESSAGE_TOAST_ERROR_TYPE.ERROR);
+            return;
+        }
+        if (!isValidEmail(formData.email)) {
+            ShowMessageToast('correo electrónico inválido.', MESSAGE_TOAST_ERROR_TYPE.ERROR);
+            return;
+        }
+
+        await onAccountExists().then(async accountExist => {
+
+            if (accountExist) {
+                ShowMessageToast('Cuenta de usuario existente, por favor especifique una diferenete e intente de nuevo!', MESSAGE_TOAST_ERROR_TYPE.ERROR);
+                return
+            }
+            const controller = new AccountController()
+            const registerViewModel: RegisterViewModel = { email: formData.email, password: encrypt(formData.password) }
+            await controller.Register(registerViewModel).then(data => {
+                const dataRegisterResult: RegisterResult = data as unknown as RegisterResult;
+                console.log('register response: ' + dataRegisterResult)
+                if (!dataRegisterResult.result) {
+                    ShowMessageToast('Se ha producido un error al registrar la cuenta, intente de nuevo!', MESSAGE_TOAST_ERROR_TYPE.ERROR);
+                    return
+                }
+                ShowMessageToast('Usuario registrado con éxito, inicie sesión para acceder al sistema!', MESSAGE_TOAST_ERROR_TYPE.SUCCESS);
+                navigate('/account/login');
+            }).catch(err => {
+                const error = err as CustomError
+                ShowMessageToast(error.message, MESSAGE_TOAST_ERROR_TYPE.ERROR);
+            })
+        })
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (password !== confirmPassword) {
-            alert("Password and Confirm Password do not match");
-            return;
+        if (e.currentTarget.checkValidity() === false) {
+            setValidated(true);
         }
-        if (!isValidEmail(email)) {
-            alert("Invalid Email Address");
-            return;
+        else {
+            onRegister();
         }
-        // Send data to register page
-        const userData = {
-            name: name,
-            email: email,
-            password: password,
-        };
-        onSubmit(userData); // Pass user data to onSubmit function
-    };
+    }
 
     const isValidEmail = (email: string) => {
         // Email validation logic here (e.g., regex)
@@ -45,25 +107,52 @@ const Register = () => {
     };
 
     return (
-        <section>
+        <section className="login-section">
             <div className="container">
-                <Card className="form-register m-auto p-5">
-                    <form onSubmit={handleSubmit}>
-                        <h1 className="h3 mb-3 fw-normal">Register</h1>
-                        <div className="form-floating">
-                            <input type="email" className="form-control" id="email" placeholder="name@example.com" value={email} onChange={handleEmailChange} required />
-                            <label htmlFor="email">Email address</label>
-                        </div>
-                        <div className="form-floating">
-                            <input type="password" className="form-control" id="password" placeholder="Password" value={password} onChange={handlePasswordChange} required />
-                            <label htmlFor="password">Password</label>
-                        </div>
-                        <div className="form-floating">
-                            <input type="password" className="form-control" id="confirmPassword" placeholder="Confirm Password" value={confirmPassword} onChange={handleConfirmPasswordChange} required />
-                            <label htmlFor="confirmPassword">Confirm Password</label>
-                        </div>
-                        <button className="btn btn-primary w-100 py-2" type="submit">Register</button>
-                    </form>
+                <Card className="form-signin m-auto  p-5">
+                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                        <Row>
+                            <div className="w-100 pt-2 pb-5 text-center">
+                                <img src={logo} alt="logo" style={{ width: 150 }} />
+                            </div>
+                            <div>
+                                <h4><strong>Crear una cuenta</strong></h4>
+                                <p>Continúa donde lo dejaste</p>
+                            </div>
+                        </Row>
+                        <Row>
+                            <Col xl={12}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Correo electrónico:</Form.Label>
+                                    <Form.Control type="email" id="email" name="email" onChange={handleChange} required />
+                                </Form.Group>
+                            </Col >
+                        </Row>
+                        <Row>
+                            <Col xl={12}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Contraseña:</Form.Label>
+                                    <Form.Control type="password" id="password" name="password" onChange={handleChange} required />
+                                </Form.Group>
+                            </Col >
+                        </Row>
+                        <Row>
+                            <Col xl={12}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Contraseña:</Form.Label>
+                                    <Form.Control type="password" id="confirmPassword" name="confirmPassword" onChange={handleChange} required />
+                                </Form.Group>
+                            </Col >
+                        </Row>
+                        <Row>
+                            <Col xl={12} className="text-center">
+                                <Button className="w-100" size="lg" id="btnSubmit" type="submit" variant='primary'>Regístrate</Button>
+                            </Col>
+                            <div className="pt-2">
+                                ¿Ya eres usuario? <Link to={"/account/login"}>Inicia sesión</Link>
+                            </div>
+                        </Row>
+                    </Form>
                 </Card>
             </div>
         </section>

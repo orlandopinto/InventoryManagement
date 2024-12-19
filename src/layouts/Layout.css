@@ -20,7 +20,7 @@
 
 main {
     padding: 2rem;
-    padding-bottom: 5rem;
+    padding-bottom: 8rem;
     overflow-y: scroll;
     height: 100vh;
     display: flex;
@@ -34,6 +34,8 @@ main {
 }
 
 .footer-container {
+    padding-top: 0rem;
+    width: 100%;
     bottom: 0;
 }
 
@@ -45,12 +47,6 @@ main {
     box-shadow: 0 0 0 0.02rem;
 }
 
-/* validar cuando este cerrao el sidebar*/
 .sidebar-menu-sub-toggle>.sidebar-menu-nav-title {
     width: 100%;
 }
-
-/* validar cuando este cerrao el sidebar*/
-/* .sidebar-menu-sub-collapse>.sidebar-menu-nav {
-    padding-left: 1rem;
-} */

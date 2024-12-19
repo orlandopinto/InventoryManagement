@@ -5,11 +5,12 @@ import { MESSAGE_TOAST_ERROR_TYPE } from "../../utilities/Constants.d";
 import { Users } from '../../types/Users';
 import { useAuth } from '../../contexts/useAuth';
 import { CustomError } from '../../models/CustomError';
-import { Button, Card, Form, Modal, Table } from 'react-bootstrap';
+import { Card, Form, Table } from 'react-bootstrap';
 import CustomPagination from '../../components/common/CustomPagination';
 import * as Icon from "react-bootstrap-icons";
 import { Link } from 'react-router-dom';
 import Loading from '../index/Loading';
+import ModalDelete from '../../hooks/ModalDelete';
 
 function index() {
 
@@ -18,7 +19,7 @@ function index() {
      const { ShowMessageToast } = useShowMessageToast()
 
      /*** ..:: [ PAGE SIZE ] ::.. ***/
-     const [pageSize, setPageSize] = useState(3)
+     const [pageSize, setPageSize] = useState(6)
      /***********************************/
 
      const [isLoading, setIsLoading] = useState(false)
@@ -49,11 +50,13 @@ function index() {
           setSearchFilter(e.target.value);
      };
 
-     const filteredData = data.filter(
-          (item) =>
-               item.firstName?.toLowerCase().includes(searchFilter.toLowerCase())
-               || item.lastName?.toLowerCase().includes(searchFilter.toLowerCase())
-     );
+     const filteredData = searchFilter === '' ? data :
+          data.filter(
+               (item) => item.email?.toLowerCase().includes(searchFilter.toLowerCase())
+                    || item.firstName?.toLowerCase().includes(searchFilter.toLowerCase())
+                    || item.lastName?.toLowerCase().includes(searchFilter.toLowerCase())
+          );
+
 
      const paginatedData = filteredData.slice(
           (currentPage - 1) * pageSize,
@@ -78,6 +81,7 @@ function index() {
      }
 
      const handleClose = () => setShow(false);
+
      const handleShow = (id: string) => {
           setShow(true);
           setIdToDelete(id);
@@ -187,26 +191,7 @@ function index() {
                          </div>
 
                }
-               <Modal show={show} onHide={handleClose} centered backdrop="static" keyboard={false} className='modal-custom modal-md'>
-                    <Modal.Header closeButton></Modal.Header>
-                    <Modal.Body>
-                         <div className="modal-custom-content-container">
-                              <div className='modal-custom-image'>
-                                   <Icon.XCircle size={75} />
-                              </div>
-                              <div className='modal-custom-header-content'>
-                                   ¿Realmente quiere eliminar el usuario?
-                              </div>
-                              <div className='modal-custom-message-content'>
-                                   El proceso es irreversible, presione 'Eliminar' para continuar
-                              </div>
-                         </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                         <Button variant="secondary" onClick={handleClose}>Cancelar</Button>
-                         <Button variant="danger" onClick={handleDelete}>Eliminar</Button>
-                    </Modal.Footer>
-               </Modal>
+               <ModalDelete show={show} headerContent="¿Realmente quiere eliminar el usuario?" handleClose={handleClose} handleDelete={handleDelete} />
           </>
      )
 }

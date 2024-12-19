@@ -48,7 +48,7 @@ export const UserProvider = ({ children }: Props) => {
           localStorage.removeItem("tokenResult")
           setUser(null)
           setTokenResult(null)
-          navigate("/login");
+          navigate("/account/login");
      }
 
      return <UserContext.Provider value={{ loginUser, user, tokenResult, logout, isLoggedIn }}>

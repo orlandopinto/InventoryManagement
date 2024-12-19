@@ -1,13 +1,14 @@
-import { useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { useQuery } from "react-query";
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 import { Link, useParams } from 'react-router-dom';
 import { initializeCategory, Categories } from '../../types/Categories.d';
 import { useAuth } from '../../contexts/useAuth';
-import { MESSAGE_TOAST_ERROR_TYPE, METHOD } from '../../utilities/Constants.d';
+import { MESSAGE_TOAST_ERROR_TYPE } from '../../utilities/Constants.d';
 import { useShowMessageToast } from '../../hooks/useShowMessageToast';
 import Loading from '../index/Loading';
 import { CategoriesController } from '../../controllers/CategoriesController';
+import { CustomError } from '../../models/CustomError';
 
 function AddUpdateCategory() {
      let IsAddMode: boolean = true;
@@ -16,12 +17,12 @@ function AddUpdateCategory() {
      const { ShowMessageToast } = useShowMessageToast()
      const [validated, setValidated] = useState(false);
 
-     const { tokenResult } = useAuth()
+     const { tokenResult, user } = useAuth()
      const controller = new CategoriesController(tokenResult as string);
 
      const [formData, setFormData] = useState<Categories>(initializeCategory);
 
-     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
           setFormData({
                ...formData,
                [event.target.id]: event.target.value,
@@ -52,29 +53,28 @@ function AddUpdateCategory() {
           }
      }
 
-     const handleAddCategory = async (event: React.SyntheticEvent<HTMLFormElement>) => {
-          event.preventDefault();
-          // if (formData.categoryName == "") {
-          //      ShowMessageToast("Agregue el nombre de la categoría!", MESSAGE_TOAST_ERROR_TYPE.ERROR);
-          //      return
-          // }
-          await controller.Post(formData).then(fetchData => {
+     const AddCategory = async (data: Categories) => {
+          data.id = self.crypto.randomUUID();
+          data.createBy = user?.userName as string
+          console.log(data)
+          await controller.Post(data).then(fetchData => {
                if (fetchData === null) {
                     ShowMessageToast("Se produjo un error al agregar la categoría, por favor intente de nuevo!", MESSAGE_TOAST_ERROR_TYPE.ERROR);
-                    return;
                }
-               setFormData(initializeCategory)
-               inputRef.current?.focus();
-               ShowMessageToast("Categoría registrada satisfactoriamente!", MESSAGE_TOAST_ERROR_TYPE.SUCCESS);
-          }).catch(error => {
-               ShowMessageToast(error.mess, MESSAGE_TOAST_ERROR_TYPE.ERROR);
-               return;
+               else {
+                    setFormData(initializeCategory)
+                    inputRef.current?.focus();
+                    ShowMessageToast("Categoría registrada satisfactoriamente!", MESSAGE_TOAST_ERROR_TYPE.SUCCESS);
+               }
+          }).catch(err => {
+               const error: CustomError = err as CustomError
+               ShowMessageToast(error.message, MESSAGE_TOAST_ERROR_TYPE.ERROR);
           })
      }
 
-     const handleUpdateCategory = async (event: React.SyntheticEvent<HTMLFormElement>) => {
-          event.preventDefault();
-          await controller.Put(formData).then(fetchData => {
+     const updateCategory = async (data: Categories) => {
+
+          await controller.Put(data).then(fetchData => {
                if (fetchData !== null) {
                     ShowMessageToast("Datos de la categoría actualizada con éxito!", MESSAGE_TOAST_ERROR_TYPE.SUCCESS);
                }
@@ -90,14 +90,19 @@ function AddUpdateCategory() {
      const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
           event.preventDefault();
           event.stopPropagation();
-          const form = event.currentTarget;
-          if (form.checkValidity() === false) {
+          const buttonSubmitter = (event.nativeEvent as SubmitEvent).submitter;
+
+          if (event.currentTarget.checkValidity() === false) {
                setValidated(true);
-               console.log('faltan rellenar los campos')
           }
           else {
-               let value = event.target.elements.categoryName.value
-               console.log('capos completos - categoryName: ' + value)
+               let data: Categories = { ...formData, [event.currentTarget.name]: event.currentTarget.value }
+               if (buttonSubmitter?.id === 'btnAddCategory') {
+                    AddCategory(data)
+               }
+               else if (buttonSubmitter?.id === 'btnUpdateCategory') {
+                    updateCategory(data)
+               }
           }
      };
      return (
@@ -115,7 +120,7 @@ function AddUpdateCategory() {
                                    <div className='container-fluid pt-2'>
                                         <Row>
                                              <Col md={6} sm={12}>
-                                                  <Form.Group className="mb-3" controlId="validationCustom01" >
+                                                  <Form.Group className="mb-3">
                                                        <Form.Label>Nombre de la categoría</Form.Label>
                                                        <Form.Control type="text" ref={inputRef} id="categoryName" name="categoryName" value={formData.categoryName == null ? "" : formData.categoryName} onChange={handleChange} required />
                                                   </Form.Group>
@@ -148,13 +153,11 @@ function AddUpdateCategory() {
                                                   <Form.Group className="mb-3 buttons-section">
                                                        {IsAddMode
                                                             ?
-                                                            // <Button type="submit" variant='primary' onClick={handleAddCategory}>Guardar</Button>
-                                                            <Button type="submit" variant='primary'>Guardar</Button>
+                                                            <Button id="btnAddCategory" type="submit" variant='primary'>Guardar</Button>
                                                             :
-                                                            // <Button type="submit" variant='primary' onClick={handleUpdateCategory}>Actualizar</Button>
-                                                            <Button type="submit" variant='primary' >Actualizar</Button>
+                                                            <Button id="btnUpdateCategory" type="submit" variant='primary' >Actualizar</Button>
                                                        }
-                                                       <Link to="/categories" className='btn btn-secondary'><span>Cancelar</span></Link>
+                                                       <Link to="/categories" className='btn btn-secondary'><span>Volver</span></Link>
                                                   </Form.Group>
                                              </Col>
                                         </Row>

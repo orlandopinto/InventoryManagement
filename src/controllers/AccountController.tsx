@@ -1,7 +1,7 @@
 import { IAccount, TokenResult } from '../interfaces/IAccount';
 import { CustomError } from '../models/CustomError';
 import ServiceAccount from '../services/ServiceAccount';
-import { LoginViewModel, RegisterViewModel } from '../types/AccountTypes';
+import { AccountViewModel, LoginViewModel, RegisterViewModel } from '../types/AccountTypes';
 import { _Body } from '../utilities/Constants.d';
 
 class AccountController implements IAccount {
@@ -23,6 +23,14 @@ class AccountController implements IAccount {
     public async RefreshToken(entity: TokenResult): Promise<string> {
         try {
             return await this.service.RefreshToken(entity);
+        } catch (err) {
+            throw err as CustomError
+        }
+    }
+
+    public async AccountExists(entity: AccountViewModel): Promise<string> {
+        try {
+            return await this.service.AccountExists(entity);
         } catch (err) {
             throw err as CustomError
         }

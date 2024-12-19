@@ -153,7 +153,7 @@ function AddUser() {
                         :
                         <Button variant='primary' onClick={handleUpdateUser}>Actualizar</Button>
                       }
-                      <Link to="/users" className='btn btn-secondary'><span>Cancelar</span></Link>
+                      <Link to="/users" className='btn btn-secondary'><span>Volver</span></Link>
                     </Form.Group>
                   </Col>
                 </Row>

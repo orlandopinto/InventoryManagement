@@ -5,11 +5,12 @@ import { MESSAGE_TOAST_ERROR_TYPE } from "../../utilities/Constants.d";
 import { Categories } from '../../types/Categories';
 import { useAuth } from '../../contexts/useAuth';
 import { CustomError } from '../../models/CustomError';
-import { Button, Card, Form, Modal, Table } from 'react-bootstrap';
+import { Card, Form, Table } from 'react-bootstrap';
 import CustomPagination from '../../components/common/CustomPagination';
 import * as Icon from "react-bootstrap-icons";
 import { Link } from 'react-router-dom';
 import Loading from '../index/Loading';
+import ModalDelete from '../../hooks/ModalDelete';
 
 function index() {
 
@@ -175,28 +176,8 @@ function index() {
                                    </Card>
                               </div>
                          </div>
-
                }
-               <Modal show={show} onHide={handleClose} centered backdrop="static" keyboard={false} className='modal-custom modal-md'>
-                    <Modal.Header closeButton></Modal.Header>
-                    <Modal.Body>
-                         <div className="modal-custom-content-container">
-                              <div className='modal-custom-image'>
-                                   <Icon.XCircle size={75} />
-                              </div>
-                              <div className='modal-custom-header-content'>
-                                   ¿Realmente quiere eliminar la categoría?
-                              </div>
-                              <div className='modal-custom-message-content'>
-                                   El proceso es irreversible, presione 'Eliminar' para continuar
-                              </div>
-                         </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                         <Button variant="secondary" onClick={handleClose}>Cancelar</Button>
-                         <Button variant="danger" onClick={handleDelete}>Eliminar</Button>
-                    </Modal.Footer>
-               </Modal>
+               <ModalDelete show={show} headerContent="¿Realmente quiere eliminar la categoría?" handleClose={handleClose} handleDelete={handleDelete} />
           </>
      )
 }

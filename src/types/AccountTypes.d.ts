@@ -1,10 +1,14 @@
 export type LoginViewModel = {
-     Id?: string,
-     Email: string,
-     Password: string
+     id?: string,
+     email: string,
+     password: string
 }
 
 export type RegisterViewModel = {
-     Email: string,
-     Password: string
+     email: string,
+     password: string
+}
+
+export type AccountViewModel = {
+     account: string
 }

@@ -1,7 +1,7 @@
 import { ICategories } from '../interfaces/ICategories';
 import Service from '../services/Service';
 import { Categories } from '../types/Categories.d';
-import { _Body } from '../utilities/Constants.d';
+import { _Body, API_CATEGORIES } from '../utilities/Constants.d';
 import { CustomError } from '../models/CustomError';
 
 export class CategoriesController implements ICategories {
@@ -10,7 +10,7 @@ export class CategoriesController implements ICategories {
      service: Service;
 
      constructor(token: string) {
-          this.service = new Service(token);
+          this.service = new Service(token, API_CATEGORIES.URL_BASE);
      }
 
      public async Get(): Promise<any> {
@@ -31,7 +31,6 @@ export class CategoriesController implements ICategories {
 
      public async Post(Category: Categories): Promise<string> {
           try {
-               Category.id = self.crypto.randomUUID();
                return await this.service.Post(Category);
           } catch (err) {
                throw err as CustomError

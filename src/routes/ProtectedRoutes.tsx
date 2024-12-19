@@ -10,7 +10,7 @@ const ProtectedRoutes = ({ children }: Pros) => {
         <>
             {children}
         </>) : (
-        <Navigate to="/login" state={{ from: location }} replace />
+        <Navigate to="/account/login" state={{ from: location }} replace />
     )
 };
 
