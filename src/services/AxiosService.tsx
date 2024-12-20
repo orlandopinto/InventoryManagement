@@ -1,23 +1,58 @@
-import { _Headers, _Method, _Body, METHOD, ACCOUNT_END_POINT, API_END_POINT } from "../utilities/Constants.d";
+import { _Headers, _Method, _Body, METHOD, API_END_POINT } from "../utilities/Constants.d";
 import { CustomError } from "../models/CustomError";
-import { IAccount, TokenResult } from "../interfaces/IAccount";
-import { AccountViewModel, LoginViewModel, RegisterViewModel } from "../types/AccountTypes";
+import { IService } from "../interfaces/IService";
 import axios, { AxiosHeaders } from "axios";
+//import axiosInstance from '../services/axiosInstance';
 
-export default class ServiceAccount implements IAccount {
+export default class AxiosService implements IService {
 
-     headers: _Headers = { 'Content-type': 'application/json' };
-     ENDPOINT: string
+     headers: _Headers = new Headers();
+     endPoint: string;
 
-     constructor() {
-          this.ENDPOINT = `${API_END_POINT.URL_BASE + ACCOUNT_END_POINT.URL}`
+     constructor(token: string, endPoint: string) {
+          this.endPoint = `${API_END_POINT.URL_BASE + endPoint}`;
+          this.headers = {
+               'Content-Type': 'application/json',
+               'Authorization': `Bearer ${token}`,
+          };
      }
 
-     public async Login(loginViewModel: LoginViewModel): Promise<string> {
+     //TODO: CUANDO SE OPTIMIZE EL BACKEND CAMBIAR DE axios A axiosInstance
+     public async Get(): Promise<string> {
           return Promise.resolve(
                axios({
-                    url: `${this.ENDPOINT}login`,
-                    data: JSON.stringify(loginViewModel),
+                    url: this.endPoint,
+                    method: METHOD.GET,
+                    headers: this.headers as AxiosHeaders
+               })
+                    .then(res => res.data)
+                    .catch(err => {
+                         const error = new CustomError({ message: err.toString(), name: 'API Error' });
+                         throw error.throwCustomError()
+                    })
+          )
+     }
+
+     public async GetById(id: string): Promise<string> {
+          return Promise.resolve(
+               axios({
+                    url: this.endPoint + id,
+                    method: METHOD.GET,
+                    headers: this.headers as AxiosHeaders
+               })
+                    .then(res => res.data)
+                    .catch(err => {
+                         const error = new CustomError({ message: err.toString(), name: 'API Error' });
+                         throw error.throwCustomError()
+                    })
+          )
+     }
+
+     public async Post<T>(entity: T): Promise<string> {
+          return Promise.resolve(
+               axios({
+                    url: this.endPoint,
+                    data: JSON.stringify(entity),
                     method: METHOD.POST,
                     headers: this.headers as AxiosHeaders
                })
@@ -29,12 +64,12 @@ export default class ServiceAccount implements IAccount {
           )
      }
 
-     public async AccountExists(accountViewModel: AccountViewModel): Promise<string> {
+     public async Put<T>(entity: T): Promise<string> {
           return Promise.resolve(
                axios({
-                    url: `${this.ENDPOINT}AccountExists`,
-                    data: JSON.stringify(accountViewModel),
-                    method: METHOD.POST,
+                    url: this.endPoint,
+                    data: JSON.stringify(entity),
+                    method: METHOD.PUT,
                     headers: this.headers as AxiosHeaders
                })
                     .then(res => res.data)
@@ -45,28 +80,11 @@ export default class ServiceAccount implements IAccount {
           )
      }
 
-     public async Register(registerViewModel: RegisterViewModel): Promise<string> {
+     public async Delete(id: string): Promise<string> {
           return Promise.resolve(
                axios({
-                    url: `${this.ENDPOINT}register`,
-                    data: JSON.stringify(registerViewModel),
-                    method: METHOD.POST,
-                    headers: this.headers as AxiosHeaders
-               })
-                    .then(res => res.data)
-                    .catch(err => {
-                         const error = new CustomError({ message: err.toString(), name: 'API Error' });
-                         throw error.throwCustomError()
-                    })
-          )
-     }
-
-     public async RefreshToken(tokenResult: TokenResult): Promise<string> {
-          return Promise.resolve(
-               axios({
-                    url: `${this.ENDPOINT}refresh`,
-                    data: JSON.stringify(tokenResult),
-                    method: METHOD.POST,
+                    url: this.endPoint + id,
+                    method: METHOD.DELETE,
                     headers: this.headers as AxiosHeaders
                })
                     .then(res => res.data)

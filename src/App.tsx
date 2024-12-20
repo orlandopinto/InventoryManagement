@@ -9,9 +9,7 @@ import i18next from "i18next";
 import './i18n';
 const queryClient = new QueryClient();
 
-i18next.init({
-      interpolation: { escapeValue: false }, // React already does escaping
-});
+i18next.init();
 
 const App = () => {
       return (

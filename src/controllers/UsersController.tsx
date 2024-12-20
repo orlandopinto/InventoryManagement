@@ -1,17 +1,17 @@
 import { IUsers } from '../interfaces/IUsers';
-import Service from '../services/Service';
 import { Users } from '../types/Users';
-import { _Body, API_USERS } from '../utilities/Constants.d';
+import { _Body, USERS_END_POINT } from '../utilities/Constants.d';
 import { CustomError } from '../models/CustomError';
 import { encrypt } from '../utilities/EncryptDecryptManager';
+import AxiosService from '../services/AxiosService';
 
 export class UsersController implements IUsers {
 
      body?: any;
-     service: Service;
+     service: AxiosService;
 
      constructor(token: string) {
-          this.service = new Service(token, API_USERS.URL_BASE);
+          this.service = new AxiosService(token, USERS_END_POINT.URL);
      }
 
      public async Get(): Promise<any> {

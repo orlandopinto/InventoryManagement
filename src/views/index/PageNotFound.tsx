@@ -12,6 +12,7 @@ function PageNotFound() {
                          <h1>Oops</h1>
                          <p>The Page you're looking for isn't here.</p>
                          <Button size='lg' variant='primary' onClick={() => navigate(-1)} >Volver</Button>
+                         <Button size='lg' variant='primary' onClick={() => navigate('/account/login')} >Login</Button>
                     </div>
                     <div className="cont_aura_1"></div>
                     <div className="cont_aura_2"></div>

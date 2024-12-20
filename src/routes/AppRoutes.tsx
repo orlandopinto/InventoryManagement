@@ -12,13 +12,15 @@ import AddUser from "../views/users/AddUser";
 import CategoryIndex from "../views/categories/index";
 import AddUpdateCategory from '../views/categories/AddUpdateCategory'
 import PageNotFound from "../views/index/PageNotFound";
+import EmailSender from '../views/tools/EmailSender'
 
-const DashboardComponent = Layout(Dashboard);
-const AboutComponent = Layout(About);
-const UserIndexComponent = Layout(UserIndex);
-const AddUserComponent = Layout(AddUser);
-const AddUpdateCategoryComponent = Layout(AddUpdateCategory);
-const CategoryIndexComponent = Layout(CategoryIndex);
+const ProtectedDashboard = Layout(Dashboard);
+const ProtectedAbout = Layout(About);
+const ProtectedUserIndex = Layout(UserIndex);
+const ProtectedAddUser = Layout(AddUser);
+const ProtectedAddUpdateCategory = Layout(AddUpdateCategory);
+const ProtectedCategoryIndex = Layout(CategoryIndex);
+const ProtectedEmailSender = Layout(EmailSender);
 
 export const AppRoutes = createBrowserRouter(
     [
@@ -31,35 +33,39 @@ export const AppRoutes = createBrowserRouter(
                 { path: "/account/register", element: <Register /> },
                 {
                     path: "/about",
-                    element: (<ProtectedRoutes><AboutComponent /></ProtectedRoutes>)
+                    element: (<ProtectedRoutes><ProtectedAbout /></ProtectedRoutes>)
                 },
                 {
                     path: "/dashboard",
-                    element: (<ProtectedRoutes><DashboardComponent /></ProtectedRoutes>)
+                    element: (<ProtectedRoutes><ProtectedDashboard /></ProtectedRoutes>)
                 },
                 {
                     path: "/users",
-                    element: (<ProtectedRoutes><UserIndexComponent /></ProtectedRoutes>)
+                    element: (<ProtectedRoutes><ProtectedUserIndex /></ProtectedRoutes>)
                 },
                 {
-                    path: "/users/AddUser",
-                    element: (<ProtectedRoutes><AddUserComponent /></ProtectedRoutes>)
+                    path: "/users/adduser",
+                    element: (<ProtectedRoutes><ProtectedAddUser /></ProtectedRoutes>)
                 },
                 {
-                    path: "/users/AddUser/:id",
-                    element: (<ProtectedRoutes><AddUserComponent /></ProtectedRoutes>)
+                    path: "/users/adduser/:id",
+                    element: (<ProtectedRoutes><ProtectedAddUser /></ProtectedRoutes>)
                 },
                 {
                     path: "/categories",
-                    element: (<ProtectedRoutes><CategoryIndexComponent /></ProtectedRoutes>)
+                    element: (<ProtectedRoutes><ProtectedCategoryIndex /></ProtectedRoutes>)
                 },
                 {
                     path: "/categories/AddUpdateCategory",
-                    element: (<ProtectedRoutes><AddUpdateCategoryComponent /></ProtectedRoutes>)
+                    element: (<ProtectedRoutes><ProtectedAddUpdateCategory /></ProtectedRoutes>)
                 },
                 {
                     path: "/categories/AddUpdateCategory/:id",
-                    element: (<ProtectedRoutes><AddUpdateCategoryComponent /></ProtectedRoutes>)
+                    element: (<ProtectedRoutes><ProtectedAddUpdateCategory /></ProtectedRoutes>)
+                },
+                {
+                    path: "/tools/emailsender",
+                    element: (<ProtectedRoutes><ProtectedEmailSender /></ProtectedRoutes>)
                 },
                 {
                     path: "*",

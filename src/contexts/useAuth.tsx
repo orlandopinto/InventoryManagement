@@ -26,7 +26,7 @@ export const UserProvider = ({ children }: Props) => {
           const tokenResult = localStorage.getItem("tokenResult")
           if (user && tokenResult) {
                setUser(JSON.parse(user));
-               setTokenResult(tokenResult as TokenResult);
+               setTokenResult(JSON.parse(tokenResult) as TokenResult);
           }
           setIsReady(true)
      }, [])

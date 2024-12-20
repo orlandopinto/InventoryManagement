@@ -15,7 +15,7 @@ import ModalDelete from '../../hooks/ModalDelete';
 function index() {
 
      const { tokenResult } = useAuth()
-     let controller = new UsersController(tokenResult as string)
+     let controller = new UsersController(tokenResult?.refreshToken as string)
      const { ShowMessageToast } = useShowMessageToast()
 
      /*** ..:: [ PAGE SIZE ] ::.. ***/
@@ -144,7 +144,7 @@ function index() {
                                                                       <td>{user.lastName}</td>
                                                                       <td style={{ width: 100 }} >
                                                                            <div className='table-row-icons'>
-                                                                                <Link to={`/users/AddUser/${user.id}`}><Icon.PencilSquare className='table-row-icon' size={20}></Icon.PencilSquare></Link>
+                                                                                <Link to={`/users/adduser/${user.id}`}><Icon.PencilSquare className='table-row-icon' size={20}></Icon.PencilSquare></Link>
                                                                                 <Icon.Trash size={20} onClick={() => { handleShow(user.id) }}></Icon.Trash>
                                                                            </div>
                                                                       </td>

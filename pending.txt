@@ -1,3 +1,8 @@
 modificar las rutas:
 - https://omarelhawary.me/blog/file-based-routing-with-react-router/
 - https://github.com/oedotme/generouted
+
+
+axios interceptor para referscar el token:
+- https://blog.theashishmaurya.me/handling-jwt-access-and-refresh-token-using-axios-in-react-app
+- https://medium.com/@aqeel_ahmad/handling-jwt-access-token-refresh-token-using-axios-in-react-react-native-app-2024-f452c96a83fc

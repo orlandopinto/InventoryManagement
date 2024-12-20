@@ -11,11 +11,13 @@ import * as Icon from "react-bootstrap-icons";
 import { Link } from 'react-router-dom';
 import Loading from '../index/Loading';
 import ModalDelete from '../../hooks/ModalDelete';
+import { TokenResult } from '../../interfaces/IAccount';
 
 function index() {
 
      const { tokenResult } = useAuth()
-     let controller = new CategoriesController(tokenResult as string)
+
+     let controller = new CategoriesController(tokenResult?.accessToken as string)
      const { ShowMessageToast } = useShowMessageToast()
 
      /*** ..:: [ PAGE SIZE ] ::.. ***/

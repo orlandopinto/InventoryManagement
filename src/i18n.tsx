@@ -16,9 +16,9 @@ i18n.use(initReactI18next).init({
      preload: ["en", "es"],
      initImmediate: false,
      fallbackLng: localStorage.getItem('lang') as string,
-     lng: localStorage.getItem('lang') as string, // Set the default language
+     lng: localStorage.getItem('lang') as string,
      resources,
-     keySeparator: false, // Allow for nested translations without using dots
+     keySeparator: false,
      debug: true,
      interpolation: {
           escapeValue: false,

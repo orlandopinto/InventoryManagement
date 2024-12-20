@@ -1,19 +1,19 @@
 import { ICategories } from '../interfaces/ICategories';
-import Service from '../services/Service';
+import AxiosService from '../services/AxiosService';
 import { Categories } from '../types/Categories.d';
-import { _Body, API_CATEGORIES } from '../utilities/Constants.d';
+import { _Body, CATEGORIES_END_POINT } from '../utilities/Constants.d';
 import { CustomError } from '../models/CustomError';
+import '../logger';
 
 export class CategoriesController implements ICategories {
-
      body?: any;
-     service: Service;
+     service: AxiosService;
 
      constructor(token: string) {
-          this.service = new Service(token, API_CATEGORIES.URL_BASE);
+          this.service = new AxiosService(token, CATEGORIES_END_POINT.URL);
      }
 
-     public async Get(): Promise<any> {
+     public async Get(): Promise<string> {
           try {
                return await this.service.Get();
           } catch (err) {

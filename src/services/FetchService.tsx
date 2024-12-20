@@ -2,7 +2,7 @@ import { _Headers, _Method, _Body, METHOD } from "../utilities/Constants.d";
 import { CustomError } from "../models/CustomError";
 import { IService } from "../interfaces/IService";
 
-export default class Service implements IService {
+export default class FetchService implements IService {
 
     headers: _Headers = new Headers();
     endPoint: string;

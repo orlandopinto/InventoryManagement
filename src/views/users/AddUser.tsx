@@ -8,6 +8,7 @@ import { useAuth } from '../../contexts/useAuth';
 import { MESSAGE_TOAST_ERROR_TYPE, METHOD } from '../../utilities/Constants.d';
 import { useShowMessageToast } from '../../hooks/useShowMessageToast';
 import Loading from '../index/Loading';
+import { TokenResult } from '../../interfaces/IAccount';
 
 function AddUser() {
   let IsAddMode: boolean = true;
@@ -18,7 +19,7 @@ function AddUser() {
   const { ShowMessageToast } = useShowMessageToast()
 
   const { tokenResult } = useAuth()
-  const controller = new UsersController(tokenResult as string);
+  const controller = new UsersController(tokenResult?.accessToken as string);
 
   const [formData, setFormData] = useState<Users>(initializedUser);
 
