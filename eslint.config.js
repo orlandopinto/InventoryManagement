@@ -12,7 +12,7 @@ export default [
       "no-unused-vars": "error",
       "no-extra-semi": "error",
       "eqeqeq": "error",
-      "camelcase": "error"
+      "camelcase": "error",
     }
   },
   {

@@ -13,6 +13,7 @@ import CategoryIndex from "../views/categories/index";
 import AddUpdateCategory from '../views/categories/AddUpdateCategory'
 import PageNotFound from "../views/index/PageNotFound";
 import EmailSender from '../views/tools/EmailSender'
+import SubCategoryIndex from "../views/subcategories/index";
 
 const ProtectedDashboard = Layout(Dashboard);
 const ProtectedAbout = Layout(About);
@@ -21,6 +22,7 @@ const ProtectedAddUser = Layout(AddUser);
 const ProtectedAddUpdateCategory = Layout(AddUpdateCategory);
 const ProtectedCategoryIndex = Layout(CategoryIndex);
 const ProtectedEmailSender = Layout(EmailSender);
+const ProtectedSubCategoryIndex = Layout(SubCategoryIndex);
 
 export const AppRoutes = createBrowserRouter(
     [
@@ -62,6 +64,10 @@ export const AppRoutes = createBrowserRouter(
                 {
                     path: "/categories/AddUpdateCategory/:id",
                     element: (<ProtectedRoutes><ProtectedAddUpdateCategory /></ProtectedRoutes>)
+                },
+                {
+                    path: "/subcategories",
+                    element: (<ProtectedRoutes><ProtectedSubCategoryIndex /></ProtectedRoutes>)
                 },
                 {
                     path: "/tools/emailsender",

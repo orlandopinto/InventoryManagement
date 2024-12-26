@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "types": [
-      "vite-plugin-svgr/client",
-      "node"
+      "node",
     ],
     "typeRoots": [
       "./global.d.ts",
@@ -32,8 +31,5 @@
   ],
   "exclude": [
     "node_modules"
-  ],
-  "files": [
-    "globals.d.ts"
   ]
 }

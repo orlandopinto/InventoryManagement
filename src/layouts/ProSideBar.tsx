@@ -26,7 +26,7 @@ function ProSideBar() {
                               icon={<Icon.Gear size={20} />}
                               label={t('Administration')}
                          >
-                              <MenuItem active={window.location.pathname === "/users" || window.location.pathname === (id == undefined ? '/users/adduser' : `/users/adduser/'${id}`)} icon={<Icon.People size={20} />} component={<Link to="/users" className="link" />}> {t('Users')} </MenuItem>
+                              <MenuItem active={window.location.pathname === "/users" || window.location.pathname === (id == undefined ? '/users/adduser' : `/users/adduser/${id}`)} icon={<Icon.People size={20} />} component={<Link to="/users" className="link" />}> {t('Users')} </MenuItem>
                          </SubMenu>
                          <SubMenu
                               defaultOpen={window.location.pathname === "/categories" || window.location.pathname === (id == undefined ? '/categories/AddUpdateCategory' : `/categories/AddUpdateCategory/${id}`)}

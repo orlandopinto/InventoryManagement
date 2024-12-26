@@ -3,4 +3,3 @@ declare module "*.svg";
 declare module "*.jpeg";
 declare module "*.jpg";
 
-/// <reference types="vite/client" />

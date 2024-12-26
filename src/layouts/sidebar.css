@@ -11,9 +11,9 @@
      --ps-menu-button-color-text: #fff;
 }
 
-.ps-menu-button {
+/* .ps-menu-button {
      color: var(--ps-menu-button-color-text) !important;
-}
+} */
 
 .ps-menu-icon {
      margin-left: -4px !important;

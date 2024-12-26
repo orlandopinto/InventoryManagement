@@ -1,12 +1,20 @@
-import { useEffect } from "react";
+import { SetStateAction, useEffect, Dispatch } from "react";
 import Pagination from "react-bootstrap/Pagination";
 import PropTypes from "prop-types";
 
-const CustomPagination = ({
+interface DataTablePaginationProps {
+     itemsCount: number;
+     itemsPerPage: number;
+     currentPage: number;
+     setCurrentPage: Dispatch<SetStateAction<number>>;
+     alwaysShown?: boolean;
+}
+
+const DataTablePagination: React.FC<DataTablePaginationProps> = ({
      itemsCount = 0,
      itemsPerPage = 0,
      currentPage = 0,
-     setCurrentPage = (number: Number) => { },
+     setCurrentPage,
      alwaysShown = true
 }) => {
 
@@ -14,11 +22,11 @@ const CustomPagination = ({
      const isPaginationShown = alwaysShown ? true : pagesCount > 1;
      const isCurrentPageFirst = currentPage === 1;
      const isCurrentPageLast = currentPage === pagesCount;
-     const changePage = (number: Number) => {
+     const changePage = (number: number) => {
           if (currentPage === number) return;
           setCurrentPage(number);
      };
-     const onPageNumberClick = (pageNumber: Number) => {
+     const onPageNumberClick = (pageNumber: number) => {
           changePage(pageNumber);
      };
 
@@ -99,11 +107,11 @@ const CustomPagination = ({
      );
 };
 
-CustomPagination.propTypes = {
+DataTablePagination.propTypes = {
      itemsCount: PropTypes.number.isRequired,
      currentPage: PropTypes.number.isRequired,
      setCurrentPage: PropTypes.func.isRequired,
      alwaysShown: PropTypes.bool
 };
 
-export default CustomPagination;
+export default DataTablePagination;

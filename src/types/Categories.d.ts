@@ -4,7 +4,7 @@ export type Categories = {
      categoryCode: string;
      categoryDescription: string | null;
      createBy: string;
-     creationDate: Date;
+     creationDate: Date | null;
      updateDate: Date | null;
      categoryImagePath: string;
 }

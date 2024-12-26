@@ -3,7 +3,6 @@ import AxiosService from '../services/AxiosService';
 import { Categories } from '../types/Categories.d';
 import { _Body, CATEGORIES_END_POINT } from '../utilities/Constants.d';
 import { CustomError } from '../models/CustomError';
-import '../logger';
 
 export class CategoriesController implements ICategories {
      body?: any;

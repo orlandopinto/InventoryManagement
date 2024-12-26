@@ -90,107 +90,104 @@ function index() {
      return (
           <>
                {
-                    isLoading
-                         ?
-                         <Loading />
-                         :
+                    isLoading && <Loading />
+               }
+               <div>
+                    <div className='header-page'>
                          <div>
-                              <div className='header-page'>
-                                   <div>
-                                        <h4>Lista de Usuarios</h4>
-                                        <p>Gestione sus usuarios</p>
+                              <h4>Lista de Usuarios</h4>
+                              <p>Gestione sus usuarios</p>
+                         </div>
+                         <div>
+                              <Link to="/users/adduser" className='btn btn-primary'><Icon.Plus size={20} /><span>Agregar usuario</span></Link>
+                         </div>
+                    </div>
+                    <div>
+                         <Card>
+                              <div className='container-fluid pt-2'>
+                                   <div className='search-bar'>
+                                        <div>
+                                             <input
+                                                  style={{ width: "200px" }}
+                                                  className='form-control mb-2'
+                                                  placeholder='Buscar'
+                                                  value={searchFilter}
+                                                  onChange={handleFilter}
+                                             />
+                                        </div>
+                                        <div className="search-bar-right-icons">
+                                             <Icon.FilePdf size={20}></Icon.FilePdf>
+                                             <Icon.FileSpreadsheet size={20}></Icon.FileSpreadsheet>
+                                             <Icon.PrinterFill size={20}></Icon.PrinterFill>
+                                        </div>
                                    </div>
-                                   <div>
-                                        <Link to="/users/adduser" className='btn btn-primary'><Icon.Plus size={20} /><span>Agregar usuario</span></Link>
-                                   </div>
-                              </div>
-                              <div>
-                                   <Card>
-                                        <div className='container-fluid pt-2'>
-                                             <div className='search-bar'>
-                                                  <div>
-                                                       <input
-                                                            style={{ width: "200px" }}
-                                                            className='form-control mb-2'
-                                                            placeholder='Buscar'
-                                                            value={searchFilter}
-                                                            onChange={handleFilter}
-                                                       />
-                                                  </div>
-                                                  <div className="search-bar-right-icons">
-                                                       <Icon.FilePdf size={20}></Icon.FilePdf>
-                                                       <Icon.FileSpreadsheet size={20}></Icon.FileSpreadsheet>
-                                                       <Icon.PrinterFill size={20}></Icon.PrinterFill>
-                                                  </div>
-                                             </div>
 
-                                             <Table className='table-xl'>
-                                                  <thead className='thead-dark'>
-                                                       <tr>
-                                                            <th>Nombre de Usuario</th>
-                                                            <th>Email</th>
-                                                            <th>Nombre</th>
-                                                            <th>Apellido</th>
-                                                            <th className='table-header-icons'></th>
+                                   <Table className='table-xl'>
+                                        <thead className='thead-dark'>
+                                             <tr>
+                                                  <th>Nombre de Usuario</th>
+                                                  <th>Email</th>
+                                                  <th>Nombre</th>
+                                                  <th>Apellido</th>
+                                                  <th className='table-header-icons'></th>
+                                             </tr>
+                                        </thead>
+                                        <tbody>
+                                             {paginatedData.length > 0 ? (
+                                                  paginatedData.map((user, i) => (
+                                                       <tr key={i}>
+                                                            <td>{user.userName}</td>
+                                                            <td>{user.email}</td>
+                                                            <td>{user.firstName}</td>
+                                                            <td>{user.lastName}</td>
+                                                            <td style={{ width: 100 }} >
+                                                                 <div className='table-row-icons'>
+                                                                      <Link to={`/users/adduser/${user.id}`}><Icon.PencilSquare className='table-row-icon' size={20}></Icon.PencilSquare></Link>
+                                                                      <Icon.Trash size={20} onClick={() => { handleShow(user.id) }}></Icon.Trash>
+                                                                 </div>
+                                                            </td>
                                                        </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                       {paginatedData.length > 0 ? (
-                                                            paginatedData.map((user, i) => (
-                                                                 <tr key={i}>
-                                                                      <td>{user.userName}</td>
-                                                                      <td>{user.email}</td>
-                                                                      <td>{user.firstName}</td>
-                                                                      <td>{user.lastName}</td>
-                                                                      <td style={{ width: 100 }} >
-                                                                           <div className='table-row-icons'>
-                                                                                <Link to={`/users/adduser/${user.id}`}><Icon.PencilSquare className='table-row-icon' size={20}></Icon.PencilSquare></Link>
-                                                                                <Icon.Trash size={20} onClick={() => { handleShow(user.id) }}></Icon.Trash>
-                                                                           </div>
-                                                                      </td>
-                                                                 </tr>
-                                                            ))
-                                                       ) : (
-                                                            <tr>
-                                                                 <td colSpan={3}>No data found</td>
-                                                            </tr>
-                                                       )}
-                                                  </tbody>
-                                             </Table>
-                                             <div className='pagination-footer'>
-                                                  <div className='show-per-page'>
-                                                       <div>
-                                                            Mostrar por página:
-                                                       </div>
-                                                       <div>
-                                                            <Form.Select size="sm" value={pageSize} onChange={handleOnchangeSelect}>
-                                                                 <option value={3}>3</option>
-                                                                 <option value={4}>4</option>
-                                                                 <option value={6}>6</option>
-                                                            </Form.Select>
-                                                       </div>
-                                                  </div>
-                                                  <div>
-                                                       {filteredData.length > 0 &&
-                                                            <>
-                                                                 <CustomPagination
-                                                                      itemsCount={filteredData.length}
-                                                                      itemsPerPage={pageSize}
-                                                                      currentPage={currentPage}
-                                                                      setCurrentPage={setCurrentPage}
-                                                                      alwaysShown={true}
-                                                                 />
-                                                            </>
-                                                       }
-                                                  </div>
-
+                                                  ))
+                                             ) : (
+                                                  <tr>
+                                                       <td colSpan={3}>No data found</td>
+                                                  </tr>
+                                             )}
+                                        </tbody>
+                                   </Table>
+                                   <div className='pagination-footer'>
+                                        <div className='show-per-page'>
+                                             <div>
+                                                  Mostrar por página:
+                                             </div>
+                                             <div>
+                                                  <Form.Select size="sm" value={pageSize} onChange={handleOnchangeSelect}>
+                                                       <option value={3}>3</option>
+                                                       <option value={4}>4</option>
+                                                       <option value={6}>6</option>
+                                                  </Form.Select>
                                              </div>
                                         </div>
-                                   </Card>
-                              </div>
-                         </div>
+                                        <div>
+                                             {filteredData.length > 0 &&
+                                                  <>
+                                                       <CustomPagination
+                                                            itemsCount={filteredData.length}
+                                                            itemsPerPage={pageSize}
+                                                            currentPage={currentPage}
+                                                            setCurrentPage={setCurrentPage}
+                                                            alwaysShown={true}
+                                                       />
+                                                  </>
+                                             }
+                                        </div>
 
-               }
+                                   </div>
+                              </div>
+                         </Card>
+                    </div>
+               </div>
+
                <ModalDelete show={show} headerContent="¿Realmente quiere eliminar el usuario?" handleClose={handleClose} handleDelete={handleDelete} />
           </>
      )

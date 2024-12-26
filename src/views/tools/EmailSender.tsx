@@ -1,5 +1,7 @@
 import { ChangeEvent, SyntheticEvent, useState } from 'react'
 import { Form, Button, Card, Col, Row } from 'react-bootstrap'
+import onSendEmailFromServer from '../../server';
+import axios from 'axios';
 // import { Html } from "@react-email/components";
 // import { Resend } from 'resend';
 
@@ -9,7 +11,7 @@ import { Form, Button, Card, Col, Row } from 'react-bootstrap'
 function EmailSender() {
      const [validated, setValidated] = useState(false);
 
-     const ApiKey = import.meta.env.VITE_SENDGRID_API_KEY;
+     //const ApiKey = import.meta.env.VITE_SENDGRID_API_KEY;
 
      const initializeValues = {
           nameSender: "",
@@ -33,28 +35,36 @@ function EmailSender() {
                setValidated(true);
           }
           else {
-               onSendEmail();
+               onSendEmail(e);
           }
      }
 
-     const onSendEmail = () => {
-          const message = {
-               to: 'orlandojavierpinto@gmail.com',
-               from: formData.emailSender,
-               subject: formData.subject,
-               html: `
-                    <p><strong>${formData.nameSender}</strong></p>
-                    <p>${formData.message}</p>
-               `
-          };
+     const onSendEmail = async (e: any) => {
+          // const message = {
+          //      to: 'orlandojavierpinto@gmail.com',
+          //      from: formData.emailSender,
+          //      subject: formData.subject,
+          //      html: `
+          //           <p><strong>${formData.nameSender}</strong></p>
+          //           <p>${formData.message}</p>
+          //      `
+          // };
 
-          // sgMail.send(message)
-          //      .then(() => {
-          //           console.log('message sent')
-          //      })
-          //      .catch((err) => {
-          //           console.log('error: ' + err)
-          //      })
+          e.preventDefault();
+          try {
+               await axios.post("http://localhost:4000/send", {
+                    from: 'orlandopinto.freelance@gmail.com',
+                    to: 'orlandojavierpinto@gmail.com',
+                    subject: formData.subject,
+                    message: `<p><strong>${formData.nameSender}</strong></p>
+                                                  <p>${formData.message}</p>`
+               }
+               );
+               alert("Email sent!");
+          } catch (err) {
+               console.log('error desde EmailSender ==>: ' + err)
+               alert(err);
+          }
      }
 
      const handleReset = (e: any) => {

@@ -6,3 +6,7 @@ modificar las rutas:
 axios interceptor para referscar el token:
 - https://blog.theashishmaurya.me/handling-jwt-access-and-refresh-token-using-axios-in-react-app
 - https://medium.com/@aqeel_ahmad/handling-jwt-access-token-refresh-token-using-axios-in-react-react-native-app-2024-f452c96a83fc
+
+subir imagenes
+- https://codeparrot.ai/blogs/how-to-implement-mui-file-upload-in-react-using-vite-and-axios-a-comprehensive-guide
+- https://www.filestack.com/fileschool/react/react-file-upload/
