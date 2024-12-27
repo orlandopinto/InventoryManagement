@@ -1,39 +1,39 @@
 import { ILoginResult } from "../interfaces/IAccount"
 
 export type Users = {
-    id: string
-    userName: string | null
-    normalizedUserName: string | null
-    email: string
-    normalizedEmail: string
-    emailConfirmed: boolean
-    passwordHash: string
-    phoneNumber: string | null
-    phoneNumberConfirmed: boolean
-    twoFactorEnabled: boolean
-    lockoutEnd: Date | null
-    lockoutEnabled: boolean
-    accessFailedCount: Number
-    address: string | null
-    birthDate: Date | null
-    firstName: string | null
-    lastName: string | null
-    zipCode: number | null
-    isAdmin: boolean
-    roleId: string | null
+    id: string;
+    userName: string;
+    normalizedUserName: string;
+    email: string;
+    normalizedEmail: string;
+    emailConfirmed: boolean;
+    passwordHash: string;
+    phoneNumber: null | string;
+    phoneNumberConfirmed: boolean;
+    twoFactorEnabled: boolean;
+    lockoutEnd: null;
+    lockoutEnabled: boolean;
+    accessFailedCount: number;
+    address: null | string;
+    birthDate: Date | null;
+    firstName: null | string;
+    lastName: null | string;
+    zipCode: number | null;
+    isAdmin: boolean;
+    roleId: null | string;
 }
 
 export const initializedUser = {
     id: "",
-    userName: null,
-    normalizedUserName: null,
+    userName: "",
+    normalizedUserName: "",
     email: "",
     normalizedEmail: "",
     emailConfirmed: true,
     passwordHash: "",
     phoneNumber: null,
     phoneNumberConfirmed: true,
-    twoFactorEnabled: false,
+    twoFactorEnabled: true,
     lockoutEnd: null,
     lockoutEnabled: false,
     accessFailedCount: 0,

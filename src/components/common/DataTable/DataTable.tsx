@@ -20,7 +20,7 @@ export interface DataTableOptions {
      showPerPageMessage: string,
      urlEdit?: string,
      handleDelete: (idToDelete: string) => void,
-     modalHeaderText?: string,
+     modalHeaderText?: string
 }
 
 const DataTable = <T extends Record<string, any>>({ children, data, options = {} as DataTableOptions }: { children: React.ReactNode, data: T[], options: DataTableOptions }) => {
@@ -71,7 +71,7 @@ const DataTable = <T extends Record<string, any>>({ children, data, options = {}
                          <div className='search-bar'>
                               <div>
                                    <input
-                                        // style={{ width: "200px" }}
+                                        style={{ width: "500px" }}
                                         className='form-control mb-2'
                                         placeholder='Buscar'
                                         value={searchFilter}
@@ -98,13 +98,13 @@ const DataTable = <T extends Record<string, any>>({ children, data, options = {}
                                              ) : null
                                         )
                                    }
-                                   <th></th>
+                                   <th style={{ width: '72px' }}></th>
                               </tr>
                          </thead>
                          <tbody>
                               {
                                    paginatedData.map((item: T) => (
-                                        <tr key={uniqueKey(item[options.dataKey])} >
+                                        <tr key={uniqueKey(item[options.dataKey])} style={{ verticalAlign: 'middle' }} >
                                              {
                                                   React.Children.map(children, child => {
                                                        return (
@@ -114,10 +114,10 @@ const DataTable = <T extends Record<string, any>>({ children, data, options = {}
                                                                       {validateIfFieldDate(item[child.props.field])
                                                                            ?
                                                                            new Date(item[child.props.field]).toLocaleDateString("es-ES")
-                                                                           :
-
-                                                                           item[child.props.field]
-
+                                                                           : (child.props.type === 'image'
+                                                                                ? <img src={item[child.props.field]} alt={item[child.props.field]} width='50' height='50' />
+                                                                                :
+                                                                                item[child.props.field])
                                                                       }
                                                                       {/* {String(item[(child.props as { field: keyof T }).field])} */}
                                                                  </td>

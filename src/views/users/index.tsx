@@ -36,7 +36,7 @@ function index() {
      const onGetData = () => {
           setIsLoading(true)
           controller.Get().then((data => {
-               setData(data.result as Users[]);
+               setData(data as Users[]);
           })).catch((err) => {
                const error = err as CustomError;
                ShowMessageToast(error.message, MESSAGE_TOAST_ERROR_TYPE.ERROR);

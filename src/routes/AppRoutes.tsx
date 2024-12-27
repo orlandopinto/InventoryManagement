@@ -14,15 +14,20 @@ import AddUpdateCategory from '../views/categories/AddUpdateCategory'
 import PageNotFound from "../views/index/PageNotFound";
 import EmailSender from '../views/tools/EmailSender'
 import SubCategoryIndex from "../views/subcategories/index";
+import AddUpdateSubCategory from '../views/subcategories/AddUpdateSubCategory'
 
 const ProtectedDashboard = Layout(Dashboard);
 const ProtectedAbout = Layout(About);
 const ProtectedUserIndex = Layout(UserIndex);
 const ProtectedAddUser = Layout(AddUser);
-const ProtectedAddUpdateCategory = Layout(AddUpdateCategory);
+
 const ProtectedCategoryIndex = Layout(CategoryIndex);
-const ProtectedEmailSender = Layout(EmailSender);
+const ProtectedAddUpdateCategory = Layout(AddUpdateCategory);
+
 const ProtectedSubCategoryIndex = Layout(SubCategoryIndex);
+const ProtectedAddUpdateSubCategory = Layout(AddUpdateSubCategory);
+
+const ProtectedEmailSender = Layout(EmailSender);
 
 export const AppRoutes = createBrowserRouter(
     [
@@ -68,6 +73,14 @@ export const AppRoutes = createBrowserRouter(
                 {
                     path: "/subcategories",
                     element: (<ProtectedRoutes><ProtectedSubCategoryIndex /></ProtectedRoutes>)
+                },
+                {
+                    path: "/subcategories/AddUpdateSubCategory",
+                    element: (<ProtectedRoutes><ProtectedAddUpdateSubCategory /></ProtectedRoutes>)
+                },
+                {
+                    path: "/subcategories/AddUpdateSubCategory/:id",
+                    element: (<ProtectedRoutes><ProtectedAddUpdateSubCategory /></ProtectedRoutes>)
                 },
                 {
                     path: "/tools/emailsender",

@@ -37,18 +37,16 @@ function AddUser() {
       queryFn: async ({ queryKey }) => {
         await controller.GetById(queryKey[1] as string).then(fetchData => {
           if (fetchData !== null) {
-            const response = (fetchData as any).result as Users
+            const response = fetchData as unknown as Users
             setOriginalPasswordHash(response.passwordHash)
             response.passwordHash = PASSWORD_HIDE
             setFormData(response)
           }
           else {
             ShowMessageToast("Se produjo un error al consultar los datos del usuario, por favor intente de nuevo!", MESSAGE_TOAST_ERROR_TYPE.ERROR);
-            //return;
           }
         }).catch(error => {
           ShowMessageToast(error.mess, MESSAGE_TOAST_ERROR_TYPE.ERROR);
-          //return;
         })
       },
     })

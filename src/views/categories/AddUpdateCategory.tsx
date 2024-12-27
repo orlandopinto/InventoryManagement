@@ -51,7 +51,7 @@ function AddUpdateCategory() {
                queryFn: async ({ queryKey }) => {
                     await controller.GetById(queryKey[1] as string).then(fetchData => {
                          if (fetchData !== null) {
-                              const response = (fetchData as any).result as Categories
+                              const response = fetchData as unknown as Categories
                               setFormData(response)
                               setSelectedFile(response.categoryImagePath)
                               const fileName = response.categoryImagePath.split('/')[3]

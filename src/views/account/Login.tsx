@@ -14,9 +14,11 @@ import { CustomError } from "../../models/CustomError";
 import { LoginResult } from "../../interfaces/IAccount";
 import logo from '../../assets/images/logo.png'
 import LanguageSwitcher from "../../components/common/LanguageSwitcher";
+import Loading from "../index/Loading";
 
 const Login = () => {
     const [validated, setValidated] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
 
     const initializeLogin = {
         id: "",
@@ -38,7 +40,8 @@ const Login = () => {
     };
 
     async function onLogin() {
-        const loginVewModel: LoginViewModel = { id: "", email: formData.email, password: encrypt(formData.password) }
+        setIsLoading(true)
+        const loginVewModel: LoginViewModel = { id: self.crypto.randomUUID(), email: formData.email, password: encrypt(formData.password) }
         const controller = new AccountController()
         await controller.Login(loginVewModel).then(data => {
             const dataLoginresult: LoginResult = data as unknown as LoginResult
@@ -58,7 +61,9 @@ const Login = () => {
         }).catch(err => {
             const error = err as CustomError
             ShowMessageToast(error.message, MESSAGE_TOAST_ERROR_TYPE.ERROR);
-        })
+        }).finally(() => {
+            setIsLoading(false)
+        });
     };
 
     const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
@@ -73,6 +78,9 @@ const Login = () => {
 
     return (
         <>
+            {
+                isLoading && <Loading />
+            }
             <div className="w-100 d-flex justify-content-end p-2">
                 <LanguageSwitcher />
             </div>
@@ -112,9 +120,9 @@ const Login = () => {
                                 <Col xl={12} className="text-center">
                                     <Button className="w-100" size="lg" id="btnSubmit" type="submit" variant='primary'>Iniciar sesión</Button>
                                 </Col>
-                                <div className="pt-2">
+                                {/* <div className="pt-2">
                                     ¿No tienes una cuenta? <Link to={"/account/register"}>Regístrate</Link>
-                                </div>
+                                </div> */}
                             </Row>
                         </Form>
                     </Card>

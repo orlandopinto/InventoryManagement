@@ -21,7 +21,6 @@ function index() {
      const [isLoading, setIsLoading] = useState(false)
      const [data, setData] = useState<Categories[]>([]);
      const [show, setShow] = useState(false);
-     const [idToDelete, setIdToDelete] = useState('')
 
      useEffect(() => {
           onGetData();
@@ -29,8 +28,8 @@ function index() {
 
      const onGetData = () => {
           setIsLoading(true)
-          controller.Get().then((data => {
-               setData(data.result as Categories[]);
+          controller.Get().then((response => {
+               setData(response as unknown as Categories[]);
           })).catch((err) => {
                const error = err as CustomError;
                ShowMessageToast(error.message, MESSAGE_TOAST_ERROR_TYPE.ERROR);
@@ -40,7 +39,11 @@ function index() {
      }
 
      const handleDelete = async (idToDelete: string) => {
-          await controller.Delete(idToDelete).then((data => {
+          await controller.Delete(idToDelete).then((response => {
+               if (response as unknown as boolean !== true) {
+                    ShowMessageToast("Se ha producido un error al eliminar la categoría!", MESSAGE_TOAST_ERROR_TYPE.ERROR);
+                    return;
+               }
                onGetData();
                ShowMessageToast("categoría eliminada satisfactoriamente!", MESSAGE_TOAST_ERROR_TYPE.SUCCESS);
                setShow(false);

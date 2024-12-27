@@ -22,19 +22,27 @@ function ProSideBar() {
                          <MenuItem active={window.location.pathname === "/dashboard"} onClick={() => setIsActive(true)} icon={<Icon.Kanban size={20} />} component={<Link to="/dashboard" className="link" />}> Dashboard </MenuItem>
                          <MenuItem active={window.location.pathname === "/about"} icon={<Icon.QuestionCircle size={20} />} component={<Link to="/about" className="link" />}> {t('about')} </MenuItem>
                          <SubMenu
-                              defaultOpen={window.location.pathname === "/users" || window.location.pathname === (id == undefined ? '/users/adduser' : `/users/adduser/${id}`)}
+                              defaultOpen={
+                                   window.location.pathname === "/users" ||
+                                   window.location.pathname === (id == undefined ? '/users/adduser' : `/users/adduser/${id}`)
+                              }
                               icon={<Icon.Gear size={20} />}
                               label={t('Administration')}
                          >
                               <MenuItem active={window.location.pathname === "/users" || window.location.pathname === (id == undefined ? '/users/adduser' : `/users/adduser/${id}`)} icon={<Icon.People size={20} />} component={<Link to="/users" className="link" />}> {t('Users')} </MenuItem>
                          </SubMenu>
                          <SubMenu
-                              defaultOpen={window.location.pathname === "/categories" || window.location.pathname === (id == undefined ? '/categories/AddUpdateCategory' : `/categories/AddUpdateCategory/${id}`)}
+                              defaultOpen={
+                                   window.location.pathname === "/categories" ||
+                                   window.location.pathname === (id == undefined ? '/categories/AddUpdateCategory' : `/categories/AddUpdateCategory/${id}`) ||
+                                   window.location.pathname === "/subcategories" ||
+                                   window.location.pathname === (id == undefined ? '/subcategories/AddUpdateSubCategory' : `/subcategories/AddUpdateSubCategory/${id}`)
+                              }
                               icon={<Icon.ShopWindow size={20} />}
                               label={t('Products')}
                          >
                               <MenuItem active={window.location.pathname === "/categories" || window.location.pathname === (id == undefined ? '/categories/AddUpdateCategory' : `/categories/AddUpdateCategory/${id}`)} icon={<Icon.Bookmark size={20} />} component={<Link to="/categories" className="link" />}> {t('Categories')} </MenuItem>
-                              <MenuItem active={window.location.pathname === "/subcategories" || window.location.pathname === "/subcategories/AddUpdateSubCategory"} icon={<Icon.Bookmarks size={20} />} component={<Link to="/subcategories" className="link" />}> Sub {t('Categories')} </MenuItem>
+                              <MenuItem active={window.location.pathname === "/subcategories" || window.location.pathname === (id == undefined ? '/subcategories/AddUpdateSubCategory' : `/subcategories/AddUpdateSubCategory/${id}`)} icon={<Icon.Bookmarks size={20} />} component={<Link to="/subcategories" className="link" />}> Sub {t('Categories')} </MenuItem>
                          </SubMenu>
                          <SubMenu
                               defaultOpen={window.location.pathname === "/tools/emailsender" || window.location.pathname === "/tools/emailsender"}
