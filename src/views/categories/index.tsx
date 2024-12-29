@@ -121,6 +121,7 @@ function index() {
                     </div>
 
                     <DataTable data={data} options={dataTableOptions}>
+                         <DataColumn field="categoryImagePath" header="Ref." type='image' />
                          <DataColumn field="id" header="id" visibility={false} />
                          <DataColumn field="categoryName" header="Nombre de la categoría" />
                          <DataColumn field="categoryCode" header="Código" />
@@ -128,7 +129,6 @@ function index() {
                          <DataColumn field="createBy" header="Creado por" visibility={false} />
                          <DataColumn field="creationDate" header="Fecha de creación" />
                          <DataColumn field="updateDate" header="updateDate" visibility={false} />
-                         <DataColumn field="categoryImagePath" header="categoryImagePath" visibility={false} />
                     </DataTable>
 
                     {/* <CustomTable

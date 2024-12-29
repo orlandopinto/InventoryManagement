@@ -13,25 +13,15 @@ const LanguageSwitcher = () => {
 
 
      const options = [
-          {
-               value: "en", label: (<Image src={ukflag} width="30" alt="" />), text: "English"
-          },
-          {
-               value: "es", label: (<img src={esflag} width="30" alt="" />), text: "Español"
-          }
+          { value: "en", label: (<Image src={ukflag} width="30" alt="" />), text: "English" },
+          { value: "es", label: (<img src={esflag} width="30" alt="" />), text: "Español" }
      ];
-
-     const [langLabel, setLangLabel] = useState(options[0].label);
-
-     // setLangLabel(options[e].label);
-     // const newLang = options[e].value;
 
      const setFlagByLabel = (value: string) => {
           return options.find(filter => filter.value === value)?.label
      }
 
      function handlclick(e: any) {
-          setLangLabel(options[e].label);
           const newLang = options[e].value;
           i18n.changeLanguage(newLang);
           localStorage.setItem('lang', newLang)

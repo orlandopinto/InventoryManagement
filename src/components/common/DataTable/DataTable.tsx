@@ -86,7 +86,7 @@ const DataTable = <T extends Record<string, any>>({ children, data, options = {}
                          </div>
                     )}
 
-                    <Table>
+                    <Table className='table-striped bordered table-hover'>
                          <thead>
                               <tr key="1">
                                    {

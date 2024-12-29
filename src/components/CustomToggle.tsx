@@ -19,8 +19,9 @@ function CustomToggle() {
             <div className='profile-info'>
                 <div className='profile-info-image'>{AvatarUserProfile}</div>
                 <div className='profile-info-full-name'>{user?.fullName}</div>
-                <div className='profile-info-email'><strong>{user?.email}</strong></div>
+                {/* <div className='profile-info-email'><strong>{user?.email}</strong></div> */}
             </div>
+            <NavDropdown.Divider />
             <Link to="/profile" className='dropdown-item'><Icon.Person size={20} /><span>Perfil</span></Link>
             <Link to="/setting" className='dropdown-item'><Icon.Gear size={20} /><span>Configuración</span></Link>
             <NavDropdown.Divider />

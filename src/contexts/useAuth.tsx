@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { AuthProfile } from "../types/AuthProfile";
 import { useNavigate } from "react-router-dom";
 import { TokenResult } from "../interfaces/IAccount";
+import { decrypt, encrypt } from "../utilities/EncryptDecryptManager";
 
 type Props = { children: React.ReactNode }
 
@@ -22,7 +23,8 @@ export const UserProvider = ({ children }: Props) => {
      const [isReady, setIsReady] = useState(false)
 
      useEffect(() => {
-          const user = localStorage.getItem("user")
+          const ciphertext: string | null = localStorage.getItem("authorizaction")
+          const user = ciphertext ? decrypt(ciphertext) : null
           const tokenResult = localStorage.getItem("tokenResult")
           if (user && tokenResult) {
                setUser(JSON.parse(user));
@@ -32,7 +34,7 @@ export const UserProvider = ({ children }: Props) => {
      }, [])
 
      const loginUser = (user: AuthProfile, tokenResult: TokenResult) => {
-          localStorage.setItem("user", JSON.stringify(user))
+          localStorage.setItem("authorizaction", encrypt(JSON.stringify(user)))
           localStorage.setItem("tokenResult", JSON.stringify(tokenResult))
           setUser(user);
           setTokenResult(tokenResult as TokenResult)
@@ -44,7 +46,7 @@ export const UserProvider = ({ children }: Props) => {
      };
 
      const logout = () => {
-          localStorage.removeItem("user")
+          localStorage.removeItem("authorizaction")
           localStorage.removeItem("tokenResult")
           setUser(null)
           setTokenResult(null)

@@ -1,0 +1,40 @@
+.border-div {
+     border: var(--bs-border-width) solid var(--bs-border-color);
+}
+
+.border-div-botton {
+     border-bottom: var(--bs-border-width) solid var(--bs-border-color);
+}
+
+.accordion-button:focus {
+     box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) {
+     color: #fff;
+     background-color: #2fa4e7;
+     box-shadow: inset 0 calc(-1* var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
+}
+
+.bi.bi-trash {
+     color: var(--bs-body-color);
+}
+
+.accordion-button {
+     pointer-events: none;
+}
+
+.accordion-button::after {
+     pointer-events: all;
+     order: -1;
+     margin-left: 0;
+     margin-right: 0.5em;
+}
+
+.main-table {
+     border: 1px solid transparent;
+}
+
+.main-card {
+     padding: .7rem .5rem 0px .5rem;
+}
