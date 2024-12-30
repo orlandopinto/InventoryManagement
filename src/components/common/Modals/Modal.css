@@ -1,0 +1,37 @@
+.modal-backdrop {
+     backdrop-filter: blur(16px) saturate(59%);
+     -webkit-backdrop-filter: blur(16px) saturate(59%);
+     background-color: rgba(118, 120, 133, 0.81);
+     border-radius: 12px;
+     border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+.modal-header {
+     border-bottom: none;
+}
+
+.modal-title {
+     font-size: 1.3rem;
+}
+
+.modal-custom-header-content,
+.modal-body {
+     text-align: center;
+     color: var(--bs-body-color) !important
+}
+
+.modal-footer {
+     border-top: none;
+     text-align: center;
+     display: flex;
+     justify-content: center;
+     padding-bottom: 2rem;
+}
+
+.modal-custom-header-content {
+     font-size: 1.1rem;
+}
+
+.btnAlertModalClose {
+     width: 200px;
+}

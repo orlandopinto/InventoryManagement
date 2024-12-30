@@ -4,6 +4,8 @@ export const ACCOUNT_END_POINT = { URL: '/account/api/' }
 export const USERS_END_POINT = { URL: '/users/api/' }
 export const CATEGORIES_END_POINT = { URL: '/categories/api/' }
 export const SUB_CATEGORIES_END_POINT = { URL: '/subcategories/api/' }
+export const ATTRIBUTES_END_POINT = { URL: '/attributes/api/' }
+export const ATTRIBUTE_VALUES_END_POINT = { URL: '/attributes/api/attributevalues/' }
 
 export const METHOD = {
     GET: 'GET',

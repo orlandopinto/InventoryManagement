@@ -38,3 +38,14 @@
 .main-card {
      padding: .7rem .5rem 0px .5rem;
 }
+
+.delete-section {
+     position: relative;
+     top: 12px;
+     left: calc(100% - 36px);
+     z-index: 1000;
+}
+
+.accordion-header {
+     margin-top: -22px;
+}
