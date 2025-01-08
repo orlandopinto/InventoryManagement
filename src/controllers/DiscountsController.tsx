@@ -2,7 +2,6 @@ import AxiosService from '../services/AxiosService';
 import { _Body, DISCOUNTS_END_POINT } from '../utilities/Constants.d';
 import { CustomError } from '../models/CustomError';
 import { Discount } from '../types/Discount.type';
-import { useAuth } from '../contexts/useAuth';
 
 export class DiscountsController {
 

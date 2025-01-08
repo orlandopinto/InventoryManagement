@@ -10,7 +10,7 @@ import DataTable from '../../components/common/DataTable/DataTable';
 import DataColumn from '../../components/common/DataTable/DataColumn';
 import { DiscountsController } from '../../controllers/DiscountsController';
 import { Discount } from '../../types/Discount.type';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 export default function index() {
 
@@ -20,6 +20,7 @@ export default function index() {
      const [isLoading, setIsLoading] = useState(false)
      const [data, setData] = useState<Discount[]>([]);
      const [show, setShow] = useState(false);
+     const { t } = useTranslation();
 
      useEffect(() => {
           onGetData();
@@ -73,20 +74,20 @@ export default function index() {
                <div>
                     <div className='header-page'>
                          <div>
-                              <h4>Descuentos</h4>
-                              <p>Gestione sus descuentos</p>
+                              <h4>{t('Discounts')}</h4>
+                              <p>{t('Manageyour')} {t('Discounts').toLocaleLowerCase()}</p>
                          </div>
-                         <div><Link to="/discounts/AddUpdateDiscount" className='btn btn-primary'><Plus size={20} /><span>Agregar descuento</span></Link></div>
+                         <div><Link to="/discounts/AddUpdateDiscount" className='btn btn-primary'><Plus size={20} /><span>{t('Add')} {t('Discount').toLocaleLowerCase()}</span></Link></div>
                     </div>
 
                     <DataTable data={data} options={dataTableOptions}>
                          <DataColumn field="id" header="id" visibility={false} />
                          <DataColumn field="discountDescription" header={t('Description')} isHeaderCentered={true} />
                          <DataColumn field="discount" header={t('Discount')} isHeaderCentered={true} isFieldCentered={true} />
-                         <DataColumn field="createBy" header="Creado por" isHeaderCentered={true} isFieldCentered={true} />
-                         <DataColumn field="creationDate" header="Fecha de creación" isHeaderCentered={true} isFieldCentered={true} />
-                         <DataColumn field="updateDate" header="Última actualización" isHeaderCentered={true} isFieldCentered={true} />
-                         <DataColumn field="active" header="Activo" isHeaderCentered={true} isFieldCentered={true} type='boolean' />
+                         <DataColumn field="createBy" header={t('CreateBy')} isHeaderCentered={true} isFieldCentered={true} />
+                         <DataColumn field="creationDate" header={t('CreationDate')} isHeaderCentered={true} isFieldCentered={true} />
+                         <DataColumn field="updateDate" header={t('LastUpdate')} isHeaderCentered={true} isFieldCentered={true} />
+                         <DataColumn field="active" header={t('Active')} isHeaderCentered={true} isFieldCentered={true} type='boolean' />
                     </DataTable>
 
                </div>

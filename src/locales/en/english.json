@@ -21,6 +21,19 @@
      "Discounts": "Discounts",
      "Discount": "Discount",
      "ShowPerPage": "Show per page",
+     "NoDataFound": "No data found",
      "Description": "Description",
-     "Active": "Active"
+     "Active": "Active",
+     "CreateBy": "Create By",
+     "CreationDate": "Creation date",
+     "LastUpdate": "Last update",
+     "Add": "Add",
+     "Manageyour": "Manage your",
+     "Status": "Status",
+     "DeleteQuestion": "Do you really want to delete the record?",
+     "IrreversibleMessage": "The process is irreversible, press 'Delete' to continue.",
+     "Save": "Save",
+     "Update": "Update",
+     "Back": "Back",
+     "Search": "Search"
 }

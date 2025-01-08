@@ -3,8 +3,9 @@ import { Card, Form, Table } from 'react-bootstrap';
 import { FilePdf, FileSpreadsheet, PencilSquare, PrinterFill, Trash } from 'react-bootstrap-icons';
 import DataTablePagination from './DataTablePagination';
 import './DataTable.css';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ModalDelete from '../../../hooks/ModalDelete';
+import { useTranslation } from 'react-i18next'
 
 const uniqueKey = (pre: number) => {
      return `${pre}_${new Date().getTime()}`;
@@ -29,6 +30,8 @@ const DataTable = <T extends Record<string, any>>({ children, data, options = {}
      const [currentPage, setCurrentPage] = useState(1);
      const [show, setShow] = useState(false);
      const [idToDelete, setIdToDelete] = useState('')
+     const navigate = useNavigate();
+     const { t } = useTranslation();
 
      useEffect(() => {
           setShow(false)
@@ -94,7 +97,7 @@ const DataTable = <T extends Record<string, any>>({ children, data, options = {}
                                    <input
                                         style={{ width: "500px" }}
                                         className='form-control mb-2'
-                                        placeholder='Buscar'
+                                        placeholder={t('Search')}
                                         value={searchFilter}
                                         onChange={handleFilter}
                                    />
@@ -141,7 +144,7 @@ const DataTable = <T extends Record<string, any>>({ children, data, options = {}
                                              }
                                              <td>
                                                   <div className='table-row-icons'>
-                                                       <Link to={`${options.urlEdit}${item[options.dataKey]}`}><PencilSquare className='table-row-icon' size={20}></PencilSquare></Link>
+                                                       <PencilSquare size={20} onClick={() => navigate(`${options.urlEdit}${item[options.dataKey]}`, { state: item })} />
                                                        <Trash size={20} onClick={() => { handleShow(item[options.dataKey]) }}></Trash>
                                                   </div>
                                              </td>
@@ -179,7 +182,7 @@ const DataTable = <T extends Record<string, any>>({ children, data, options = {}
                </div>
           </Card >
           {children}
-          <ModalDelete show={show} headerContent={options.modalHeaderText || "¿Realmente quiere eliminar el registro?"} handleClose={handleClose} handleDelete={() => options.handleDelete(idToDelete)} />
+          <ModalDelete show={show} headerContent={options.modalHeaderText || t('DeleteQuestion')} handleClose={handleClose} handleDelete={() => options.handleDelete(idToDelete)} />
      </div>
 };
 

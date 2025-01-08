@@ -7,6 +7,7 @@ export const SUB_CATEGORIES_END_POINT = { URL: '/subcategories/api/' }
 export const ATTRIBUTES_END_POINT = { URL: '/attributes/api/' }
 export const ATTRIBUTE_VALUES_END_POINT = { URL: '/attributes/api/attributevalues/' }
 export const DISCOUNTS_END_POINT = { URL: '/discounts/api/' }
+export const STATUS_END_POINT = { URL: '/status/api/' }
 
 export const METHOD = {
     GET: 'GET',

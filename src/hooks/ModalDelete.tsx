@@ -1,8 +1,11 @@
 import { Button, Modal } from 'react-bootstrap';
 import { XCircle } from 'react-bootstrap-icons';
+import { useTranslation } from 'react-i18next';
 
 const ModalDelete = (props: any) => {
      const { show, headerContent, handleClose, handleDelete } = props;
+     const { t } = useTranslation();
+
      return (
           <Modal show={show} onHide={handleClose} centered backdrop="static" keyboard={false} className='modal-custom modal-md'>
                <Modal.Header closeButton></Modal.Header>
@@ -15,7 +18,7 @@ const ModalDelete = (props: any) => {
                               {headerContent}
                          </div>
                          <div className='modal-custom-message-content'>
-                              El proceso es irreversible, presione 'Eliminar' para continuar
+                              {t('IrreversibleMessage')}
                          </div>
                     </div>
                </Modal.Body>

@@ -41,7 +41,10 @@ function ProSideBar() {
                                    window.location.pathname === "/attributes" ||
 
                                    window.location.pathname === "/discounts" ||
-                                   window.location.pathname === (id == undefined ? '/discounts/AddUpdateDiscount' : `/discounts/AddUpdateDiscount/${id}`)
+                                   window.location.pathname === (id == undefined ? '/discounts/AddUpdateDiscount' : `/discounts/AddUpdateDiscount/${id}`) ||
+
+                                   window.location.pathname === "/status" ||
+                                   window.location.pathname === (id == undefined ? '/status/AddUpdateStatus' : `/status/AddUpdateStatus/${id}`)
                               }
                               icon={<Icon.BoxSeam size={20} />}
                               label={t('Inventory')}
@@ -50,6 +53,7 @@ function ProSideBar() {
                               <MenuItem active={window.location.pathname === "/subcategories" || window.location.pathname === (id == undefined ? '/subcategories/AddUpdateSubCategory' : `/subcategories/AddUpdateSubCategory/${id}`)} icon={<Icon.Bookmarks size={20} />} component={<Link to="/subcategories" className="link" />}> Sub {t('Categories')} </MenuItem>
                               <MenuItem active={window.location.pathname === "/attributes"} icon={<Icon.Hash size={30} />} component={<Link to="/attributes" className="link" />}> {t('Attributes')} </MenuItem>
                               <MenuItem active={window.location.pathname === "/discounts" || window.location.pathname === (id == undefined ? '/discounts/AddUpdateDiscount' : `/discounts/AddUpdateDiscount/${id}`)} icon={<Icon.Percent size={20} />} component={<Link to="/discounts" className="link" />}> {t('Discount')} </MenuItem>
+                              <MenuItem active={window.location.pathname === "/status" || window.location.pathname === (id == undefined ? '/status/AddUpdateStatus' : `/status/AddUpdateStatus/${id}`)} icon={<Icon.Flag size={20} />} component={<Link to="/status" className="link" />}> {t('Status')} </MenuItem>
                          </SubMenu>
                          <SubMenu
                               defaultOpen={

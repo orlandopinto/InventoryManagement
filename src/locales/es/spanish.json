@@ -21,6 +21,19 @@
      "Discounts": "Descuentos",
      "Discount": "Descuento",
      "ShowPerPage": "Mostrar por página",
+     "NoDataFound": "No se encontraron datos",
      "Description": "Descripción",
-     "Active": "Activo"
+     "Active": "Activo",
+     "CreateBy": "Creado por",
+     "CreationDate": "Fecha de creación",
+     "LastUpdate": "Última actualización",
+     "Add": "Agregar",
+     "Manageyour": "Gestione sus",
+     "Status": "Estado",
+     "DeleteQuestion": "¿Realmente quieres eliminar el registro?",
+     "IrreversibleMessage": "El proceso es irreversible, presione 'Eliminar' para continuar.",
+     "Save": "Guardar",
+     "Update": "Actualizar",
+     "Back": "Regresar",
+     "Search": "Buscar"
 }

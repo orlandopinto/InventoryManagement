@@ -27,6 +27,9 @@ import AddUpdateSubCategory from '../views/subcategories/AddUpdateSubCategory'
 import DiscountIndex from '../views/discounts/index'
 import AddUpdateDiscount from '../views/discounts/AddUpdateDiscount'
 
+import StatusIndex from '../views/status/index'
+import AddUpdateStatus from '../views/status/AddUpdateStatus'
+
 const ProtectedDashboard = Layout(Dashboard);
 const ProtectedAbout = Layout(About);
 const ProtectedUserIndex = Layout(UserIndex);
@@ -42,6 +45,9 @@ const ProtectedAttributesIndex = Layout(AttributesIndex);
 
 const ProtectedDiscountIndex = Layout(DiscountIndex);
 const ProtectedAddUpdateDiscount = Layout(AddUpdateDiscount);
+
+const ProtectedStatusIndex = Layout(StatusIndex);
+const ProtectedAddUpdateStatus = Layout(AddUpdateStatus);
 
 const ProtectedEmailSender = Layout(EmailSender);
 
@@ -74,6 +80,10 @@ export const AppRoutes = createBrowserRouter(
                 { path: "/discounts", element: (<ProtectedRoutes><ProtectedDiscountIndex /></ProtectedRoutes>) },
                 { path: "/discounts/AddUpdateDiscount", element: (<ProtectedRoutes><ProtectedAddUpdateDiscount /></ProtectedRoutes>) },
                 { path: "/discounts/AddUpdateDiscount/:id", element: (<ProtectedRoutes><ProtectedAddUpdateDiscount /></ProtectedRoutes>) },
+
+                { path: "/status", element: (<ProtectedRoutes><ProtectedStatusIndex /></ProtectedRoutes>) },
+                { path: "/status/AddUpdateStatus", element: (<ProtectedRoutes><ProtectedAddUpdateStatus /></ProtectedRoutes>) },
+                { path: "/status/AddUpdateStatus/:id", element: (<ProtectedRoutes><ProtectedAddUpdateStatus /></ProtectedRoutes>) },
 
                 { path: "/tools/emailsender", element: (<ProtectedRoutes><ProtectedEmailSender /></ProtectedRoutes>) },
                 {
