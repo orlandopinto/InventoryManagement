@@ -60,7 +60,7 @@ function index() {
                categoryCode: '',
                categoryDescription: null,
                createBy: '',
-               creationDate: null,
+               creationDate: new Date,
                updateDate: null,
                categoryImagePath: ''
           }

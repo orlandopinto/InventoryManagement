@@ -17,5 +17,10 @@
      "Attributes": "Attributes",
      "Attribute": "Attribute",
      "Tools": "Tools",
-     "EmailManager": "Email Manager"
+     "EmailManager": "Email Manager",
+     "Discounts": "Discounts",
+     "Discount": "Discount",
+     "ShowPerPage": "Show per page",
+     "Description": "Description",
+     "Active": "Active"
 }

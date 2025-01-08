@@ -3,6 +3,7 @@ import App from './App'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom';
 import { AppRoutes } from './routes/AppRoutes';
+import { StrictMode } from 'react';
 
 let root = createRoot(document.getElementById('root') as HTMLElement);
 
@@ -25,6 +26,8 @@ const currentTheme: string = localStorage.getItem('theme') as string;
 document.documentElement.setAttribute("data-bs-theme", currentTheme);
 root.render(
     <RouterProvider router={AppRoutes}>
-        <App />
+        <StrictMode>
+            <App />
+        </StrictMode>
     </RouterProvider>
 );

@@ -64,6 +64,27 @@ const DataTable = <T extends Record<string, any>>({ children, data, options = {}
 
      const handleClose = () => setShow(false);
 
+     const drawControl = (item: T, child: any) => {
+          if (validateIfFieldDate(item[child.props.field])) {
+               return new Date(item[child.props.field]).toLocaleDateString("es-ES")
+          }
+
+          if (child.props.type === 'image') {
+               return <img src={item[child.props.field]} alt={item[child.props.field]} width='50' height='50' />
+          }
+
+          if (child.props.type === 'boolean') {
+               return (
+                    <div className='w-100 d-flex justify-content-center'>
+                         <Form.Check type="checkbox" disabled checked={item[child.props.field]} />
+                    </div>
+               )
+          }
+
+          return item[child.props.field]
+     };
+
+
      return <div>
           <Card>
                <div className='container-fluid pt-2'>
@@ -88,11 +109,11 @@ const DataTable = <T extends Record<string, any>>({ children, data, options = {}
 
                     <Table className='table-striped bordered table-hover'>
                          <thead>
-                              <tr key="1">
+                              <tr key="1" className='align-middle'>
                                    {
                                         React.Children.map(children, child =>
                                              child && React.isValidElement(child) ? (
-                                                  <th className={child?.props?.visibility === false ? 'hiddenColumn' : ''}>
+                                                  <th className={`${child?.props?.visibility === false ? 'hiddenColumn' : ''} ${child?.props?.isHeaderCentered === true ? 'text-center' : ''}`}>
                                                        {child?.props?.header}
                                                   </th>
                                              ) : null
@@ -110,16 +131,8 @@ const DataTable = <T extends Record<string, any>>({ children, data, options = {}
                                                        return (
                                                             React.isValidElement(child)
                                                                  ?
-                                                                 <td className={child?.props?.visibility === false ? 'hiddenColumn' : ''}>
-                                                                      {validateIfFieldDate(item[child.props.field])
-                                                                           ?
-                                                                           new Date(item[child.props.field]).toLocaleDateString("es-ES")
-                                                                           : (child.props.type === 'image'
-                                                                                ? <img src={item[child.props.field]} alt={item[child.props.field]} width='50' height='50' />
-                                                                                :
-                                                                                item[child.props.field])
-                                                                      }
-                                                                      {/* {String(item[(child.props as { field: keyof T }).field])} */}
+                                                                 <td className={`${child?.props?.visibility === false ? 'hiddenColumn' : ''} ${child?.props?.isFieldCentered === true ? 'text-center' : ''}`}>
+                                                                      {drawControl(item, child)}
                                                                  </td>
                                                                  :
                                                                  null

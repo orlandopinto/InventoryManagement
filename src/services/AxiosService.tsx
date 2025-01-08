@@ -48,6 +48,17 @@ export default class AxiosService implements IService {
           )
      }
 
+     public async GetByDescription(description: string): Promise<string> {
+          return Promise.resolve(
+               axios({ url: this.endPoint, method: METHOD.GET, headers: this.headers as AxiosHeaders })
+                    .then(res => res.data)
+                    .catch(err => {
+                         const error = new CustomError({ message: err.toString(), name: 'API Error' });
+                         throw error.throwCustomError()
+                    })
+          )
+     }
+
      public async Post<T>(entity: T): Promise<string> {
           return Promise.resolve(
                axios({
