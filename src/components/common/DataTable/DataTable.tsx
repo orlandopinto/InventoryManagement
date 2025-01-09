@@ -6,6 +6,7 @@ import './DataTable.css';
 import { useNavigate } from 'react-router-dom';
 import ModalDelete from '../../../hooks/ModalDelete';
 import { useTranslation } from 'react-i18next'
+import FormatDate from '../../../views/tools/CommonFunctions';
 
 const uniqueKey = (pre: number) => {
      return `${pre}_${new Date().getTime()}`;
@@ -69,7 +70,7 @@ const DataTable = <T extends Record<string, any>>({ children, data, options = {}
 
      const drawControl = (item: T, child: any) => {
           if (validateIfFieldDate(item[child.props.field])) {
-               return new Date(item[child.props.field]).toLocaleDateString("es-ES")
+               return new Date(FormatDate(item[child.props.field])).toJSON().slice(0, 10).split('-').reverse().join('/')
           }
 
           if (child.props.type === 'image') {

@@ -35,5 +35,11 @@
      "Save": "Guardar",
      "Update": "Actualizar",
      "Back": "Regresar",
-     "Search": "Buscar"
+     "Search": "Buscar",
+     "Tax": "Impuesto",
+     "Taxes": "Impuestos",
+     "From": "Desde",
+     "To": "Hasta",
+     "Init": "Inicia",
+     "End": "Finaliza"
 }

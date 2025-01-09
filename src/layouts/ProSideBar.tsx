@@ -23,37 +23,41 @@ function ProSideBar() {
                          <SubMenu
                               defaultOpen={
                                    window.location.pathname === "/users" ||
-                                   window.location.pathname === (id == undefined ? '/users/adduser' : `/users/adduser/${id}`)
+                                   window.location.pathname === (id === undefined ? '/users/adduser' : `/users/adduser/${id}`)
                               }
                               icon={<Icon.Gear size={20} />}
                               label={t('Administration')}
                          >
-                              <MenuItem active={window.location.pathname === "/users" || window.location.pathname === (id == undefined ? '/users/adduser' : `/users/adduser/${id}`)} icon={<Icon.People size={20} />} component={<Link to="/users" className="link" />}> {t('Users')} </MenuItem>
+                              <MenuItem active={window.location.pathname === "/users" || window.location.pathname === (id === undefined ? '/users/adduser' : `/users/adduser/${id}`)} icon={<Icon.People size={20} />} component={<Link to="/users" className="link" />}> {t('Users')} </MenuItem>
                          </SubMenu>
                          <SubMenu
                               defaultOpen={
                                    window.location.pathname === "/categories" ||
-                                   window.location.pathname === (id == undefined ? '/categories/AddUpdateCategory' : `/categories/AddUpdateCategory/${id}`) ||
+                                   window.location.pathname === (id === undefined ? '/categories/AddUpdateCategory' : `/categories/AddUpdateCategory/${id}`) ||
 
                                    window.location.pathname === "/subcategories" ||
-                                   window.location.pathname === (id == undefined ? '/subcategories/AddUpdateSubCategory' : `/subcategories/AddUpdateSubCategory/${id}`) ||
+                                   window.location.pathname === (id === undefined ? '/subcategories/AddUpdateSubCategory' : `/subcategories/AddUpdateSubCategory/${id}`) ||
 
                                    window.location.pathname === "/attributes" ||
 
                                    window.location.pathname === "/discounts" ||
-                                   window.location.pathname === (id == undefined ? '/discounts/AddUpdateDiscount' : `/discounts/AddUpdateDiscount/${id}`) ||
+                                   window.location.pathname === (id === undefined ? '/discounts/AddUpdateDiscount' : `/discounts/AddUpdateDiscount/${id}`) ||
 
                                    window.location.pathname === "/status" ||
-                                   window.location.pathname === (id == undefined ? '/status/AddUpdateStatus' : `/status/AddUpdateStatus/${id}`)
+                                   window.location.pathname === (id === undefined ? '/status/AddUpdateStatus' : `/status/AddUpdateStatus/${id}`) ||
+
+                                   window.location.pathname === "/taxes" ||
+                                   window.location.pathname === (id === undefined ? '/taxes/AddUpdateTaxes' : `/taxes/AddUpdateTaxes/${id}`)
                               }
                               icon={<Icon.BoxSeam size={20} />}
                               label={t('Inventory')}
                          >
-                              <MenuItem active={window.location.pathname === "/categories" || window.location.pathname === (id == undefined ? '/categories/AddUpdateCategory' : `/categories/AddUpdateCategory/${id}`)} icon={<Icon.Bookmark size={20} />} component={<Link to="/categories" className="link" />}> {t('Categories')} </MenuItem>
-                              <MenuItem active={window.location.pathname === "/subcategories" || window.location.pathname === (id == undefined ? '/subcategories/AddUpdateSubCategory' : `/subcategories/AddUpdateSubCategory/${id}`)} icon={<Icon.Bookmarks size={20} />} component={<Link to="/subcategories" className="link" />}> Sub {t('Categories')} </MenuItem>
+                              <MenuItem active={window.location.pathname === "/categories" || window.location.pathname === (id === undefined ? '/categories/AddUpdateCategory' : `/categories/AddUpdateCategory/${id}`)} icon={<Icon.Bookmark size={20} />} component={<Link to="/categories" className="link" />}> {t('Categories')} </MenuItem>
+                              <MenuItem active={window.location.pathname === "/subcategories" || window.location.pathname === (id === undefined ? '/subcategories/AddUpdateSubCategory' : `/subcategories/AddUpdateSubCategory/${id}`)} icon={<Icon.Bookmarks size={20} />} component={<Link to="/subcategories" className="link" />}> Sub {t('Categories')} </MenuItem>
                               <MenuItem active={window.location.pathname === "/attributes"} icon={<Icon.Hash size={30} />} component={<Link to="/attributes" className="link" />}> {t('Attributes')} </MenuItem>
-                              <MenuItem active={window.location.pathname === "/discounts" || window.location.pathname === (id == undefined ? '/discounts/AddUpdateDiscount' : `/discounts/AddUpdateDiscount/${id}`)} icon={<Icon.Percent size={20} />} component={<Link to="/discounts" className="link" />}> {t('Discount')} </MenuItem>
-                              <MenuItem active={window.location.pathname === "/status" || window.location.pathname === (id == undefined ? '/status/AddUpdateStatus' : `/status/AddUpdateStatus/${id}`)} icon={<Icon.Flag size={20} />} component={<Link to="/status" className="link" />}> {t('Status')} </MenuItem>
+                              <MenuItem active={window.location.pathname === "/discounts" || window.location.pathname === (id === undefined ? '/discounts/AddUpdateDiscount' : `/discounts/AddUpdateDiscount/${id}`)} icon={<Icon.Percent size={20} />} component={<Link to="/discounts" className="link" />}> {t('Discount')} </MenuItem>
+                              <MenuItem active={window.location.pathname === "/status" || window.location.pathname === (id === undefined ? '/status/AddUpdateStatus' : `/status/AddUpdateStatus/${id}`)} icon={<Icon.Flag size={20} />} component={<Link to="/status" className="link" />}> {t('Status')} </MenuItem>
+                              <MenuItem active={window.location.pathname === "/taxes" || window.location.pathname === (id === undefined ? '/taxes/AddUpdateTaxes' : `/taxes/AddUpdateTaxes/${id}`)} icon={<Icon.CashCoin size={20} />} component={<Link to="/taxes" className="link" />}> {t('Taxes')} </MenuItem>
                          </SubMenu>
                          <SubMenu
                               defaultOpen={

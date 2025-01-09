@@ -35,5 +35,11 @@
      "Save": "Save",
      "Update": "Update",
      "Back": "Back",
-     "Search": "Search"
+     "Search": "Search",
+     "Tax": "Tax",
+     "Taxes": "Taxes",
+     "From": "From",
+     "To": "To",
+     "Init": "Init",
+     "End": "End"
 }

@@ -42,7 +42,7 @@ export default class AxiosService implements IService {
                })
                     .then(res => res.data)
                     .catch(err => {
-                         const error = new CustomError({ message: err.toString(), name: 'API Error' });
+                         const error = new CustomError({ message: err.toString(), name: 'API Error', stack: 'handled error' });
                          throw error.throwCustomError()
                     })
           )
@@ -53,7 +53,7 @@ export default class AxiosService implements IService {
                axios({ url: this.endPoint, method: METHOD.GET, headers: this.headers as AxiosHeaders })
                     .then(res => res.data)
                     .catch(err => {
-                         const error = new CustomError({ message: err.toString(), name: 'API Error' });
+                         const error = new CustomError({ message: err.toString(), name: 'API Error', stack: 'handled error' });
                          throw error.throwCustomError()
                     })
           )
@@ -69,7 +69,7 @@ export default class AxiosService implements IService {
                })
                     .then(res => res.data)
                     .catch(err => {
-                         const error = new CustomError({ message: err.toString(), name: 'API Error' });
+                         const error = new CustomError({ message: err.toString(), name: 'API Error', stack: 'handled error' });
                          throw error.throwCustomError()
                     })
           )
@@ -85,7 +85,7 @@ export default class AxiosService implements IService {
                })
                     .then(res => res.data)
                     .catch(err => {
-                         const error = new CustomError({ message: err.toString(), name: 'API Error' });
+                         const error = new CustomError({ message: err.toString(), name: 'API Error', stack: 'handled error' });
                          throw error.throwCustomError()
                     })
           )
@@ -100,7 +100,7 @@ export default class AxiosService implements IService {
                })
                     .then(res => res.data)
                     .catch(err => {
-                         const error = new CustomError({ message: err.toString(), name: 'API Error' });
+                         const error = new CustomError({ message: err.toString(), name: 'API Error', stack: 'handled error' });
                          throw error.throwCustomError()
                     })
           )
