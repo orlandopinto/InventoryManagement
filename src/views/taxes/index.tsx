@@ -1,85 +1,23 @@
-import { Plus } from "react-bootstrap-icons"
-import { useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
 import { Button } from "react-bootstrap"
+import { Plus } from "react-bootstrap-icons"
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from "react-router-dom"
 
-import Loading from "../index/Loading"
 import DataColumn from "../../components/common/DataTable/DataColumn"
 import DataTable from "../../components/common/DataTable/DataTable"
-
+import Loading from "../index/Loading"
 import { initializeTaxesViewModel, Taxes, TaxesViewModel } from "../../types/Taxes.types.d"
-import { MESSAGE_TOAST_ERROR_TYPE } from "../../utilities/Constants.d"
-
-import { TaxesController } from '../../controllers/TaxesController'
-import { useShowMessageToast } from "../../hooks/useShowMessageToast"
-import { CustomError } from "../../models/CustomError"
 import CustomModalAlert from "../../components/common/Modals/CustomModalAlert"
+import { TaxesController } from '../../controllers/TaxesController'
+import useIndexEntity from "../../hooks/useIndexEntity"
 
 function index() {
      //VARIABLES
      const { t } = useTranslation();
-     const translate = t;
-     const { ShowMessageToast } = useShowMessageToast()
-     const [isLoading, setIsLoading] = useState(false)
-     const [dataViewModel, setDataViewModel] = useState<TaxesViewModel[]>([]);
      const newTax: TaxesViewModel = initializeTaxesViewModel
-     let controller = TaxesController()
-     const navigate = useNavigate();
      const AddEditPage: string = '/taxes/AddUpdateTaxes/';
-
-     //STATES
-     const [showAlert, setShowAlert] = useState(false);
-     const [bodyText, setBodyText] = useState('')
-
-     useEffect(() => {
-          onGetData();
-     }, [])
-
-     const onGetData = () => {
-          setIsLoading(true)
-          controller.Index().then((response => {
-               const taxesList: Taxes[] = response as unknown as Taxes[]
-               const result: TaxesViewModel[] = [];
-               taxesList.map((tax) => result.push(Mapper(tax)));
-               setDataViewModel(result);
-          })).catch((err) => {
-               const error = err as CustomError;
-               ShowMessageToast(error.message, MESSAGE_TOAST_ERROR_TYPE.ERROR);
-          }).finally(() => {
-               setIsLoading(false)
-          });
-     }
-
-     const handleDelete = async (idToDelete: string) => {
-          await controller.Delete(idToDelete).then((response => {
-               onGetData();
-               ShowMessageToast("El estado ha sido eliminado satisfactoriamente!", MESSAGE_TOAST_ERROR_TYPE.SUCCESS);
-          })).catch((err) => {
-               const error = err as CustomError
-               setBodyText(error.message);
-               setShowAlert(true);
-          });
-     }
-
-     const dataTableOptions = {
-          dataKey: 'id',
-          filters: ['taxDescription'],
-          showPagination: true,
-          rowPerPage: 10,
-          rowsPerPageOptions: ['5', '10', '25', '50'],
-          emptyMessage: translate('NoDataFound'),
-          showPerPageMessage: translate('ShowPerPage'),
-          urlEdit: AddEditPage,
-          handleDelete,
-          modalHeaderText: translate('DeleteQuestion')
-     }
-
-     const handleCloseAlert = () => setShowAlert(false);
-
-
      const Mapper = (tax: Taxes): TaxesViewModel => {
-          const taxMepped: TaxesViewModel = {
+          return {
                id: tax.id,
                taxDescription: tax.taxDescription,
                tax: tax.tax,
@@ -90,9 +28,26 @@ function index() {
                creationDate: tax.creationDate,
                updateDate: tax.updateDate,
                addMode: false
-          }
-          return taxMepped;
+          } as TaxesViewModel
      }
+
+     const { dataViewModel, isLoading, showAlert, bodyText, handleCloseAlert, handleDelete } = useIndexEntity(TaxesController(), initializeTaxesViewModel, Mapper)
+
+     const dataTableOptions = {
+          dataKey: 'id',
+          filters: ['taxDescription'],
+          showPagination: true,
+          rowPerPage: 10,
+          rowsPerPageOptions: ['5', '10', '25', '50'],
+          emptyMessage: t('NoDataFound'),
+          showPerPageMessage: t('ShowPerPage'),
+          urlEdit: AddEditPage,
+          handleDelete,
+          modalHeaderText: t('DeleteQuestion')
+     }
+
+     //HOOKS
+     const navigate = useNavigate();
 
      return (
           <>
@@ -100,11 +55,11 @@ function index() {
                <div>
                     <div className='header-page'>
                          <div>
-                              <h4>{translate('Taxes')}</h4>
-                              <p>{translate('Manageyour')} {translate('Taxes').toLocaleLowerCase()}</p>
+                              <h4>{t('Taxes')}</h4>
+                              <p>{t('Manageyour')} {t('Taxes').toLocaleLowerCase()}</p>
                          </div>
                          <div>
-                              <Button onClick={() => navigate(AddEditPage, { state: newTax })} variant='primary'><Plus size={20} /><span>{translate('Add')} {translate('Taxes').toLocaleLowerCase()}</span></Button>
+                              <Button onClick={() => navigate(AddEditPage, { state: newTax })} variant='primary'><Plus size={20} /><span>{t('Add')} {t('Taxes').toLocaleLowerCase()}</span></Button>
                          </div>
                     </div>
                     <DataTable data={dataViewModel} options={dataTableOptions}>

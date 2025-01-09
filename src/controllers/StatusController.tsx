@@ -1,8 +1,8 @@
-import AxiosService from '../services/AxiosService';
-import { _Body, STATUS_END_POINT } from '../utilities/Constants.d';
-import { CustomError } from '../models/CustomError';
-import { Status, StatusViewModel } from '../types/Status.types.d';
 import { useAuth } from '../contexts/useAuth';
+import { CustomError } from '../models/CustomError';
+import AxiosService from '../services/AxiosService';
+import { Status, StatusViewModel } from '../types/Status.types.d';
+import { STATUS_END_POINT } from '../utilities/Constants.d';
 
 export const StatusController = () => {
      const { tokenResult, user } = useAuth()
@@ -30,7 +30,12 @@ export const StatusController = () => {
                }
                return await service.Post(status);
           } catch (err) {
-               throw err
+               const error: CustomError = err as unknown as CustomError
+               if (error.stack === 'handled error') {
+                    error.name = 'Error';
+                    error.message = 'Se ha producido un error al crear el estado, intente de nuevo.';
+               }
+               throw error
           }
      };
 
@@ -44,7 +49,12 @@ export const StatusController = () => {
                status.updateDate = new Date;
                return await service.Put(status);
           } catch (err) {
-               throw err
+               const error: CustomError = err as unknown as CustomError
+               if (error.stack === 'handled error') {
+                    error.name = 'Error';
+                    error.message = 'Se ha producido un error al actualiza el estado, intente de nuevo.';
+               }
+               throw error
           }
      };
 
@@ -56,7 +66,12 @@ export const StatusController = () => {
                }
                return response;
           } catch (err) {
-               throw err
+               const error: CustomError = err as unknown as CustomError
+               if (error.stack === 'handled error') {
+                    error.name = 'Error';
+                    error.message = 'Se produjo un error al eliminar el estado, por favor intente de nuevo!';
+               }
+               throw error
           }
      };
 
