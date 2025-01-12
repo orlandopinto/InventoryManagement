@@ -9,6 +9,7 @@ export const ATTRIBUTE_VALUES_END_POINT = { URL: '/attributes/api/attributevalue
 export const DISCOUNTS_END_POINT = { URL: '/discounts/api/' }
 export const STATUS_END_POINT = { URL: '/status/api/' }
 export const TAXES_END_POINT = { URL: '/taxes/api/' }
+export const PRODUCTS_END_POINT = { URL: '/products/api/' }
 
 export const METHOD = {
     GET: 'GET',

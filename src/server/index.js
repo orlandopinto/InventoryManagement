@@ -1,16 +1,26 @@
-const express = require('express');
+
+import process from "process";
+import express from 'express';
+import cors from 'cors';
+import multer from 'multer';
+import bodyParser from 'body-parser';
+import fileUpload from 'express-fileupload';
+import dotenv from "dotenv";
+import fs from 'fs-extra'
+
+dotenv.config({ path: './.env.development' });
+
 //const nodemailer = require("nodemailer");
 const app = express();
-const cors = require("cors");
-const multer = require('multer');
-const bodyParser = require('body-parser');
 //const { hostname } = require('os');
 //const sgMail = require('@sendgrid/mail')
+import { uploadProductImage } from './utils/cloudinary.js'
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const corsOrigin = 'http://localhost:5173';
+
 app.use(cors({
      origin: [corsOrigin],
      methods: ['GET', 'POST'],
@@ -38,11 +48,38 @@ app.get('/', (req, res) => {
 })
 
 //EndPoint to upload images
-app.post('/image-upload', imageUpload.array("img"), (req, res) => {
-     console.log('POST request received to /image-upload.');
-     console.log('Axios POST body: ', req.body);
-     res.send('POST request recieved on server to /image-upload.');
+app.post('/image-upload', imageUpload.array("img"), async (req, res) => {
+     try {
+
+          //console.log('POST request received to /image-upload.');
+          //console.log('Axios POST body: ', req.body);
+          res.send('POST request recieved on server to /image-upload.');
+          //console.log('result: ', result)
+     } catch (error) {
+          console.log(`error:  ${error} end point: '/image-upload'`)
+     }
 })
+
+app.use(fileUpload({
+     useTempFiles: true,
+     tempFileDir: '../uploaded_files'
+}))
+
+app.post('/upload-product-images', async (req, res) => {
+     try {
+          //console.log('POST request received to /upload-product-images.');
+          // console.log('Axios POST body: ', req.body);
+          //console.log('tempFilePath: ', req.files.img.tempFilePath)
+          res.send('POST request recieved on server to /upload-product-images.');
+          const result = await uploadProductImage(req.files.img.tempFilePath)
+          //console.log('result: ', result)
+          await fs.unlink(req.files.img.tempFilePath)
+     } catch (error) {
+          console.log(`error:  ${error} end point: '/upload-product-images'`)
+     }
+
+})
+
 
 //EndPoint to send emails
 //app.post("/send", (req, res) => {

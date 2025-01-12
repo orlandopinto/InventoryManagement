@@ -33,6 +33,9 @@ import AddUpdateStatus from '../views/status/AddUpdateStatus'
 import TaxesIndex from '../views/taxes/index'
 import AddUpdateTaxes from '../views/taxes/AddUpdateTaxes'
 
+import ProductsIndex from '../views/products/index'
+import AddUpdateProduct from '../views/products/AddUpdateProduct'
+
 const ProtectedDashboard = Layout(Dashboard);
 const ProtectedAbout = Layout(About);
 const ProtectedUserIndex = Layout(UserIndex);
@@ -54,6 +57,9 @@ const ProtectedAddUpdateStatus = Layout(AddUpdateStatus);
 
 const ProtectedTaxesIndex = Layout(TaxesIndex);
 const ProtectedAddUpdateTaxes = Layout(AddUpdateTaxes);
+
+const ProtectedProductsIndex = Layout(ProductsIndex);
+const ProtectedAddUpdateProduct = Layout(AddUpdateProduct);
 
 const ProtectedEmailSender = Layout(EmailSender);
 
@@ -94,6 +100,10 @@ export const AppRoutes = createBrowserRouter(
                 { path: "/taxes", element: (<ProtectedRoutes><ProtectedTaxesIndex /></ProtectedRoutes>) },
                 { path: "/taxes/AddUpdateTaxes", element: (<ProtectedRoutes><ProtectedAddUpdateTaxes /></ProtectedRoutes>) },
                 { path: "/taxes/AddUpdateTaxes/:id", element: (<ProtectedRoutes><ProtectedAddUpdateTaxes /></ProtectedRoutes>) },
+
+                { path: "/products", element: (<ProtectedRoutes><ProtectedProductsIndex /></ProtectedRoutes>) },
+                { path: "/products/AddUpdateProduct", element: (<ProtectedRoutes><ProtectedAddUpdateProduct /></ProtectedRoutes>) },
+                { path: "/products/AddUpdateProduct/:id", element: (<ProtectedRoutes><ProtectedAddUpdateProduct /></ProtectedRoutes>) },
 
                 { path: "/tools/emailsender", element: (<ProtectedRoutes><ProtectedEmailSender /></ProtectedRoutes>) },
                 {

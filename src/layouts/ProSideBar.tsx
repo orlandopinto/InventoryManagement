@@ -11,6 +11,10 @@ function ProSideBar() {
      const [collapsed, setCollapsed] = useState(false);
      const { id } = useParams<string>()
 
+     const matchPath = (arrPath: string[]) => {
+          return arrPath.some(path => window.location.pathname.toLocaleLowerCase().includes(path));
+     };
+
      return (
           <div style={{ display: "flex", height: "100vh" }}>
                <Sidebar collapsed={collapsed} id='ProSidebar'>
@@ -32,37 +36,27 @@ function ProSideBar() {
                          </SubMenu>
                          <SubMenu
                               defaultOpen={
-                                   window.location.pathname === "/categories" ||
-                                   window.location.pathname === (id === undefined ? '/categories/AddUpdateCategory' : `/categories/AddUpdateCategory/${id}`) ||
-
-                                   window.location.pathname === "/subcategories" ||
-                                   window.location.pathname === (id === undefined ? '/subcategories/AddUpdateSubCategory' : `/subcategories/AddUpdateSubCategory/${id}`) ||
-
-                                   window.location.pathname === "/attributes" ||
-
-                                   window.location.pathname === "/discounts" ||
-                                   window.location.pathname === (id === undefined ? '/discounts/AddUpdateDiscount' : `/discounts/AddUpdateDiscount/${id}`) ||
-
-                                   window.location.pathname === "/status" ||
-                                   window.location.pathname === (id === undefined ? '/status/AddUpdateStatus' : `/status/AddUpdateStatus/${id}`) ||
-
-                                   window.location.pathname === "/taxes" ||
-                                   window.location.pathname === (id === undefined ? '/taxes/AddUpdateTaxes' : `/taxes/AddUpdateTaxes/${id}`)
+                                   matchPath(["/categories", "/categories/addupdatecategory/", `/discounts/addupdatecategory/${id}`]) ||
+                                   matchPath(["/subcategories", "/subcategories/addupdatesubcategory/", `/discounts/addupdatesubcategory/${id}`]) ||
+                                   matchPath(["/attributes"]) ||
+                                   matchPath(["/discounts", "/discounts/addupdatediscounts/", `/discounts/addupdatediscounts/${id}`]) ||
+                                   matchPath(["/status", "/status/addupdatestatus/", `/status/addupdatestatus/${id}`]) ||
+                                   matchPath(["/taxes", "/taxes/addupdatetaxes/", `/taxes/addupdatetaxes/${id}`]) ||
+                                   matchPath(["/products", "/products/addupdateproduct", `/products/addupdateproduct/${id}`])
                               }
                               icon={<Icon.BoxSeam size={20} />}
                               label={t('Inventory')}
                          >
-                              <MenuItem active={window.location.pathname === "/categories" || window.location.pathname === (id === undefined ? '/categories/AddUpdateCategory' : `/categories/AddUpdateCategory/${id}`)} icon={<Icon.Bookmark size={20} />} component={<Link to="/categories" className="link" />}> {t('Categories')} </MenuItem>
-                              <MenuItem active={window.location.pathname === "/subcategories" || window.location.pathname === (id === undefined ? '/subcategories/AddUpdateSubCategory' : `/subcategories/AddUpdateSubCategory/${id}`)} icon={<Icon.Bookmarks size={20} />} component={<Link to="/subcategories" className="link" />}> Sub {t('Categories')} </MenuItem>
-                              <MenuItem active={window.location.pathname === "/attributes"} icon={<Icon.Hash size={30} />} component={<Link to="/attributes" className="link" />}> {t('Attributes')} </MenuItem>
-                              <MenuItem active={window.location.pathname === "/discounts" || window.location.pathname === (id === undefined ? '/discounts/AddUpdateDiscount' : `/discounts/AddUpdateDiscount/${id}`)} icon={<Icon.Percent size={20} />} component={<Link to="/discounts" className="link" />}> {t('Discount')} </MenuItem>
-                              <MenuItem active={window.location.pathname === "/status" || window.location.pathname === (id === undefined ? '/status/AddUpdateStatus' : `/status/AddUpdateStatus/${id}`)} icon={<Icon.Flag size={20} />} component={<Link to="/status" className="link" />}> {t('Status')} </MenuItem>
-                              <MenuItem active={window.location.pathname === "/taxes" || window.location.pathname === (id === undefined ? '/taxes/AddUpdateTaxes' : `/taxes/AddUpdateTaxes/${id}`)} icon={<Icon.CashCoin size={20} />} component={<Link to="/taxes" className="link" />}> {t('Taxes')} </MenuItem>
+                              <MenuItem active={matchPath(["/categories", "/categories/addupdatecategory/", `/discounts/addupdatecategory/${id}`])} icon={<Icon.Bookmark size={20} />} component={<Link to="/categories" className="link" />}> {t('Categories')} </MenuItem>
+                              <MenuItem active={matchPath(["/subcategories", "/subcategories/addupdatesubcategory/", `/discounts/addupdatesubcategory/${id}`])} icon={<Icon.Bookmarks size={20} />} component={<Link to="/subcategories" className="link" />}> Sub {t('Categories')} </MenuItem>
+                              <MenuItem active={matchPath(["/attributes"])} icon={<Icon.Hash size={30} />} component={<Link to="/attributes" className="link" />}> {t('Attributes')} </MenuItem>
+                              <MenuItem active={matchPath(["/discounts", "/discounts/addupdatediscounts/", `/discounts/addupdatediscounts/${id}`])} icon={<Icon.Percent size={20} />} component={<Link to="/discounts" className="link" />}> {t('Discount')} </MenuItem>
+                              <MenuItem active={matchPath(["/status", "/status/addupdatestatus/", `/status/addupdatestatus/${id}`])} icon={<Icon.Flag size={20} />} component={<Link to="/status" className="link" />}> {t('Status')} </MenuItem>
+                              <MenuItem active={matchPath(["/taxes", "/taxes/addupdatetaxes/", `/taxes/addupdatetaxes/${id}`])} icon={<Icon.CashCoin size={20} />} component={<Link to="/taxes" className="link" />}> {t('Taxes')} </MenuItem>
+                              <MenuItem active={matchPath(["/products", "/products/addupdateproduct", `/products/addupdateproduct/${id}`])} icon={<Icon.Bookmark size={20} />} component={<Link to="/products" className="link" />}> {t('Products')} </MenuItem>
                          </SubMenu>
                          <SubMenu
-                              defaultOpen={
-                                   window.location.pathname === "/tools/emailsender" || window.location.pathname === "/tools/emailsender"
-                              }
+                              defaultOpen={window.location.pathname === "/tools/emailsender" || window.location.pathname === "/tools/emailsender"}
                               icon={<Icon.Tools size={20} />}
                               label={t('Tools')}
                          >

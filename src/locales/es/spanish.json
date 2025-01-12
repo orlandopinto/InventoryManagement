@@ -41,5 +41,10 @@
      "From": "Desde",
      "To": "Hasta",
      "Init": "Inicia",
-     "End": "Finaliza"
+     "End": "Finaliza",
+     "ProductName": "Nombre del producto",
+     "ProductDescription": "Descripción del producto",
+     "Cost": "Costo",
+     "Price": "Precio",
+     "Quantity": "Cantidad"
 }

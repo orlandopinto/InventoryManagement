@@ -15,7 +15,7 @@ const ModalDelete = (props: any) => {
                               <XCircle size={55} />
                          </div>
                          <div className='modal-custom-header-content'>
-                              {headerContent}
+                              {headerContent.replace('<br>', '')}
                          </div>
                          <div className='modal-custom-message-content'>
                               {t('IrreversibleMessage')}

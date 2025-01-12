@@ -1,20 +1,20 @@
-import { Plus } from "react-bootstrap-icons"
-import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { Button } from "react-bootstrap"
+import { Plus } from "react-bootstrap-icons"
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from "react-router-dom"
 
-import Loading from "../index/Loading"
-import DataColumn from "../../components/common/DataTable/DataColumn"
 import DataTable from "../../components/common/DataTable/DataTable"
+import Loading from "../index/Loading"
 
 import { initializeStatusViewModel, Status, StatusViewModel } from "../../types/Status.types.d"
 import { MESSAGE_TOAST_ERROR_TYPE } from "../../utilities/Constants.d"
 
+import DataColumn from "../../components/common/DataTable/DataColumn"
+import CustomModalAlert from "../../components/common/Modals/CustomModalAlert"
 import { StatusController } from '../../controllers/StatusController'
 import { useShowMessageToast } from "../../hooks/useShowMessageToast"
 import { CustomError } from "../../models/CustomError"
-import CustomModalAlert from "../../components/common/Modals/CustomModalAlert"
 
 function index() {
      //VARIABLES
@@ -26,7 +26,7 @@ function index() {
      const newStatus: StatusViewModel = initializeStatusViewModel
      let controller = StatusController()
      const navigate = useNavigate();
-     const AddEditPage: string = '/status/AddUpdateStatus/';
+     const AddEditPage: string[] = ['/status/AddUpdateStatus', '/status/AddUpdateStatus/'];
 
      //STATES
      const [showAlert, setShowAlert] = useState(false);
@@ -76,7 +76,7 @@ function index() {
           rowsPerPageOptions: ['5', '10', '25', '50'],
           emptyMessage: translate('NoDataFound'),
           showPerPageMessage: translate('ShowPerPage'),
-          urlEdit: AddEditPage,
+          urlEdit: AddEditPage[1],
           handleDelete,
           modalHeaderText: translate('DeleteQuestion')
      }
@@ -93,7 +93,7 @@ function index() {
                               <p>{translate('Manageyour')} {translate('Status').toLocaleLowerCase()}</p>
                          </div>
                          <div>
-                              <Button onClick={() => navigate(AddEditPage, { state: newStatus })} variant='primary'><Plus size={20} /><span>{translate('Add')} {translate('Status').toLocaleLowerCase()}</span></Button>
+                              <Button onClick={() => navigate(AddEditPage[0], { state: newStatus })} variant='primary'><Plus size={20} /><span>{translate('Add')} {translate('Status').toLocaleLowerCase()}</span></Button>
                          </div>
                     </div>
                     <DataTable data={dataViewModel} options={dataTableOptions}>

@@ -105,4 +105,20 @@ export default class AxiosService implements IService {
                     })
           )
      }
+
+     public async UploadImages(image: FormData, ImageEndPoint: string = 'http://localhost/4000/upload-product-images'): Promise<string> {
+          return Promise.resolve(
+               axios({
+                    url: ImageEndPoint,
+                    method: METHOD.POST,
+                    data: image,
+                    headers: { 'Content-Type': 'multipart/form-data' }
+               })
+                    .then(res => res.data)
+                    .catch(err => {
+                         const error = new CustomError({ message: err.toString(), name: 'API Error to upload imaga', stack: 'handled error' });
+                         throw error.throwCustomError()
+                    })
+          )
+     }
 }

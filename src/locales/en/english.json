@@ -41,5 +41,10 @@
      "From": "From",
      "To": "To",
      "Init": "Init",
-     "End": "End"
+     "End": "End",
+     "ProductName": "Product Name",
+     "ProductDescription": "Product Description",
+     "Cost": "Cost",
+     "Price": "Price",
+     "Quantity": "Quantity"
 }

@@ -23,7 +23,14 @@ const CustomModalAlert = (props: any) => {
                               <Image src={errorImage} width="80" alt="" />
                          </div>
                          <div className='modal-custom-header-content'>
-                              {bodyText}
+                              {
+                                   bodyText.includes('<br>') ?
+                                        bodyText.split('<br>').map((message: string, index: number) => (
+                                             <div key={index}>{message}<br /></div>
+                                        ))
+                                        :
+                                        bodyText
+                              }
                          </div>
                     </div>
                </Modal.Body>

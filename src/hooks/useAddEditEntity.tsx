@@ -1,15 +1,18 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CustomError } from "../models/CustomError";
-import { MESSAGE_TOAST_ERROR_TYPE } from "../utilities/Constants.d";
+import { MESSAGE_TOAST_ERROR_TYPE, METHOD } from "../utilities/Constants.d";
 import { useShowMessageToast } from "./useShowMessageToast";
+import axios from "axios";
 
 interface Controller<T> {
+     Index(): Promise<string>;
      Create(data: T): Promise<string>;
      Edit(data: T): Promise<string>;
+     Delete(id: string): Promise<string>;
 }
 
-function useAddEditEntity<T, U extends Controller<T>>(controller: U, initializeValues: T, alteredIdMessage: string, addMessage: string, updateMessage: string, IndexPage: string) {
+function useAddEditEntity<T, U extends Controller<T>>(controller: U, initializeValues: T, alteredIdMessage: string, addMessage: string, updateMessage: string, IndexPage: string, uploadImages: boolean, arrFormDataList: FormData[]) {
      //STATES
      const [showAlert, setShowAlert] = useState(false);
      const [hasUrlToRedirect, setHasUrlToRedirect] = useState(false)
@@ -18,12 +21,10 @@ function useAddEditEntity<T, U extends Controller<T>>(controller: U, initializeV
      const [validated, setValidated] = useState(false);
      const [formData, setFormData] = useState<T>(initializeValues);
      const [isAddMode, setIsAddMode] = useState(true)
-
-     //HOOKS AND GENERAL FUNCTIONS
+     //HOOKS
      const location = useLocation();
      const { ShowMessageToast } = useShowMessageToast()
      const navigate = useNavigate()
-     const RedirectTo = (view: string) => navigate(view)
 
      //EFFECTS
      useEffect(() => {
@@ -41,7 +42,9 @@ function useAddEditEntity<T, U extends Controller<T>>(controller: U, initializeV
      }, [])
 
      //FUNCTIONS
-     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
+     const RedirectTo = (view: string) => navigate(view)
+
+     const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
           event.preventDefault();
           const buttonSubmitter = (event.nativeEvent as SubmitEvent).submitter;
 
@@ -49,12 +52,34 @@ function useAddEditEntity<T, U extends Controller<T>>(controller: U, initializeV
                setValidated(true);
           }
           else {
-               let data: T = { ...formData }
-               if (buttonSubmitter?.id === 'btnAdd') {
-                    addEntity(data)
-               }
-               else if (buttonSubmitter?.id === 'btnUpdate') {
-                    updateEntity(data)
+               try {
+                    // if (uploadImages) {
+                    //      arrFormDataList.map(async (frmData) => {
+                    //           if (frmData.get('id') !== null) {
+                    //                const formImageData = frmData;
+                    //                if (formImageData instanceof FormData) {
+                    //                     await axios.post('http://localhost:4000/upload-product-images', formImageData, config)
+                    //                          .then((response) => {
+                    //                               console.log('response: ', response)
+                    //                               console.log('imagen subida: ', frmData.get('id'))
+                    //                          }).catch((error) => {
+                    //                               console.log('error: ', error)
+                    //                          });
+                    //                } else {
+                    //                     console.error('formImageData is not a FormData instance');
+                    //                }
+                    //           }
+                    //      })
+                    // }
+                    let data: T = { ...formData }
+                    if (buttonSubmitter?.id === 'btnAdd') {
+                         addEntity(data)
+                    }
+                    else if (buttonSubmitter?.id === 'btnUpdate') {
+                         updateEntity(data)
+                    }
+               } catch (error) {
+                    console.log(`error:  ${error} end point: '/upload-product-images'`)
                }
           }
      };
@@ -81,7 +106,14 @@ function useAddEditEntity<T, U extends Controller<T>>(controller: U, initializeV
      const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
           setFormData({
                ...formData,
-               [event.target.id]: event.target.type === 'checkbox' ? event.target.checked : event.target.value,
+               [event.target.id]: event.target.value,
+          });
+     };
+
+     const handleChangeChecked = (event: ChangeEvent<HTMLInputElement>) => {
+          setFormData({
+               ...formData,
+               [event.target.id]: event.target.value,
           });
      };
 
@@ -104,6 +136,7 @@ function useAddEditEntity<T, U extends Controller<T>>(controller: U, initializeV
           isAddMode,
           handleSubmit,
           handleChange,
+          handleChangeChecked,
           handleCloseAlert
      }
 }
