@@ -38,13 +38,13 @@ export type ProductViewModel = {
      active: boolean
      creationDate: Date
      updateDate: Date | null
-     imagesProducts: ImagesProduct[]
      addMode: boolean;
 }
 
-export type ImagesProduct = {
+export type MultimediaFilesProduct = {
      id: string
      productId: string
+     type: string
      publicId: string
      secureUrl: string,
 }
@@ -92,6 +92,5 @@ export const initializeProductViewModel = {
      active: true,
      creationDate: new Date,
      updateDate: null,
-     imagesProducts: [],
      addMode: true
 }

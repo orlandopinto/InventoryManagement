@@ -33,6 +33,7 @@
      "DeleteQuestion": "Do you really want to delete the record?",
      "IrreversibleMessage": "The process is irreversible, press 'Delete' to continue.",
      "Save": "Save",
+     "Close": "Close",
      "Update": "Update",
      "Back": "Back",
      "Search": "Search",
@@ -46,5 +47,9 @@
      "ProductDescription": "Product Description",
      "Cost": "Cost",
      "Price": "Price",
-     "Quantity": "Quantity"
+     "Quantity": "Quantity",
+     "UploadMediaFile": "Upload media file",
+     "UploadImage": "Upload image",
+     "UploadVideo": "Upload video",
+     "BrowseFileToUpload": "Browse file to upload"
 }

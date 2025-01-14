@@ -5,12 +5,12 @@ import { useTranslation } from 'react-i18next';
 import { NumericFormat } from 'react-number-format';
 import { Link } from "react-router-dom";
 import CustomModalAlert from "../../components/common/Modals/CustomModalAlert";
-import ModalAddImageToProduct from "../../components/ModalAddImageToProduct";
+import ModalAddMediaFileProduct from "../../components/ModalAddMediaFileProduct";
 import { ProductsController } from "../../controllers/ProductsController";
 import useAddEditEntity from "../../hooks/useAddEditEntity";
 import useLoadListsForProduct from "../../hooks/useLoadListsForProduct";
-import { ImagesProduct, initializeProductViewModel } from "../../types/Products.types.d";
-import MultimediaProduct from "./MultimediaProduct";
+import { MultimediaFilesProduct, initializeProductViewModel } from "../../types/Products.types.d";
+import MultimediaProduct from "./MultimediaFileProduct";
 
 function AddUpdateProduct() {
      const { t } = useTranslation();
@@ -19,8 +19,10 @@ function AddUpdateProduct() {
      const [selectedDiscountID, setSelectedDiscountID] = useState<string>('')
      const [selectedStatusID, setSelectedStatusID] = useState('')
      const [selectedTaxID, setSelectedTaxID] = useState('')
-     const [showModalAddImageProduct, setShowModalAddImageProduct] = useState(false)
+     const [showModalAddMediaFileProduct, SetShowModalAddMediaFileProduct] = useState(false)
      const [initializeImage, setInitializeImage] = useState(true)
+     const [initializeVideo, setInitializeVideo] = useState(true)
+     const [typeFile, setTypeFile] = useState('')
 
      //NOTA: Mantener este orden en que se van a mostrar los mensajes en el Custom Hook
      const messages: string[] = [
@@ -33,24 +35,28 @@ function AddUpdateProduct() {
      const { IndexPage, showAlert, hasUrlToRedirect, urlToRedirect, bodyText, validated, formData, isAddMode, handleSubmit, handleChange, handleChangeChecked, handleCloseAlert } =
           useAddEditEntity(ProductsController(), initializeProductViewModel, messages[0], messages[1], messages[2], '/products')
 
-     const { categoryID, categoryList, subCategoryID, subCategoryList, discountID, discountList, statusID, statusList, taxID, taxesList, imagesProductList } = useLoadListsForProduct(formData.id)
+     const { categoryID, categoryList, subCategoryID, subCategoryList, discountID, discountList, statusID, statusList, taxID, taxesList, multimediaFilesProduct } = useLoadListsForProduct(formData.id)
 
      const handleOnchangeSelect = (event: ChangeEvent<HTMLSelectElement>, setValueReference: Dispatch<SetStateAction<string>>) => {
           event.preventDefault();
           event.target.value !== '' ? setValueReference(event.target.value) : setValueReference('')
      }
 
-     const handleShowModalAddImageProduct = () => {
-          setShowModalAddImageProduct(true)
+     const handleShowModalAddMediaFileProduct = (type: 'image' | 'video'): string => {
+          SetShowModalAddMediaFileProduct(true)
+          setTypeFile(type)
           setInitializeImage(true)
+          setInitializeVideo(true)
+          return type;
      }
 
      const handleClose = () => {
           setInitializeImage(true)
-          setShowModalAddImageProduct(false)
+          setInitializeVideo(true)
+          SetShowModalAddMediaFileProduct(false)
      }
 
-     const chunkImagesProduct = imagesProductList.reduce((resultArray: ImagesProduct[][], item, index) => {
+     const chunkMultimediaFilesProduct = multimediaFilesProduct.reduce((resultArray: MultimediaFilesProduct[][], item, index) => {
           const chunkIndex = Math.floor(index / 3)
           if (!resultArray[chunkIndex]) {
                resultArray[chunkIndex] = []
@@ -224,57 +230,11 @@ function AddUpdateProduct() {
                                              <Col xl={4} md={6} sm={12}>
                                                   <Form.Group className="mt-3">
                                                        <Form.Label></Form.Label>
-                                                       <Form.Check type="switch" label={t('Active')} id="active" onChange={handleChangeChecked} checked={formData.active} />
+                                                       <Form.Check type="switch" label={t('Active')} id="active" onChange={handleChangeChecked} defaultChecked={formData.active} />
                                                   </Form.Group>
                                              </Col >
                                         </Row>
                                         <hr className="pb-2" />
-                                        {
-                                             !formData.addMode ?
-                                                  <div>
-                                                       <Row>
-                                                            <Col sm={12} className="d-flex justify-content-center gap-2">
-                                                                 <div>
-                                                                      <Button className='btnShowModalAddImageProduct' variant="outline-primary" onClick={handleShowModalAddImageProduct}>
-                                                                           <div className="py-2">
-                                                                                <div><Upload size={30} /></div>
-                                                                                <div className="pt-2">Agregar imagen</div>
-                                                                           </div>
-                                                                      </Button>
-                                                                 </div>
-                                                                 <div>
-                                                                      <Button className='btnShowModalAddImageProduct' variant="outline-light" onClick={handleShowModalAddImageProduct}>
-                                                                           <div className="py-2">
-                                                                                <div><CameraVideo size={30} /></div>
-                                                                                <div className="pt-2">Agregar video</div>
-                                                                           </div>
-                                                                      </Button>
-                                                                 </div>
-                                                            </Col>
-                                                       </Row>
-                                                       <hr className="pb-2" />
-                                                       {
-                                                            chunkImagesProduct.map((chunk, idx) => {
-                                                                 const newDivUUID = self.crypto.randomUUID()
-                                                                 return (
-                                                                      <Row key={newDivUUID} data-row-id={newDivUUID} >
-                                                                           {
-                                                                                chunk.map((itemChunk) => {
-                                                                                     const newSpanUUID = self.crypto.randomUUID()
-                                                                                     return (
-                                                                                          <MultimediaProduct key={newSpanUUID} {...itemChunk} />
-                                                                                     )
-                                                                                })
-                                                                           }
-                                                                      </Row>
-                                                                 )
-                                                            })
-                                                       }
-                                                  </div>
-                                                  :
-                                                  null
-                                        }
-
                                         <Row>
                                              <Col xl={12}>
                                                   <Form.Group className="mb-3 buttons-section">
@@ -289,10 +249,54 @@ function AddUpdateProduct() {
                                                   </Form.Group>
                                              </Col>
                                         </Row>
+                                        <hr className="pb-2" />
+                                        {
+                                             !formData.addMode ?
+                                                  <div>
+                                                       <Row>
+                                                            <Col sm={12} className="d-flex justify-content-center gap-2">
+                                                                 <div>
+                                                                      <Button className='btnShowModalAddImageProduct' variant="outline-primary" onClick={() => handleShowModalAddMediaFileProduct('image')}>
+                                                                           <div className="py-2">
+                                                                                <div><Upload size={30} /></div>
+                                                                                <div className="pt-2">Agregar imagen</div>
+                                                                           </div>
+                                                                      </Button>
+                                                                 </div>
+                                                                 <div>
+                                                                      <Button className='btnShowModalAddImageProduct' variant="outline-info" onClick={() => handleShowModalAddMediaFileProduct('video')}>
+                                                                           <div className="py-2">
+                                                                                <div><CameraVideo size={30} /></div>
+                                                                                <div className="pt-2">Agregar video</div>
+                                                                           </div>
+                                                                      </Button>
+                                                                 </div>
+                                                            </Col>
+                                                       </Row>
+                                                       <hr className="pb-2" />
+                                                       {
+                                                            chunkMultimediaFilesProduct.map((multimediaFilesProduct) => {
+                                                                 return (
+                                                                      <Row key={self.crypto.randomUUID()} >
+                                                                           {
+                                                                                multimediaFilesProduct.map((multimediaFile) => {
+                                                                                     return (
+                                                                                          <MultimediaProduct key={self.crypto.randomUUID()} {...multimediaFile} />
+                                                                                     )
+                                                                                })
+                                                                           }
+                                                                      </Row>
+                                                                 )
+                                                            })
+                                                       }
+                                                  </div>
+                                                  :
+                                                  null
+                                        }
                                    </div>
                               </Card>
                          </Form>
-                         <ModalAddImageToProduct show={showModalAddImageProduct} handleClose={handleClose} productId={formData.id} initializeImage={initializeImage} setInitializeImage={setInitializeImage} />
+                         <ModalAddMediaFileProduct show={showModalAddMediaFileProduct} handleClose={handleClose} productId={formData.id} initializeImage={initializeImage} initializeVideo={initializeVideo} setInitializeVideo={setInitializeVideo} setInitializeImage={setInitializeImage} typeFile={typeFile} />
                     </div>
                     <CustomModalAlert show={showAlert} headerText={'Error'} bodyText={bodyText} handleClose={handleCloseAlert} hasUrlToRedirect={hasUrlToRedirect} urlToRedirect={urlToRedirect} />
                </div>

@@ -36,7 +36,6 @@ function index() {
                active: product.active,
                creationDate: product.creationDate,
                updateDate: product.updateDate,
-               imagesProducts: product.imagesProducts,
                addMode: false
           } as ProductViewModel
      }

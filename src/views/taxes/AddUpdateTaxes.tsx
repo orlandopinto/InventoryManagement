@@ -18,7 +18,7 @@ function AddUpdateTaxes() {
           "Datos del impuesto actualizado con éxito!",                                                                                 //updateMessage
      ]
 
-     const { IndexPage, showAlert, hasUrlToRedirect, urlToRedirect, bodyText, validated, formData, isAddMode, handleSubmit, handleChange, handleCloseAlert } = useAddEditEntity
+     const { IndexPage, showAlert, hasUrlToRedirect, urlToRedirect, bodyText, validated, formData, isAddMode, handleSubmit, handleChange, handleChangeChecked, handleCloseAlert } = useAddEditEntity
           (TaxesController(), initializeTaxesViewModel, messages[0], messages[1], messages[2], '/taxes')
 
      return (
@@ -77,7 +77,7 @@ function AddUpdateTaxes() {
                                              <Col xl={4} md={6} sm={12}>
                                                   <Form.Group className="mb-3">
                                                        <Form.Label></Form.Label>
-                                                       <Form.Check type="switch" label={t('Active')} id="active" onChange={handleChange} checked={formData.active} />
+                                                       <Form.Check type="switch" label={t('Active')} id="active" onChange={handleChangeChecked} defaultChecked={formData.active} />
                                                   </Form.Group>
                                              </Col>
                                         </Row>

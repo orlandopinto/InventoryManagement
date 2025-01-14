@@ -33,6 +33,7 @@
      "DeleteQuestion": "¿Realmente quieres eliminar el registro?",
      "IrreversibleMessage": "El proceso es irreversible, presione 'Eliminar' para continuar.",
      "Save": "Guardar",
+     "Close": "Cerrar",
      "Update": "Actualizar",
      "Back": "Regresar",
      "Search": "Buscar",
@@ -46,5 +47,9 @@
      "ProductDescription": "Descripción del producto",
      "Cost": "Costo",
      "Price": "Precio",
-     "Quantity": "Cantidad"
+     "Quantity": "Cantidad",
+     "UploadMediaFile": "Subir archivo multimedia",
+     "UploadImage": "Subir imagen",
+     "UploadVideo": "Subir video",
+     "BrowseFileToUpload": "Explorar archivo para cargar"
 }

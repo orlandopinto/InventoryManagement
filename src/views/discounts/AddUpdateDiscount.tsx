@@ -45,7 +45,7 @@ function AddUpdateDiscount() {
           setGeneratedId(generatedId)
           setFormData({
                ...formData,
-               [event.target.id]: event.target.type === 'checkbox' ? event.target.checked : event.target.value,
+               [event.target.id]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
           });
      };
 

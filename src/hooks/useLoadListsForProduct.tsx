@@ -10,9 +10,9 @@ import { Discount } from "../types/Discount.type"
 import { Status } from "../types/Status.types"
 import { SubCategories } from "../types/SubCategories"
 import { Taxes } from "../types/Taxes.types"
-import { API_END_POINT, IMAGES_PRODUCT_END_POINT, MESSAGE_TOAST_ERROR_TYPE, METHOD, STATUS_END_POINT, TAXES_END_POINT } from "../utilities/Constants.d"
+import { API_END_POINT, MULTIMEDIA_FILES_PRODUCT_END_POINT, MESSAGE_TOAST_ERROR_TYPE, METHOD, STATUS_END_POINT, TAXES_END_POINT } from "../utilities/Constants.d"
 import { useShowMessageToast } from "./useShowMessageToast"
-import { ImagesProduct } from "../types/Products.types"
+import { MultimediaFilesProduct } from "../types/Products.types"
 
 function useLoadListsForProduct(productId: string) {
      const { ShowMessageToast } = useShowMessageToast()
@@ -32,7 +32,7 @@ function useLoadListsForProduct(productId: string) {
      const [taxID, setTaxID] = useState('')
      const [taxesList, setTaxesList] = useState<Taxes[]>([] as Taxes[])
 
-     const [imagesProductList, setImagesProductList] = useState<ImagesProduct[]>([] as ImagesProduct[])
+     const [multimediaFilesProduct, setMultimediaFilesProduct] = useState<MultimediaFilesProduct[]>([] as MultimediaFilesProduct[])
 
      const { tokenResult } = useAuth()
 
@@ -83,10 +83,10 @@ function useLoadListsForProduct(productId: string) {
           }
      }
 
-     const populateImagesProductList = async () => {
+     const populateMultimediaFilesProductList = async () => {
           try {
-               const response = await GetList(IMAGES_PRODUCT_END_POINT.URL + productId)
-               setImagesProductList(response as unknown as ImagesProduct[]);
+               const response = await GetList(MULTIMEDIA_FILES_PRODUCT_END_POINT.URL + productId)
+               setMultimediaFilesProduct(response as unknown as MultimediaFilesProduct[]);
           } catch (err) {
                const error = err as CustomError;
                ShowMessageToast(error.message, MESSAGE_TOAST_ERROR_TYPE.ERROR);
@@ -114,10 +114,10 @@ function useLoadListsForProduct(productId: string) {
           populateDiscountList();
           populateStatusList();
           populateTaxesList();
-          populateImagesProductList();
+          populateMultimediaFilesProductList();
      }, []);
 
-     return { categoryID, categoryList, subCategoryID, subCategoryList, discountID, discountList, statusID, statusList, taxID, taxesList, imagesProductList }
+     return { categoryID, categoryList, subCategoryID, subCategoryList, discountID, discountList, statusID, statusList, taxID, taxesList, multimediaFilesProduct }
 }
 
 export default useLoadListsForProduct

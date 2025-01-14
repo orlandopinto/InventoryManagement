@@ -1,0 +1,26 @@
+.mainSquare {
+     width: 471px;
+     height: 344px;
+     background-image: url(/src/assets/images/default-upload-image.jpg);
+     background-position: center;
+     background-repeat: no-repeat;
+     cursor: pointer;
+     border-radius: 5px;
+}
+
+.internalSquare {
+     width: 431px;
+     height: 300px;
+     border: 2px dashed #2fa4e7;
+     position: relative;
+     left: 1.5rem;
+     top: 1.5rem;
+     border-radius: 5px;
+}
+
+.textBrowseFile {
+     color: rgb(0, 0, 0);
+     position: relative;
+     top: 17rem;
+     font-size: 1.5rem;
+}

@@ -1,8 +1,8 @@
 import { useAuth } from '../contexts/useAuth';
 import { CustomError } from '../models/CustomError';
 import AxiosService from '../services/AxiosService';
-import { ImagesProduct, Product, ResultCloudinary } from '../types/Products.types.d';
-import { IMAGES_PRODUCT_END_POINT, PRODUCTS_END_POINT } from '../utilities/Constants.d';
+import { MultimediaFilesProduct, Product, ResultCloudinary } from '../types/Products.types.d';
+import { MULTIMEDIA_FILES_PRODUCT_END_POINT, PRODUCTS_END_POINT } from '../utilities/Constants.d';
 
 export const ProductsController = () => {
      const { tokenResult, user } = useAuth()
@@ -102,19 +102,20 @@ export const ProductsController = () => {
           try {
                const resultCloudinary = await service.UploadMedia(formData) as unknown as ResultCloudinary;
 
-               const imageProduct: ImagesProduct = {
+               const multimediaFileProduct: MultimediaFilesProduct = {
                     id: self.crypto.randomUUID(),
                     productId: productId,
+                    type: resultCloudinary.type,
                     publicId: resultCloudinary.public_id,
                     secureUrl: resultCloudinary.secure_url,
                }
 
-               service = new AxiosService(tokenResult?.accessToken as string, IMAGES_PRODUCT_END_POINT.URL);
-               const response = await service.Post(imageProduct);
+               service = new AxiosService(tokenResult?.accessToken as string, MULTIMEDIA_FILES_PRODUCT_END_POINT.URL);
+               const response = await service.Post(multimediaFileProduct);
                if (response as unknown as boolean !== true) {
                     throw new CustomError({ message: 'Se produjo un error al registrar los datos de la imagen en la base de datos, por favor intente de nuevo!', name: 'Error' });
                }
-               return imageProduct;
+               return multimediaFileProduct;
           } catch (err) {
                const error: CustomError = err as unknown as CustomError
                if (error.stack === 'handled error') {

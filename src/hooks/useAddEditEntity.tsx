@@ -95,7 +95,7 @@ function useAddEditEntity<T, U extends Controller<T>>(controller: U, initializeV
      const handleChangeChecked = (event: ChangeEvent<HTMLInputElement>) => {
           setFormData({
                ...formData,
-               [event.target.id]: event.target.value,
+               [event.target.id]: event.target.checked
           });
      };
 
