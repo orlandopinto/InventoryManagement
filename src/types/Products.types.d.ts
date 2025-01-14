@@ -17,7 +17,6 @@ export type Product = {
      active: boolean
      creationDate: Date
      updateDate: Date | null
-     imagesProducts: ImagesProduct[]
 }
 
 export type ProductViewModel = {
@@ -46,7 +45,32 @@ export type ProductViewModel = {
 export type ImagesProduct = {
      id: string
      productId: string
-     urlImage: string
+     publicId: string
+     secureUrl: string,
+}
+
+export type ResultCloudinary = {
+     asset_id: string;
+     public_id: string;
+     version: number;
+     version_id: string;
+     signature: string;
+     width: number;
+     height: number;
+     format: string;
+     resource_type: string;
+     created_at: Date;
+     tags: any[];
+     bytes: number;
+     type: string;
+     etag: string;
+     placeholder: boolean;
+     url: string;
+     secure_url: string;
+     asset_folder: string;
+     display_name: string;
+     original_filename: string;
+     api_key: string;
 }
 
 export const initializeProductViewModel = {

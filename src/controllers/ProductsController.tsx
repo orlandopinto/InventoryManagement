@@ -1,13 +1,12 @@
-import { join } from 'path';
 import { useAuth } from '../contexts/useAuth';
 import { CustomError } from '../models/CustomError';
 import AxiosService from '../services/AxiosService';
-import { Product } from '../types/Products.types.d';
-import { PRODUCTS_END_POINT } from '../utilities/Constants.d';
+import { ImagesProduct, Product, ResultCloudinary } from '../types/Products.types.d';
+import { IMAGES_PRODUCT_END_POINT, PRODUCTS_END_POINT } from '../utilities/Constants.d';
 
 export const ProductsController = () => {
      const { tokenResult, user } = useAuth()
-     const service = new AxiosService(tokenResult?.accessToken as string, PRODUCTS_END_POINT.URL);
+     let service = new AxiosService(tokenResult?.accessToken as string, PRODUCTS_END_POINT.URL);
 
      const Index = async () => {
           try {
@@ -31,7 +30,6 @@ export const ProductsController = () => {
                }
 
                if (product.cost === 0 || product.price === 0 || product.quantity === 0 || product.minimunQuantity === 0) {
-
                     let messageList = 'Se detectaron los siguientes errores: <br>'
                     if (product.cost === 0) {
                          messageList += '- El valor del "Costo" debe ser diferente a cero.<br>'
@@ -48,7 +46,6 @@ export const ProductsController = () => {
                     if (product.minimunQuantity === 0) {
                          messageList += '- El valor "Cantidad mínima" debe ser diferente a cero.<br>'
                     }
-
 
                     const error = new CustomError({ message: messageList, name: 'Error' });
                     throw error
@@ -101,5 +98,32 @@ export const ProductsController = () => {
           }
      };
 
-     return { Index, Create, Edit, Delete }
+     const UploadMedia = async (productId: string, formData: FormData, isImage: boolean) => {
+          try {
+               const resultCloudinary = await service.UploadMedia(formData) as unknown as ResultCloudinary;
+
+               const imageProduct: ImagesProduct = {
+                    id: self.crypto.randomUUID(),
+                    productId: productId,
+                    publicId: resultCloudinary.public_id,
+                    secureUrl: resultCloudinary.secure_url,
+               }
+
+               service = new AxiosService(tokenResult?.accessToken as string, IMAGES_PRODUCT_END_POINT.URL);
+               const response = await service.Post(imageProduct);
+               if (response as unknown as boolean !== true) {
+                    throw new CustomError({ message: 'Se produjo un error al registrar los datos de la imagen en la base de datos, por favor intente de nuevo!', name: 'Error' });
+               }
+               return imageProduct;
+          } catch (err) {
+               const error: CustomError = err as unknown as CustomError
+               if (error.stack === 'handled error') {
+                    error.name = 'Error';
+                    error.message = `Se produjo un error al subir ${isImage ? 'la imagen' : 'el video'} , por favor intente de nuevo!`;
+               }
+               throw error
+          }
+     };
+
+     return { Index, Create, Edit, Delete, UploadMedia }
 }

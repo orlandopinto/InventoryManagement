@@ -1,9 +1,8 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CustomError } from "../models/CustomError";
-import { MESSAGE_TOAST_ERROR_TYPE, METHOD } from "../utilities/Constants.d";
+import { MESSAGE_TOAST_ERROR_TYPE } from "../utilities/Constants.d";
 import { useShowMessageToast } from "./useShowMessageToast";
-import axios from "axios";
 
 interface Controller<T> {
      Index(): Promise<string>;
@@ -12,7 +11,7 @@ interface Controller<T> {
      Delete(id: string): Promise<string>;
 }
 
-function useAddEditEntity<T, U extends Controller<T>>(controller: U, initializeValues: T, alteredIdMessage: string, addMessage: string, updateMessage: string, IndexPage: string, uploadImages: boolean, arrFormDataList: FormData[]) {
+function useAddEditEntity<T, U extends Controller<T>>(controller: U, initializeValues: T, alteredIdMessage: string, addMessage: string, updateMessage: string, IndexPage: string) {
      //STATES
      const [showAlert, setShowAlert] = useState(false);
      const [hasUrlToRedirect, setHasUrlToRedirect] = useState(false)
@@ -53,24 +52,6 @@ function useAddEditEntity<T, U extends Controller<T>>(controller: U, initializeV
           }
           else {
                try {
-                    // if (uploadImages) {
-                    //      arrFormDataList.map(async (frmData) => {
-                    //           if (frmData.get('id') !== null) {
-                    //                const formImageData = frmData;
-                    //                if (formImageData instanceof FormData) {
-                    //                     await axios.post('http://localhost:4000/upload-product-images', formImageData, config)
-                    //                          .then((response) => {
-                    //                               console.log('response: ', response)
-                    //                               console.log('imagen subida: ', frmData.get('id'))
-                    //                          }).catch((error) => {
-                    //                               console.log('error: ', error)
-                    //                          });
-                    //                } else {
-                    //                     console.error('formImageData is not a FormData instance');
-                    //                }
-                    //           }
-                    //      })
-                    // }
                     let data: T = { ...formData }
                     if (buttonSubmitter?.id === 'btnAdd') {
                          addEntity(data)
@@ -86,6 +67,7 @@ function useAddEditEntity<T, U extends Controller<T>>(controller: U, initializeV
 
      const addEntity = async (data: T) => {
           await controller.Create(data as any).then(() => {
+               const values = data as unknown as T
                setFormData(initializeValues)
                ShowMessageToast(addMessage, MESSAGE_TOAST_ERROR_TYPE.SUCCESS);
                RedirectTo(IndexPage)

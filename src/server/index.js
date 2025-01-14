@@ -23,7 +23,7 @@ const corsOrigin = 'http://localhost:5173';
 
 app.use(cors({
      origin: [corsOrigin],
-     methods: ['GET', 'POST'],
+     methods: ['GET', 'POST', 'UPDATE', 'DELETE'],
      credentials: true
 }));
 
@@ -67,13 +67,12 @@ app.use(fileUpload({
 
 app.post('/upload-product-images', async (req, res) => {
      try {
-          //console.log('POST request received to /upload-product-images.');
-          // console.log('Axios POST body: ', req.body);
-          //console.log('tempFilePath: ', req.files.img.tempFilePath)
-          res.send('POST request recieved on server to /upload-product-images.');
-          const result = await uploadProductImage(req.files.img.tempFilePath)
+          // console.log('tempFilePath: ', req.files)
+          console.log('tempFilePath: ', req.files.file.tempFilePath)
+          const result = await uploadProductImage(req.files.file.tempFilePath)
           //console.log('result: ', result)
-          await fs.unlink(req.files.img.tempFilePath)
+          res.send(result);
+          await fs.unlink(req.files.file.tempFilePath)
      } catch (error) {
           console.log(`error:  ${error} end point: '/upload-product-images'`)
      }

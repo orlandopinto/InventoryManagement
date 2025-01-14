@@ -1,40 +1,26 @@
-import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
+import { CameraVideo, Upload } from "react-bootstrap-icons";
 import { useTranslation } from 'react-i18next';
 import { NumericFormat } from 'react-number-format';
 import { Link } from "react-router-dom";
 import CustomModalAlert from "../../components/common/Modals/CustomModalAlert";
+import ModalAddImageToProduct from "../../components/ModalAddImageToProduct";
 import { ProductsController } from "../../controllers/ProductsController";
-import UploadProductImage from "../../hooks/UploadProductImage";
 import useAddEditEntity from "../../hooks/useAddEditEntity";
 import useLoadListsForProduct from "../../hooks/useLoadListsForProduct";
-import { initializeProductViewModel } from "../../types/Products.types.d";
+import { ImagesProduct, initializeProductViewModel } from "../../types/Products.types.d";
+import MultimediaProduct from "./MultimediaProduct";
 
 function AddUpdateProduct() {
-     const [image1, setImage1] = useState<FormData>(new FormData())
-     const [image2, setImage2] = useState<FormData>(new FormData())
-     const [image3, setImage3] = useState<FormData>(new FormData())
-     const [image4, setImage4] = useState<FormData>(new FormData())
-     const [image5, setImage5] = useState<FormData>(new FormData())
-
+     const { t } = useTranslation();
      const [selectedCategoryID, setSelectedCategoryID] = useState<string>('')
      const [selectedSubCategoryID, setSelectedSubCategoryID] = useState<string>('')
      const [selectedDiscountID, setSelectedDiscountID] = useState<string>('')
      const [selectedStatusID, setSelectedStatusID] = useState('')
      const [selectedTaxID, setSelectedTaxID] = useState('')
-     const [arrFormDataList, setArrFormDataList] = useState([] as FormData[])
-
-     const { t } = useTranslation();
-     const imageUploadPath = '../uploaded_files'
-     const mediaUploadPath = '../uploaded_files'
-
-     const fileInputRefOne = useRef<HTMLInputElement>({} as HTMLInputElement);
-     const fileInputRefTwo = useRef<HTMLInputElement>({} as HTMLInputElement);
-     const fileInputRefThree = useRef<HTMLInputElement>({} as HTMLInputElement);
-     const fileInputRefFour = useRef<HTMLInputElement>({} as HTMLInputElement);
-     const fileInputRefFive = useRef<HTMLInputElement>({} as HTMLInputElement);
-
-     const { categoryID, categoryList, subCategoryID, subCategoryList, discountID, discountList, statusID, statusList, taxID, taxesList } = useLoadListsForProduct()
+     const [showModalAddImageProduct, setShowModalAddImageProduct] = useState(false)
+     const [initializeImage, setInitializeImage] = useState(true)
 
      //NOTA: Mantener este orden en que se van a mostrar los mensajes en el Custom Hook
      const messages: string[] = [
@@ -43,19 +29,35 @@ function AddUpdateProduct() {
           "Datos del impuesto actualizado con éxito!",                                                                                 //updateMessage
      ]
 
+
      const { IndexPage, showAlert, hasUrlToRedirect, urlToRedirect, bodyText, validated, formData, isAddMode, handleSubmit, handleChange, handleChangeChecked, handleCloseAlert } =
-          useAddEditEntity(ProductsController(), initializeProductViewModel, messages[0], messages[1], messages[2], '/products', true, arrFormDataList)
+          useAddEditEntity(ProductsController(), initializeProductViewModel, messages[0], messages[1], messages[2], '/products')
+
+     const { categoryID, categoryList, subCategoryID, subCategoryList, discountID, discountList, statusID, statusList, taxID, taxesList, imagesProductList } = useLoadListsForProduct(formData.id)
 
      const handleOnchangeSelect = (event: ChangeEvent<HTMLSelectElement>, setValueReference: Dispatch<SetStateAction<string>>) => {
           event.preventDefault();
           event.target.value !== '' ? setValueReference(event.target.value) : setValueReference('')
      }
 
-     const handleClickImageOne = () => fileInputRefOne.current?.click();
-     const handleClickImageTwo = () => fileInputRefTwo.current.click();
-     const handleClickImageThree = () => fileInputRefThree.current.click();
-     const handleClickImageFour = () => fileInputRefFour.current.click();
-     const handleClickImageFive = () => fileInputRefFive.current.click();
+     const handleShowModalAddImageProduct = () => {
+          setShowModalAddImageProduct(true)
+          setInitializeImage(true)
+     }
+
+     const handleClose = () => {
+          setInitializeImage(true)
+          setShowModalAddImageProduct(false)
+     }
+
+     const chunkImagesProduct = imagesProductList.reduce((resultArray: ImagesProduct[][], item, index) => {
+          const chunkIndex = Math.floor(index / 3)
+          if (!resultArray[chunkIndex]) {
+               resultArray[chunkIndex] = []
+          }
+          resultArray[chunkIndex].push(item)
+          return resultArray
+     }, [])
 
      return (
           <>
@@ -227,44 +229,70 @@ function AddUpdateProduct() {
                                              </Col >
                                         </Row>
                                         <hr className="pb-2" />
-                                        <Row>
-                                             <Col xl={2} md={4} sm={6}>
-                                                  <UploadProductImage arrFormDataList={{ values: arrFormDataList, setValues: setArrFormDataList }} id="fileInputImageOne" setImage={setImage1} handleClick={handleClickImageOne} fileInputRef={fileInputRefOne} uploadPath={imageUploadPath} imageName={'imagen1'} />
-                                             </Col>
-                                             <Col xl={2} md={4} sm={6}>
-                                                  <UploadProductImage arrFormDataList={{ values: arrFormDataList, setValues: setArrFormDataList }} id="fileInputImageTwo" setImage={setImage2} handleClick={handleClickImageTwo} fileInputRef={fileInputRefTwo} uploadPath={imageUploadPath} imageName={'imagen2'} />
-                                             </Col>
-                                             <Col xl={2} md={4} sm={6}>
-                                                  <UploadProductImage arrFormDataList={{ values: arrFormDataList, setValues: setArrFormDataList }} id="fileInputImageThree" setImage={setImage3} handleClick={handleClickImageThree} fileInputRef={fileInputRefThree} uploadPath={imageUploadPath} imageName={'imagen3'} />
-                                             </Col>
-                                             <Col xl={2} md={4} sm={6}>
-                                                  <UploadProductImage arrFormDataList={{ values: arrFormDataList, setValues: setArrFormDataList }} id="fileInputImageFour" setImage={setImage4} handleClick={handleClickImageFour} fileInputRef={fileInputRefFour} uploadPath={imageUploadPath} imageName={'imagen4'} />
-                                             </Col>
-                                             <Col xl={2} md={4} sm={6}>
-                                                  <UploadProductImage arrFormDataList={{ values: arrFormDataList, setValues: setArrFormDataList }} id="fileInputImageFive" setImage={setImage5} handleClick={handleClickImageFive} fileInputRef={fileInputRefFive} uploadPath={imageUploadPath} imageName={'imagen5'} />
-                                             </Col>
-                                             <Col xl={2} md={4} sm={6}>
+                                        {
+                                             !formData.addMode ?
+                                                  <div>
+                                                       <Row>
+                                                            <Col sm={12} className="d-flex justify-content-center gap-2">
+                                                                 <div>
+                                                                      <Button className='btnShowModalAddImageProduct' variant="outline-primary" onClick={handleShowModalAddImageProduct}>
+                                                                           <div className="py-2">
+                                                                                <div><Upload size={30} /></div>
+                                                                                <div className="pt-2">Agregar imagen</div>
+                                                                           </div>
+                                                                      </Button>
+                                                                 </div>
+                                                                 <div>
+                                                                      <Button className='btnShowModalAddImageProduct' variant="outline-light" onClick={handleShowModalAddImageProduct}>
+                                                                           <div className="py-2">
+                                                                                <div><CameraVideo size={30} /></div>
+                                                                                <div className="pt-2">Agregar video</div>
+                                                                           </div>
+                                                                      </Button>
+                                                                 </div>
+                                                            </Col>
+                                                       </Row>
+                                                       <hr className="pb-2" />
+                                                       {
+                                                            chunkImagesProduct.map((chunk, idx) => {
+                                                                 const newDivUUID = self.crypto.randomUUID()
+                                                                 return (
+                                                                      <Row key={newDivUUID} data-row-id={newDivUUID} >
+                                                                           {
+                                                                                chunk.map((itemChunk) => {
+                                                                                     const newSpanUUID = self.crypto.randomUUID()
+                                                                                     return (
+                                                                                          <MultimediaProduct key={newSpanUUID} {...itemChunk} />
+                                                                                     )
+                                                                                })
+                                                                           }
+                                                                      </Row>
+                                                                 )
+                                                            })
+                                                       }
+                                                  </div>
+                                                  :
+                                                  null
+                                        }
 
-                                             </Col>
-                                        </Row>
-                                        <hr className="pb-2" />
                                         <Row>
                                              <Col xl={12}>
                                                   <Form.Group className="mb-3 buttons-section">
                                                        {
                                                             isAddMode
                                                                  ?
-                                                                 <Button id="btnAdd" type="submit" variant='primary'>{t('Save')}</Button>
+                                                                 <Button id="btnAdd" type="submit" variant='outline-primary'>{t('Save')}</Button>
                                                                  :
-                                                                 <Button id="btnUpdate" type="submit" variant='primary' >{t('Update')}</Button>
+                                                                 <Button id="btnUpdate" type="submit" variant='outline-primary' >{t('Update')}</Button>
                                                        }
-                                                       <Link to={IndexPage} className='btn btn-secondary'><span>{t('Back')}</span></Link>
+                                                       <Link to={IndexPage} className='btn btn-outline-info'><span>{t('Back')}</span></Link>
                                                   </Form.Group>
                                              </Col>
                                         </Row>
                                    </div>
                               </Card>
                          </Form>
+                         <ModalAddImageToProduct show={showModalAddImageProduct} handleClose={handleClose} productId={formData.id} initializeImage={initializeImage} setInitializeImage={setInitializeImage} />
                     </div>
                     <CustomModalAlert show={showAlert} headerText={'Error'} bodyText={bodyText} handleClose={handleCloseAlert} hasUrlToRedirect={hasUrlToRedirect} urlToRedirect={urlToRedirect} />
                </div>

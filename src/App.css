@@ -194,6 +194,14 @@ main {
     color: var(--bs-gray-700);
 }
 
+.modal-backdrop {
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
+}
+
 .modal-md {
     --bs-modal-width: 400px !important;
 }

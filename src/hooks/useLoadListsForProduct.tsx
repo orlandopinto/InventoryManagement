@@ -10,10 +10,11 @@ import { Discount } from "../types/Discount.type"
 import { Status } from "../types/Status.types"
 import { SubCategories } from "../types/SubCategories"
 import { Taxes } from "../types/Taxes.types"
-import { API_END_POINT, MESSAGE_TOAST_ERROR_TYPE, METHOD, STATUS_END_POINT, TAXES_END_POINT } from "../utilities/Constants.d"
+import { API_END_POINT, IMAGES_PRODUCT_END_POINT, MESSAGE_TOAST_ERROR_TYPE, METHOD, STATUS_END_POINT, TAXES_END_POINT } from "../utilities/Constants.d"
 import { useShowMessageToast } from "./useShowMessageToast"
+import { ImagesProduct } from "../types/Products.types"
 
-function useLoadListsForProduct() {
+function useLoadListsForProduct(productId: string) {
      const { ShowMessageToast } = useShowMessageToast()
 
      const [categoryID, setCategoryID] = useState('')
@@ -30,6 +31,9 @@ function useLoadListsForProduct() {
 
      const [taxID, setTaxID] = useState('')
      const [taxesList, setTaxesList] = useState<Taxes[]>([] as Taxes[])
+
+     const [imagesProductList, setImagesProductList] = useState<ImagesProduct[]>([] as ImagesProduct[])
+
      const { tokenResult } = useAuth()
 
      const populateCategoryList = async () => {
@@ -79,6 +83,16 @@ function useLoadListsForProduct() {
           }
      }
 
+     const populateImagesProductList = async () => {
+          try {
+               const response = await GetList(IMAGES_PRODUCT_END_POINT.URL + productId)
+               setImagesProductList(response as unknown as ImagesProduct[]);
+          } catch (err) {
+               const error = err as CustomError;
+               ShowMessageToast(error.message, MESSAGE_TOAST_ERROR_TYPE.ERROR);
+          }
+     }
+
      const GetList = (endPoint: string) => {
           return Promise.resolve(
                axios({
@@ -100,9 +114,10 @@ function useLoadListsForProduct() {
           populateDiscountList();
           populateStatusList();
           populateTaxesList();
+          populateImagesProductList();
      }, []);
 
-     return { categoryID, categoryList, subCategoryID, subCategoryList, discountID, discountList, statusID, statusList, taxID, taxesList }
+     return { categoryID, categoryList, subCategoryID, subCategoryList, discountID, discountList, statusID, statusList, taxID, taxesList, imagesProductList }
 }
 
 export default useLoadListsForProduct

@@ -106,13 +106,17 @@ export default class AxiosService implements IService {
           )
      }
 
-     public async UploadImages(image: FormData, ImageEndPoint: string = 'http://localhost/4000/upload-product-images'): Promise<string> {
+     public async UploadMedia(image: FormData, ImageEndPoint: string = 'http://localhost:4000/upload-product-images'): Promise<string> {
           return Promise.resolve(
                axios({
                     url: ImageEndPoint,
                     method: METHOD.POST,
                     data: image,
-                    headers: { 'Content-Type': 'multipart/form-data' }
+                    headers: {
+                         "X-Requested-With": "XMLHttpRequest",
+                         'Access-Control-Allow-Origin': '*',
+                         'Content-Type': 'multipart/form-data'
+                    }
                })
                     .then(res => res.data)
                     .catch(err => {

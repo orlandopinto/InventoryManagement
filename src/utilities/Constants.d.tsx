@@ -10,6 +10,7 @@ export const DISCOUNTS_END_POINT = { URL: '/discounts/api/' }
 export const STATUS_END_POINT = { URL: '/status/api/' }
 export const TAXES_END_POINT = { URL: '/taxes/api/' }
 export const PRODUCTS_END_POINT = { URL: '/products/api/' }
+export const IMAGES_PRODUCT_END_POINT = { URL: '/imagesproduct/api/' }
 
 export const METHOD = {
     GET: 'GET',
