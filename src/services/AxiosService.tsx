@@ -120,7 +120,7 @@ export default class AxiosService implements IService {
                })
                     .then(res => res.data)
                     .catch(err => {
-                         const error = new CustomError({ message: err.toString(), name: 'API Error to upload imaga', stack: 'handled error' });
+                         const error = new CustomError({ message: err.toString(), name: 'API Error to upload media file', stack: 'handled error' });
                          throw error.throwCustomError()
                     })
           )

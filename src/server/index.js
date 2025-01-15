@@ -14,7 +14,7 @@ dotenv.config({ path: './.env.development' });
 const app = express();
 //const { hostname } = require('os');
 //const sgMail = require('@sendgrid/mail')
-import { uploadProductImage } from './utils/cloudinary.js'
+import { DeleteMediaFile, uploadMediaFile } from './utils/cloudinary.js'
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -67,12 +67,23 @@ app.use(fileUpload({
 
 app.post('/upload-product-images', async (req, res) => {
      try {
-          // console.log('tempFilePath: ', req.files)
-          console.log('tempFilePath: ', req.files.file.tempFilePath)
-          const result = await uploadProductImage(req.files.file.tempFilePath)
+          //console.log('tempFilePath: ', req.files)
+          //console.log('tempFilePath: ', req.files.file.tempFilePath)
+          const result = await uploadMediaFile(req.files.file)
           //console.log('result: ', result)
           res.send(result);
           await fs.unlink(req.files.file.tempFilePath)
+     } catch (error) {
+          console.log(`error:  ${error} end point: '/upload-product-images'`)
+     }
+
+})
+
+app.delete(`/upload-product-images/${process.env.FOLDER_TO_UPLOAD}/:public_id`, async (req, res) => {
+     try {
+          console.log('req.params.id: ', req.params.public_id)
+          const result = await DeleteMediaFile(`${process.env.FOLDER_TO_UPLOAD}/${req.params.public_id}`)
+          res.status(200).send(result)
      } catch (error) {
           console.log(`error:  ${error} end point: '/upload-product-images'`)
      }

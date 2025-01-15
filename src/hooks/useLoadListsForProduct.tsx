@@ -10,11 +10,10 @@ import { Discount } from "../types/Discount.type"
 import { Status } from "../types/Status.types"
 import { SubCategories } from "../types/SubCategories"
 import { Taxes } from "../types/Taxes.types"
-import { API_END_POINT, MULTIMEDIA_FILES_PRODUCT_END_POINT, MESSAGE_TOAST_ERROR_TYPE, METHOD, STATUS_END_POINT, TAXES_END_POINT } from "../utilities/Constants.d"
+import { API_END_POINT, MESSAGE_TOAST_ERROR_TYPE, METHOD, STATUS_END_POINT, TAXES_END_POINT } from "../utilities/Constants.d"
 import { useShowMessageToast } from "./useShowMessageToast"
-import { MultimediaFilesProduct } from "../types/Products.types"
 
-function useLoadListsForProduct(productId: string) {
+function useLoadListsForProduct() {
      const { ShowMessageToast } = useShowMessageToast()
 
      const [categoryID, setCategoryID] = useState('')
@@ -31,8 +30,6 @@ function useLoadListsForProduct(productId: string) {
 
      const [taxID, setTaxID] = useState('')
      const [taxesList, setTaxesList] = useState<Taxes[]>([] as Taxes[])
-
-     const [multimediaFilesProduct, setMultimediaFilesProduct] = useState<MultimediaFilesProduct[]>([] as MultimediaFilesProduct[])
 
      const { tokenResult } = useAuth()
 
@@ -83,16 +80,6 @@ function useLoadListsForProduct(productId: string) {
           }
      }
 
-     const populateMultimediaFilesProductList = async () => {
-          try {
-               const response = await GetList(MULTIMEDIA_FILES_PRODUCT_END_POINT.URL + productId)
-               setMultimediaFilesProduct(response as unknown as MultimediaFilesProduct[]);
-          } catch (err) {
-               const error = err as CustomError;
-               ShowMessageToast(error.message, MESSAGE_TOAST_ERROR_TYPE.ERROR);
-          }
-     }
-
      const GetList = (endPoint: string) => {
           return Promise.resolve(
                axios({
@@ -114,10 +101,9 @@ function useLoadListsForProduct(productId: string) {
           populateDiscountList();
           populateStatusList();
           populateTaxesList();
-          populateMultimediaFilesProductList();
      }, []);
 
-     return { categoryID, categoryList, subCategoryID, subCategoryList, discountID, discountList, statusID, statusList, taxID, taxesList, multimediaFilesProduct }
+     return { categoryID, categoryList, subCategoryID, subCategoryList, discountID, discountList, statusID, statusList, taxID, taxesList }
 }
 
 export default useLoadListsForProduct

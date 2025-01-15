@@ -30,6 +30,7 @@
      "Add": "Agregar",
      "Manageyour": "Gestione sus",
      "Status": "Estado",
+     "Delete": "Eliminar",
      "DeleteQuestion": "¿Realmente quieres eliminar el registro?",
      "IrreversibleMessage": "El proceso es irreversible, presione 'Eliminar' para continuar.",
      "Save": "Guardar",
@@ -51,5 +52,7 @@
      "UploadMediaFile": "Subir archivo multimedia",
      "UploadImage": "Subir imagen",
      "UploadVideo": "Subir video",
-     "BrowseFileToUpload": "Explorar archivo para cargar"
+     "BrowseFileToUpload": "Explorar archivo para cargar",
+     "AddImage": "Agregar imagen",
+     "AddVideo": "Agregar video"
 }

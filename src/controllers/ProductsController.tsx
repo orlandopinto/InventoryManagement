@@ -105,7 +105,7 @@ export const ProductsController = () => {
                const multimediaFileProduct: MultimediaFilesProduct = {
                     id: self.crypto.randomUUID(),
                     productId: productId,
-                    type: resultCloudinary.type,
+                    type: resultCloudinary.resource_type,
                     publicId: resultCloudinary.public_id,
                     secureUrl: resultCloudinary.secure_url,
                }
@@ -126,5 +126,20 @@ export const ProductsController = () => {
           }
      };
 
-     return { Index, Create, Edit, Delete, UploadMedia }
+     const GetMultimediaFilesProductList = async (productId: string) => {
+          try {
+               service = new AxiosService(tokenResult?.accessToken as string, MULTIMEDIA_FILES_PRODUCT_END_POINT.URL);
+               const multimediaFilesProduct = await service.GetById(productId)
+               return multimediaFilesProduct;
+          } catch (err) {
+               const error: CustomError = err as unknown as CustomError
+               if (error.stack === 'handled error') {
+                    error.name = 'Error';
+                    error.message = `Se produjo un error al listar los archivos multimedia!`;
+               }
+               throw error
+          }
+     }
+
+     return { Index, Create, Edit, Delete, UploadMedia, GetMultimediaFilesProductList }
 }

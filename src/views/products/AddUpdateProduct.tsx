@@ -1,6 +1,6 @@
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
-import { CameraVideo, Upload } from "react-bootstrap-icons";
+import { CameraVideo, Images } from "react-bootstrap-icons";
 import { useTranslation } from 'react-i18next';
 import { NumericFormat } from 'react-number-format';
 import { Link } from "react-router-dom";
@@ -9,8 +9,8 @@ import ModalAddMediaFileProduct from "../../components/ModalAddMediaFileProduct"
 import { ProductsController } from "../../controllers/ProductsController";
 import useAddEditEntity from "../../hooks/useAddEditEntity";
 import useLoadListsForProduct from "../../hooks/useLoadListsForProduct";
-import { MultimediaFilesProduct, initializeProductViewModel } from "../../types/Products.types.d";
-import MultimediaProduct from "./MultimediaFileProduct";
+import { initializeProductViewModel } from "../../types/Products.types.d";
+import MultimediaFileProductList from "./MultimediaFileProductList";
 
 function AddUpdateProduct() {
      const { t } = useTranslation();
@@ -22,7 +22,7 @@ function AddUpdateProduct() {
      const [showModalAddMediaFileProduct, SetShowModalAddMediaFileProduct] = useState(false)
      const [initializeImage, setInitializeImage] = useState(true)
      const [initializeVideo, setInitializeVideo] = useState(true)
-     const [typeFile, setTypeFile] = useState('')
+     const [typeFile, setTypeFile] = useState<'image' | 'video'>('image')
 
      //NOTA: Mantener este orden en que se van a mostrar los mensajes en el Custom Hook
      const messages: string[] = [
@@ -31,11 +31,10 @@ function AddUpdateProduct() {
           "Datos del impuesto actualizado con éxito!",                                                                                 //updateMessage
      ]
 
-
      const { IndexPage, showAlert, hasUrlToRedirect, urlToRedirect, bodyText, validated, formData, isAddMode, handleSubmit, handleChange, handleChangeChecked, handleCloseAlert } =
           useAddEditEntity(ProductsController(), initializeProductViewModel, messages[0], messages[1], messages[2], '/products')
 
-     const { categoryID, categoryList, subCategoryID, subCategoryList, discountID, discountList, statusID, statusList, taxID, taxesList, multimediaFilesProduct } = useLoadListsForProduct(formData.id)
+     const { categoryID, categoryList, subCategoryID, subCategoryList, discountID, discountList, statusID, statusList, taxID, taxesList } = useLoadListsForProduct()
 
      const handleOnchangeSelect = (event: ChangeEvent<HTMLSelectElement>, setValueReference: Dispatch<SetStateAction<string>>) => {
           event.preventDefault();
@@ -55,15 +54,6 @@ function AddUpdateProduct() {
           setInitializeVideo(true)
           SetShowModalAddMediaFileProduct(false)
      }
-
-     const chunkMultimediaFilesProduct = multimediaFilesProduct.reduce((resultArray: MultimediaFilesProduct[][], item, index) => {
-          const chunkIndex = Math.floor(index / 3)
-          if (!resultArray[chunkIndex]) {
-               resultArray[chunkIndex] = []
-          }
-          resultArray[chunkIndex].push(item)
-          return resultArray
-     }, [])
 
      return (
           <>
@@ -258,8 +248,8 @@ function AddUpdateProduct() {
                                                                  <div>
                                                                       <Button className='btnShowModalAddImageProduct' variant="outline-primary" onClick={() => handleShowModalAddMediaFileProduct('image')}>
                                                                            <div className="py-2">
-                                                                                <div><Upload size={30} /></div>
-                                                                                <div className="pt-2">Agregar imagen</div>
+                                                                                <div><Images size={30} /></div>
+                                                                                <div className="pt-2">{t('AddImage')}</div>
                                                                            </div>
                                                                       </Button>
                                                                  </div>
@@ -267,28 +257,14 @@ function AddUpdateProduct() {
                                                                       <Button className='btnShowModalAddImageProduct' variant="outline-info" onClick={() => handleShowModalAddMediaFileProduct('video')}>
                                                                            <div className="py-2">
                                                                                 <div><CameraVideo size={30} /></div>
-                                                                                <div className="pt-2">Agregar video</div>
+                                                                                <div className="pt-2">{t('AddVideo')}</div>
                                                                            </div>
                                                                       </Button>
                                                                  </div>
                                                             </Col>
                                                        </Row>
                                                        <hr className="pb-2" />
-                                                       {
-                                                            chunkMultimediaFilesProduct.map((multimediaFilesProduct) => {
-                                                                 return (
-                                                                      <Row key={self.crypto.randomUUID()} >
-                                                                           {
-                                                                                multimediaFilesProduct.map((multimediaFile) => {
-                                                                                     return (
-                                                                                          <MultimediaProduct key={self.crypto.randomUUID()} {...multimediaFile} />
-                                                                                     )
-                                                                                })
-                                                                           }
-                                                                      </Row>
-                                                                 )
-                                                            })
-                                                       }
+                                                       <MultimediaFileProductList productId={formData.id} />
                                                   </div>
                                                   :
                                                   null

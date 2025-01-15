@@ -1,9 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary'
-import { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } from '../config.js'
+import { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, FOLDER_TO_UPLOAD } from '../config.js'
 
-const options = { folder: 'ProductImages' }
-
-if (!CLOUDINARY_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET)
+if (!CLOUDINARY_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET || !FOLDER_TO_UPLOAD)
      console.error("Environment variables not set");
 
 cloudinary.config({
@@ -20,9 +18,22 @@ if (!cloudinary.config().cloud_name || !cloudinary.config().api_key || !cloudina
 // const api_secret = cloudinary.config().api_secret;
 // console.log({ cloudName, apiKey, api_secret })
 
-export async function uploadProductImage(filePath) {
+export async function uploadMediaFile(file) {
      try {
-          return await cloudinary.uploader.upload(filePath, options)
+          const options = {
+               folder: FOLDER_TO_UPLOAD,
+               resource_type: file.mimetype === 'video/mp4' ? 'video' : 'image',
+               overwrite: true,
+          }
+          return await cloudinary.uploader.upload(file.tempFilePath, options)
+     } catch (error) {
+          console.log('error:', error)
+     }
+}
+
+export async function DeleteMediaFile(public_id) {
+     try {
+          return await cloudinary.uploader.destroy(public_id)
      } catch (error) {
           console.log('error:', error)
      }

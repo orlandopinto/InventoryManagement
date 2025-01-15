@@ -30,6 +30,7 @@
      "Add": "Add",
      "Manageyour": "Manage your",
      "Status": "Status",
+     "Delete": "Delete",
      "DeleteQuestion": "Do you really want to delete the record?",
      "IrreversibleMessage": "The process is irreversible, press 'Delete' to continue.",
      "Save": "Save",
@@ -51,5 +52,7 @@
      "UploadMediaFile": "Upload media file",
      "UploadImage": "Upload image",
      "UploadVideo": "Upload video",
-     "BrowseFileToUpload": "Browse file to upload"
+     "BrowseFileToUpload": "Browse file to upload",
+     "AddImage": "Add image",
+     "AddVideo": "Add video"
 }

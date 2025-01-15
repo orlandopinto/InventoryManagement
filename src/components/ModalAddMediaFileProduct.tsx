@@ -16,7 +16,6 @@ function ModalAddMediaFileProduct(props: any) {
      const buttonInputRef = useRef<HTMLButtonElement>({} as HTMLButtonElement);
      const { t } = useTranslation();
 
-
      //STATES
      const [selectedFile, setSelectedFile] = useState('')
      const [selectedVideoFile, setSelectedVideoFile] = useState('')
@@ -52,7 +51,7 @@ function ModalAddMediaFileProduct(props: any) {
           fileInputRef.current.click();
      }
 
-     const handleClickUploadImage = () => {
+     const handleClickUploadMediaFile = () => {
           if (fileInputRef.current.files?.length === 0) {
                buttonInputRef.current.disabled = true;
           }
@@ -65,7 +64,6 @@ function ModalAddMediaFileProduct(props: any) {
      const UploadMedia = async () => {
           await controller.UploadMedia(productId, image, true).then((response) => {
                handleClose(false)
-               //cargar lista en AddUpdateProduct y mostrar la imagen o video agregado
           }).catch(err => {
                showCustomError(err);
           })
@@ -91,58 +89,58 @@ function ModalAddMediaFileProduct(props: any) {
                                    ?
                                    typeFile === 'image'
                                         ?
-                                        <div>
+                                        <>
                                              <div className="mainSquare" onClick={handleClick}>
                                                   <div className="internalSquare">
                                                        <div className="textBrowseFile">{t('BrowseFileToUpload')}</div>
                                                   </div>
                                              </div>
                                              <Form.Control type="file" onChange={handleFileInput} ref={fileInputRef} accept=".jpg,.jpeg,.png" style={{ display: 'none' }} />
-                                        </div>
+                                        </>
                                         :
-                                        <div>
+                                        <>
                                              <div className="mainSquare" onClick={handleClick}>
                                                   <div className="internalSquare">
                                                        <div className="textBrowseFile">{t('BrowseFileToUpload')}</div>
                                                   </div>
                                              </div>
                                              <Form.Control type="file" onChange={handleFileInput} ref={fileInputRef} accept=".mp4" style={{ display: 'none' }} />
-                                        </div>
+                                        </>
                                    :
                                    (
                                         typeFile === 'image'
                                              ?
                                              initializeImage
                                                   ?
-                                                  <div>
+                                                  <>
                                                        <div className="mainSquare" onClick={handleClick}>
                                                             <div className="internalSquare">
                                                                  <div className="textBrowseFile">{t('BrowseFileToUpload')}</div>
                                                             </div>
                                                        </div>
                                                        <Form.Control type="file" onChange={handleFileInput} ref={fileInputRef} accept=".jpg,.jpeg,.png" style={{ display: 'none' }} />
-                                                  </div>
+                                                  </>
                                                   :
-                                                  <div>
+                                                  <>
                                                        <div className="w-100" style={{ cursor: 'pointer' }}>{<Image src={selectedFile} className="w-100 rounded" onClick={handleClick} title="Haga click en la imagen para seleccionar otra." />}</div>
                                                        <Form.Control type="file" onChange={handleFileInput} ref={fileInputRef} accept=".jpg,.jpeg,.png" style={{ display: 'none' }} />
-                                                  </div>
+                                                  </>
                                              :
                                              initializeVideo
                                                   ?
-                                                  <div>
+                                                  <>
                                                        <div className="mainSquare" onClick={handleClick}>
                                                             <div className="internalSquare">
                                                                  <div className="textBrowseFile">{t('BrowseFileToUpload')}</div>
                                                             </div>
                                                        </div>
                                                        <Form.Control type="file" onChange={handleFileInput} ref={fileInputRef} accept=".mp4" style={{ display: 'none' }} />
-                                                  </div>
+                                                  </>
                                                   :
-                                                  <div>
+                                                  <>
                                                        <div className="w-100" style={{ cursor: 'pointer' }}>{<video autoPlay={true} loop muted src={selectedVideoFile} className="w-100 rounded" onClick={handleClick} title="Haga click en el video para seleccionar otro." />}</div>
                                                        <Form.Control type="file" onChange={handleFileInput} ref={fileInputRef} accept=".mp4" style={{ display: 'none' }} />
-                                                  </div>
+                                                  </>
                                    )
 
                          }
@@ -150,7 +148,7 @@ function ModalAddMediaFileProduct(props: any) {
                </Modal.Body>
                <Modal.Footer className="pt-0 pb-3 d-flex justify-content-center">
                     <div className="w-25">
-                         <Button variant="outline-primary" className="button-upload" onClick={handleClickUploadImage}>{typeFile === 'image' ? t('UploadImage') : t('UploadVideo')}</Button>
+                         <Button variant="outline-primary" className="button-upload" onClick={handleClickUploadMediaFile}>{typeFile === 'image' ? t('UploadImage') : t('UploadVideo')}</Button>
                     </div>
                     <div className="w-25">
                          <Button className="w-100" variant="outline-info" onClick={handleClose}>{t('Close')}</Button>
