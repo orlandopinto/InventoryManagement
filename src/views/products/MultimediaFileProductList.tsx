@@ -1,42 +1,16 @@
+import { useState } from "react";
 import { Row } from "react-bootstrap";
 import { MultimediaFilesProduct } from "../../types/Products.types";
 import MultimediaFileProductItem from "./MultimediaFileProductItem";
 import useLoadMultimediFileListData from "./useLoadMultimediFileListData";
-import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
-import { CustomError } from "../../models/CustomError";
-import { API_END_POINT, METHOD, MESSAGE_TOAST_ERROR_TYPE, MULTIMEDIA_FILES_PRODUCT_BY_PRODUCT_ID_END_POINT } from "../../utilities/Constants.d";
-import { useAuth } from "../../contexts/useAuth";
 
 function MultimediaFileProductList({ ...props }) {
-
-     // const { tokenResult } = useAuth()
-
-     // const [multimediaFilesProductList, setMultimediaFilesProductList] = useState<MultimediaFilesProduct[]>([] as MultimediaFilesProduct[])
-
-
-     // const loadProfile = useCallback(async () => {
-     //      const result = await GetList(MULTIMEDIA_FILES_PRODUCT_BY_PRODUCT_ID_END_POINT.URL + props.productId)
-     //      setMultimediaFilesProductList(result);
-     // }, [multimediaFilesProductList])
-
-
-     // const GetList = (endPoint: string) => {
-     //      return Promise.resolve(
-     //           axios({
-     //                url: `${API_END_POINT.URL_BASE + endPoint}`,
-     //                method: METHOD.GET,
-     //                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${tokenResult?.accessToken as string}` }
-     //           })
-     //                .then(res => res.data)
-     //                .catch(err => {
-     //                     const error = err as CustomError;
-     //                     //ShowMessageToast(error.message, MESSAGE_TOAST_ERROR_TYPE.ERROR);
-     //                })
-     //      )
-     // }
-
+     //VARIABLES
+     const [newChunkMultimediaFilesProduct, setChunkMultimediaFilesProduct] = useState<MultimediaFilesProduct[][]>([] as MultimediaFilesProduct[][])
      const { multimediaFilesProductList } = useLoadMultimediFileListData(props.productId);
+
+     //STATES
+     const [reloadState, setReloadState] = useState(false)
 
      const chunkMultimediaFilesProduct = multimediaFilesProductList.reduce((resultArray: MultimediaFilesProduct[][], item, index) => {
           const chunkIndex = Math.floor(index / 3)
@@ -47,22 +21,64 @@ function MultimediaFileProductList({ ...props }) {
           return resultArray
      }, [])
 
+     //FUNCTIONS
+     function reload(id: string) {
+          setReloadState(true)
+          const newResultArray = [...multimediaFilesProductList].filter(filtro => filtro.id !== id)
+          const newChunkMultimediaFilesProductTmp = newResultArray.reduce((resultArray: MultimediaFilesProduct[][], item, index) => {
+               const chunkIndex = Math.floor(index / 3)
+               if (!resultArray[chunkIndex]) {
+                    resultArray[chunkIndex] = []
+               }
+               resultArray[chunkIndex].push(item)
+               return resultArray
+          }, [])
+          setChunkMultimediaFilesProduct(newChunkMultimediaFilesProductTmp)
+     }
+
+     const arrayCounter = (resultArray: MultimediaFilesProduct[][]) => {
+          let counterLevelOne: number = 0;
+          let counterLevelTwo: number = 0;
+          resultArray.map((item) => {
+               counterLevelOne = counterLevelOne + 1
+               item.map(() => {
+                    counterLevelTwo = counterLevelTwo + 1
+               })
+          })
+          return counterLevelOne + counterLevelTwo;
+     }
 
      return (
-          chunkMultimediaFilesProduct.map((multimediaFilesProductList) => {
-               return (
-                    <Row key={self.crypto.randomUUID()} >
-                         {
-                              multimediaFilesProductList.map((multimediaFile) => {
-                                   return (
-                                        <MultimediaFileProductItem key={self.crypto.randomUUID()} {...multimediaFile} />
-                                   )
-                              })
-                         }
-                    </Row>
-               )
-          })
-
+          (arrayCounter(newChunkMultimediaFilesProduct) < arrayCounter(chunkMultimediaFilesProduct) && reloadState) &&
+               arrayCounter(newChunkMultimediaFilesProduct) < arrayCounter(chunkMultimediaFilesProduct)
+               ?
+               newChunkMultimediaFilesProduct.map((multimediaFilesProductList) => {
+                    return (
+                         <Row key={self.crypto.randomUUID()} >
+                              {
+                                   multimediaFilesProductList.map((multimediaFile) => {
+                                        return (
+                                             <MultimediaFileProductItem key={self.crypto.randomUUID()} multimediaFileProduct={multimediaFile} reload={reload} />
+                                        )
+                                   })
+                              }
+                         </Row>
+                    )
+               })
+               :
+               chunkMultimediaFilesProduct.map((multimediaFilesProductList) => {
+                    return (
+                         <Row key={self.crypto.randomUUID()} >
+                              {
+                                   multimediaFilesProductList.map((multimediaFile) => {
+                                        return (
+                                             <MultimediaFileProductItem key={self.crypto.randomUUID()} multimediaFileProduct={multimediaFile} reload={reload} />
+                                        )
+                                   })
+                              }
+                         </Row>
+                    )
+               })
      )
 
 }

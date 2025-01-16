@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { NumericFormat } from 'react-number-format';
 import { Link } from "react-router-dom";
 import CustomModalAlert from "../../components/common/Modals/CustomModalAlert";
-import ModalAddMediaFileProduct from "../../components/ModalAddMediaFileProduct";
+import ModalAddMediaFileProduct from "./ModalAddMediaFileProduct";
 import { ProductsController } from "../../controllers/ProductsController";
 import useAddEditEntity from "../../hooks/useAddEditEntity";
 import useLoadListsForProduct from "../../hooks/useLoadListsForProduct";

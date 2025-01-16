@@ -1,10 +1,9 @@
 import { useRef, useState } from "react";
 import { Button, Form, Image, Modal } from "react-bootstrap";
 import { CameraVideo, CardImage } from "react-bootstrap-icons";
-import { ProductsController } from "../controllers/ProductsController";
-import { CustomError } from "../models/CustomError";
-import { useTranslation } from 'react-i18next'
-
+import { useTranslation } from 'react-i18next';
+import { ProductsController } from "../../controllers/ProductsController";
+import { CustomError } from "../../models/CustomError";
 import './ModalAddMediaFileProduct.css';
 
 function ModalAddMediaFileProduct(props: any) {

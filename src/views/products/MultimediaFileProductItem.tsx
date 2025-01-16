@@ -9,7 +9,12 @@ import { MultimediaFilesProduct } from '../../types/Products.types';
 import { API_END_POINT, MESSAGE_TOAST_ERROR_TYPE, METHOD, MULTIMEDIA_FILES_PRODUCT_END_POINT } from '../../utilities/Constants.d';
 import { useTranslation } from 'react-i18next';
 
-const MultimediaFileProductItem = (multimediaFileProduct: MultimediaFilesProduct) => {
+interface Props {
+     multimediaFileProduct: MultimediaFilesProduct
+     reload: (id: string) => void
+}
+
+const MultimediaFileProductItem = ({ multimediaFileProduct, reload }: Props) => {
 
      const [show, setShow] = useState(false);
      const { ShowMessageToast } = useShowMessageToast()
@@ -25,6 +30,7 @@ const MultimediaFileProductItem = (multimediaFileProduct: MultimediaFilesProduct
                     //TODO: VALIDAR SI SE ELIMINA EL ARCHIVO DE cloudinary, EN CASO NEGATIVO GUARDARLO EN UN ARCHIVO LOG
                     console.log('result from cloudinary api: ', result)
                     setShow(false);
+                    reload(multimediaFileProduct.id);
                }
                else {
                     ShowMessageToast("Se produjo un error al eliminar el archivo multimedia, por favor intente de nuevo!", MESSAGE_TOAST_ERROR_TYPE.SUCCESS);
