@@ -1,29 +1,27 @@
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { CameraVideo, Images } from "react-bootstrap-icons";
 import { useTranslation } from 'react-i18next';
 import { NumericFormat } from 'react-number-format';
 import { Link } from "react-router-dom";
 import CustomModalAlert from "../../components/common/Modals/CustomModalAlert";
-import ModalAddMediaFileProduct from "./ModalAddMediaFileProduct";
 import { ProductsController } from "../../controllers/ProductsController";
 import useAddEditEntity from "../../hooks/useAddEditEntity";
 import useLoadListsForProduct from "../../hooks/useLoadListsForProduct";
 import { initializeProductViewModel, MultimediaFilesProduct } from "../../types/Products.types.d";
+import Loading from "../index/Loading";
+import ModalAddMediaFileProduct from "./ModalAddMediaFileProduct";
 import MultimediaFileProductList from "./MultimediaFileProductList";
 
 function AddUpdateProduct() {
      const { t } = useTranslation();
-     const [selectedCategoryID, setSelectedCategoryID] = useState<string>('')
-     const [selectedSubCategoryID, setSelectedSubCategoryID] = useState<string>('')
-     const [selectedDiscountID, setSelectedDiscountID] = useState<string>('')
-     const [selectedStatusID, setSelectedStatusID] = useState('')
      const [selectedTaxID, setSelectedTaxID] = useState('')
      const [showModalAddMediaFileProduct, SetShowModalAddMediaFileProduct] = useState(false)
      const [initializeImage, setInitializeImage] = useState(true)
      const [initializeVideo, setInitializeVideo] = useState(true)
      const [typeFile, setTypeFile] = useState<'image' | 'video'>('image')
      const [multimediaFilesProduct, setMultimediaFilesProduct] = useState({} as MultimediaFilesProduct)
+     const [isLoading, setIsLoading] = useState(true)
 
      //NOTA: Mantener este orden en que se van a mostrar los mensajes en el Custom Hook
      const messages: string[] = [
@@ -32,22 +30,16 @@ function AddUpdateProduct() {
           "Datos del impuesto actualizado con éxito!",                                                                                 //updateMessage
      ]
 
-     const { IndexPage, showAlert, hasUrlToRedirect, urlToRedirect, bodyText, validated, formData, isAddMode, handleSubmit, handleChange, handleChangeChecked, handleCloseAlert } =
+     const { IndexPage, showAlert, hasUrlToRedirect, urlToRedirect, bodyText, validated, formData, isAddMode, handleSubmit, handleChange, handleChangeChecked, handleOnchangeSelect, handleCloseAlert } =
           useAddEditEntity(ProductsController(), initializeProductViewModel, messages[0], messages[1], messages[2], '/products')
 
-     const { categoryID, categoryList, subCategoryID, subCategoryList, discountID, discountList, statusID, statusList, taxID, taxesList } = useLoadListsForProduct()
+     const { categoryList, subCategoryList, discountList, statusList, taxesList } = useLoadListsForProduct({ setIsLoading })
 
-     const handleOnchangeSelect = (event: ChangeEvent<HTMLSelectElement>, setValueReference: Dispatch<SetStateAction<string>>) => {
-          event.preventDefault();
-          event.target.value !== '' ? setValueReference(event.target.value) : setValueReference('')
-     }
-
-     const handleShowModalAddMediaFileProduct = (type: 'image' | 'video'): string => {
+     const handleShowModalAddMediaFileProduct = (type: 'image' | 'video') => {
           SetShowModalAddMediaFileProduct(true)
           setTypeFile(type)
           setInitializeImage(true)
           setInitializeVideo(true)
-          return type;
      }
 
      const handleClose = () => {
@@ -58,6 +50,9 @@ function AddUpdateProduct() {
 
      return (
           <>
+               {
+                    isLoading && <Loading />
+               }
                <div>
                     <div className='header-page'>
                          <div className="ps-2">
@@ -162,7 +157,7 @@ function AddUpdateProduct() {
                                              <Col xl={4} md={6} sm={12}>
                                                   <Form.Group className="mb-3">
                                                        <Form.Label><strong>{t('Category')}:</strong></Form.Label>
-                                                       <Form.Select required value={formData.categoryId = selectedCategoryID} id={categoryID} name={categoryID} onChange={(e) => handleOnchangeSelect(e, setSelectedCategoryID)}>
+                                                       <Form.Select required value={formData.categoryId} id="categoryId" name="categoryId" onChange={handleOnchangeSelect}>
                                                             <option value="">Selecciona categoría</option>
                                                             {categoryList.map((option, index) => (
                                                                  <option key={index} value={option.id}>{option.categoryName}</option>
@@ -175,18 +170,20 @@ function AddUpdateProduct() {
                                              <Col xl={4} md={6} sm={12}>
                                                   <Form.Group className="mb-3">
                                                        <Form.Label><strong>Sub {t('Category')}:</strong></Form.Label>
-                                                       <Form.Select required value={formData.subCategoryId = selectedSubCategoryID} id={subCategoryID} name={subCategoryID} onChange={(e) => handleOnchangeSelect(e, setSelectedSubCategoryID)}>
+                                                       <Form.Select required value={formData.subCategoryId} id="subCategoryId" name="subCategoryId" onChange={handleOnchangeSelect}>
                                                             <option value="">Selecciona sub categoría</option>
-                                                            {subCategoryList.map((option, index) => (
-                                                                 <option key={index} value={option.id}>{option.subCategoryName}</option>
-                                                            ))}
+                                                            {
+                                                                 subCategoryList.filter(subCategoryFilted => subCategoryFilted.categoryID == formData.categoryId).map((option, index) => (
+                                                                      <option key={index} value={option.id}>{option.subCategoryName}</option>
+                                                                 ))
+                                                            }
                                                        </Form.Select>
                                                   </Form.Group>
                                              </Col >
                                              <Col xl={4} md={6} sm={12}>
                                                   <Form.Group className="mb-3">
                                                        <Form.Label><strong>{t('Discount')}:</strong></Form.Label>
-                                                       <Form.Select required value={formData.discountId = selectedDiscountID} id={discountID} name={discountID} onChange={(e) => handleOnchangeSelect(e, setSelectedDiscountID)}>
+                                                       <Form.Select required value={formData.discountId} id="discountId" name="discountId" onChange={handleOnchangeSelect}>
                                                             <option value="">Selecciona descuento</option>
                                                             {discountList.map((option, index) => (
                                                                  <option key={index} value={option.id}>{option.discountDescription}</option>
@@ -197,7 +194,7 @@ function AddUpdateProduct() {
                                              <Col xl={4} md={6} sm={12}>
                                                   <Form.Group className="mb-3">
                                                        <Form.Label><strong>{t('Status')}:</strong></Form.Label>
-                                                       <Form.Select required value={formData.statusId = selectedStatusID} id={statusID} name={statusID} onChange={(e) => handleOnchangeSelect(e, setSelectedStatusID)}>
+                                                       <Form.Select required value={formData.statusId} id="statusId" name="statusId" onChange={handleOnchangeSelect}>
                                                             <option value="">Selecciona estado</option>
                                                             {statusList.map((option, index) => (
                                                                  <option key={index} value={option.id}>{option.statusDescription}</option>
@@ -210,7 +207,7 @@ function AddUpdateProduct() {
                                              <Col xl={4} md={6} sm={12}>
                                                   <Form.Group className="mb-3">
                                                        <Form.Label><strong> {t('Tax')}:</strong></Form.Label>
-                                                       <Form.Select required value={formData.taxId = selectedTaxID} id={taxID} name={taxID} onChange={(e) => handleOnchangeSelect(e, setSelectedTaxID)}>
+                                                       <Form.Select required value={selectedTaxID !== '' ? selectedTaxID : formData.taxId} id="taxId" name="taxId" onChange={handleOnchangeSelect}>
                                                             <option value="">Selecciona impuesto</option>
                                                             {taxesList.map((option, index) => (
                                                                  <option key={index} value={option.id}>{option.taxDescription}</option>
@@ -236,7 +233,7 @@ function AddUpdateProduct() {
                                                                  :
                                                                  <Button id="btnUpdate" type="submit" variant='outline-primary' >{t('Update')}</Button>
                                                        }
-                                                       <Link to={IndexPage} className='btn btn-outline-info'><span>{t('Back')}</span></Link>
+                                                       <Link to={IndexPage} className='btn btn-outline-secondary'><span>{t('Back')}</span></Link>
                                                   </Form.Group>
                                              </Col>
                                         </Row>
@@ -255,7 +252,7 @@ function AddUpdateProduct() {
                                                                       </Button>
                                                                  </div>
                                                                  <div>
-                                                                      <Button className='btnShowModalAddImageProduct' variant="outline-info" onClick={() => handleShowModalAddMediaFileProduct('video')}>
+                                                                      <Button className='btnShowModalAddImageProduct' variant="outline-secondary" onClick={() => handleShowModalAddMediaFileProduct('video')}>
                                                                            <div className="py-2">
                                                                                 <div><CameraVideo size={30} /></div>
                                                                                 <div className="pt-2">{t('AddVideo')}</div>

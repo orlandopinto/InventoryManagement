@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CustomError } from "../models/CustomError";
 import { MESSAGE_TOAST_ERROR_TYPE } from "../utilities/Constants.d";
@@ -36,9 +36,11 @@ function useAddEditEntity<T, U extends Controller<T>>(controller: U, initializeV
           }
           else {
                setIsAddMode(location.state.addMode)
-               setFormData(location.state)
+               if (location.state.categoryId !== '') {
+                    setFormData(location.state)
+               }
           }
-     }, [])
+     }, [location.state])
 
      //FUNCTIONS
      const RedirectTo = (view: string) => navigate(view)
@@ -99,6 +101,13 @@ function useAddEditEntity<T, U extends Controller<T>>(controller: U, initializeV
           });
      };
 
+     const handleOnchangeSelect = (event: ChangeEvent<HTMLSelectElement>) => {
+          setFormData({
+               ...formData,
+               [event.target.id]: event.target.value
+          });
+     };
+
      const handleCloseAlert = () => setShowAlert(false);
 
      const showCustomError = (err: any) => {
@@ -119,6 +128,7 @@ function useAddEditEntity<T, U extends Controller<T>>(controller: U, initializeV
           handleSubmit,
           handleChange,
           handleChangeChecked,
+          handleOnchangeSelect,
           handleCloseAlert
      }
 }

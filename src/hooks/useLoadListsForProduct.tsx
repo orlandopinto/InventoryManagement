@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { useAuth } from "../contexts/useAuth"
 import { CategoriesController } from "../controllers/CategoriesController"
 import { DiscountsController } from "../controllers/DiscountsController"
@@ -13,22 +13,27 @@ import { Taxes } from "../types/Taxes.types"
 import { API_END_POINT, MESSAGE_TOAST_ERROR_TYPE, METHOD, STATUS_END_POINT, TAXES_END_POINT } from "../utilities/Constants.d"
 import { useShowMessageToast } from "./useShowMessageToast"
 
-function useLoadListsForProduct() {
+interface Props {
+     setIsLoading: Dispatch<SetStateAction<boolean>>
+}
+
+function useLoadListsForProduct({ setIsLoading }: Props) {
+
      const { ShowMessageToast } = useShowMessageToast()
 
-     const [categoryID, setCategoryID] = useState('')
+     //const [categoryID, setCategoryID] = useState('')
      const [categoryList, setCategoryList] = useState<Categories[]>([] as Categories[])
 
-     const [subCategoryID, setSubCategoryID] = useState('')
+     //const [subCategoryID, setSubCategoryID] = useState('')
      const [subCategoryList, setSubCategoryList] = useState<SubCategories[]>([] as SubCategories[])
 
-     const [discountID, setDiscountID] = useState('')
+     //const [discountID, setDiscountID] = useState('')
      const [discountList, setDiscountList] = useState<Discount[]>([] as Discount[])
 
-     const [statusID, setStatusID] = useState('')
+     //const [statusID, setStatusID] = useState('')
      const [statusList, setStatusList] = useState<Status[]>([] as Status[])
 
-     const [taxID, setTaxID] = useState('')
+     //const [taxID, setTaxID] = useState('')
      const [taxesList, setTaxesList] = useState<Taxes[]>([] as Taxes[])
 
      const { tokenResult } = useAuth()
@@ -101,9 +106,11 @@ function useLoadListsForProduct() {
           populateDiscountList();
           populateStatusList();
           populateTaxesList();
+          setIsLoading(false)
      }, []);
 
-     return { categoryID, categoryList, subCategoryID, subCategoryList, discountID, discountList, statusID, statusList, taxID, taxesList }
+     //return { categoryID, categoryList, subCategoryID, subCategoryList, discountID, discountList, statusID, statusList, taxID, taxesList }
+     return { categoryList, subCategoryList, discountList, statusList, taxesList }
 }
 
 export default useLoadListsForProduct

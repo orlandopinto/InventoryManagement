@@ -28,7 +28,7 @@ const MultimediaFileProductItem = ({ multimediaFileProduct, reload }: Props) => 
                     ShowMessageToast("El archivo multimedia se ha eliminado satisfactoriamente!", MESSAGE_TOAST_ERROR_TYPE.SUCCESS);
                     const result = await DeleteMultimediaFile(multimediaFileProduct.publicId)
                     //TODO: VALIDAR SI SE ELIMINA EL ARCHIVO DE cloudinary, EN CASO NEGATIVO GUARDARLO EN UN ARCHIVO LOG
-                    console.log('result from cloudinary api: ', result)
+                    //console.log('result from cloudinary api: ', result)
                     setShow(false);
                     reload(multimediaFileProduct.id);
                }

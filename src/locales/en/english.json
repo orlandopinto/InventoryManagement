@@ -30,6 +30,7 @@
      "Add": "Add",
      "Manageyour": "Manage your",
      "Status": "Status",
+     "Cancel": "Cancel",
      "Delete": "Delete",
      "DeleteQuestion": "Do you really want to delete the record?",
      "IrreversibleMessage": "The process is irreversible, press 'Delete' to continue.",

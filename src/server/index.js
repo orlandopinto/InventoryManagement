@@ -71,7 +71,7 @@ app.post('/upload-product-images', async (req, res) => {
           //console.log('tempFilePath: ', req.files.file.tempFilePath)
           const result = await uploadMediaFile(req.files.file)
           //console.log('result: ', result)
-          res.send(result);
+          res.status(200).send(result)
           await fs.unlink(req.files.file.tempFilePath)
      } catch (error) {
           console.log(`error:  ${error} end point: '/upload-product-images'`)
@@ -81,7 +81,7 @@ app.post('/upload-product-images', async (req, res) => {
 
 app.delete(`/upload-product-images/${process.env.FOLDER_TO_UPLOAD}/:public_id`, async (req, res) => {
      try {
-          console.log('req.params.id: ', req.params.public_id)
+          //console.log('req.params.id: ', req.params.public_id)
           const result = await DeleteMediaFile(`${process.env.FOLDER_TO_UPLOAD}/${req.params.public_id}`)
           res.status(200).send(result)
      } catch (error) {

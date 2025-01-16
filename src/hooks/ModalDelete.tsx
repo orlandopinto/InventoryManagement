@@ -23,8 +23,8 @@ const ModalDelete = (props: any) => {
                     </div>
                </Modal.Body>
                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>Cancelar</Button>
-                    <Button variant="danger" onClick={handleDelete}>Eliminar</Button>
+                    <Button variant="outline-danger" onClick={handleDelete}>{t('Delete')}</Button>
+                    <Button variant="outline-secondary" onClick={handleClose}>{t('Cancel')}</Button>
                </Modal.Footer>
           </Modal>
      )
