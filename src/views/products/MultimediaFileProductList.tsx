@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
 import { MultimediaFilesProduct } from "../../types/Products.types";
 import MultimediaFileProductItem from "./MultimediaFileProductItem";
@@ -6,42 +6,64 @@ import useLoadMultimediFileListData from "./useLoadMultimediFileListData";
 
 function MultimediaFileProductList({ ...props }) {
      //VARIABLES
-     const [newChunkMultimediaFilesProduct, setChunkMultimediaFilesProduct] = useState<MultimediaFilesProduct[][]>([] as MultimediaFilesProduct[][])
+     const [newChunksMultimediaFilesProduct, setChunkMultimediaFilesProduct] = useState<MultimediaFilesProduct[][]>([] as MultimediaFilesProduct[][])
      const { multimediaFilesProductList } = useLoadMultimediFileListData(props.productId);
+     const chunksMultimediaFilesProduct = multimediaFilesProductList.reduce((multimediaFilesProduct: MultimediaFilesProduct[][], item, index) => {
+          const chunkIndex = Math.floor(index / 3)
+          if (!multimediaFilesProduct[chunkIndex]) {
+               multimediaFilesProduct[chunkIndex] = []
+          }
+          multimediaFilesProduct[chunkIndex].push(item)
+          return multimediaFilesProduct
+     }, [])
 
      //STATES
      const [reloadState, setReloadState] = useState(false)
 
-     const chunkMultimediaFilesProduct = multimediaFilesProductList.reduce((resultArray: MultimediaFilesProduct[][], item, index) => {
-          const chunkIndex = Math.floor(index / 3)
-          if (!resultArray[chunkIndex]) {
-               resultArray[chunkIndex] = []
-          }
-          resultArray[chunkIndex].push(item)
-          return resultArray
-     }, [])
+     //OTHERS
+     useEffect(() => {
+          reloadToAddedNewMultimediaFile(props.multimediaFilesProduct)
+     }, [props.multimediaFilesProduct])
 
      //FUNCTIONS
      function reload(id: string) {
           setReloadState(true)
-          const newResultArray = [...multimediaFilesProductList].filter(filtro => filtro.id !== id)
-          const newChunkMultimediaFilesProductTmp = newResultArray.reduce((resultArray: MultimediaFilesProduct[][], item, index) => {
+          const newMultimediaFilesProductList = [...multimediaFilesProductList].filter(filtro => filtro.id !== id)
+          const newChunkMultimediaFilesProductList = newMultimediaFilesProductList.reduce((multimediaFilesProduct: MultimediaFilesProduct[][], item, index) => {
                const chunkIndex = Math.floor(index / 3)
-               if (!resultArray[chunkIndex]) {
-                    resultArray[chunkIndex] = []
+               if (!multimediaFilesProduct[chunkIndex]) {
+                    multimediaFilesProduct[chunkIndex] = []
                }
-               resultArray[chunkIndex].push(item)
-               return resultArray
+               multimediaFilesProduct[chunkIndex].push(item)
+               return multimediaFilesProduct
           }, [])
-          setChunkMultimediaFilesProduct(newChunkMultimediaFilesProductTmp)
+          setChunkMultimediaFilesProduct(newChunkMultimediaFilesProductList)
      }
 
-     const arrayCounter = (resultArray: MultimediaFilesProduct[][]) => {
+     function reloadToAddedNewMultimediaFile(multimediaFilesProduct: MultimediaFilesProduct) {
+          if (multimediaFilesProduct.id !== undefined && multimediaFilesProductList.length > 0) {
+               setReloadState(true)
+               const newMultimediaFilesProductList: MultimediaFilesProduct[] = [...multimediaFilesProductList]
+               newMultimediaFilesProductList.push(multimediaFilesProduct)
+
+               const newChunkMultimediaFilesProductList = newMultimediaFilesProductList.reduce((multimediaFilesProduct: MultimediaFilesProduct[][], item, index) => {
+                    const chunkIndex = Math.floor(index / 3)
+                    if (!multimediaFilesProduct[chunkIndex]) {
+                         multimediaFilesProduct[chunkIndex] = []
+                    }
+                    multimediaFilesProduct[chunkIndex].push(item)
+                    return multimediaFilesProduct
+               }, [])
+               setChunkMultimediaFilesProduct(newChunkMultimediaFilesProductList)
+          }
+     }
+
+     const arrayCounter = (multimediaFilesProductList: MultimediaFilesProduct[][]) => {
           let counterLevelOne: number = 0;
           let counterLevelTwo: number = 0;
-          resultArray.map((item) => {
+          multimediaFilesProductList.map((filesProductList) => {
                counterLevelOne = counterLevelOne + 1
-               item.map(() => {
+               filesProductList.map(() => {
                     counterLevelTwo = counterLevelTwo + 1
                })
           })
@@ -49,31 +71,28 @@ function MultimediaFileProductList({ ...props }) {
      }
 
      return (
-          (arrayCounter(newChunkMultimediaFilesProduct) < arrayCounter(chunkMultimediaFilesProduct) && reloadState) &&
-               arrayCounter(newChunkMultimediaFilesProduct) < arrayCounter(chunkMultimediaFilesProduct)
+          (arrayCounter(newChunksMultimediaFilesProduct) < arrayCounter(chunksMultimediaFilesProduct) && reloadState) ||
+               (arrayCounter(newChunksMultimediaFilesProduct) > arrayCounter(chunksMultimediaFilesProduct) && reloadState) &&
+               arrayCounter(newChunksMultimediaFilesProduct) < arrayCounter(chunksMultimediaFilesProduct) || arrayCounter(newChunksMultimediaFilesProduct) > arrayCounter(chunksMultimediaFilesProduct)
                ?
-               newChunkMultimediaFilesProduct.map((multimediaFilesProductList) => {
+               newChunksMultimediaFilesProduct.map((multimediaFilesProductList) => {
                     return (
-                         <Row key={self.crypto.randomUUID()} >
+                         <Row key={self.crypto.randomUUID()}>
                               {
                                    multimediaFilesProductList.map((multimediaFile) => {
-                                        return (
-                                             <MultimediaFileProductItem key={self.crypto.randomUUID()} multimediaFileProduct={multimediaFile} reload={reload} />
-                                        )
+                                        return <MultimediaFileProductItem key={multimediaFile.id} multimediaFileProduct={multimediaFile} reload={reload} />
                                    })
                               }
                          </Row>
                     )
                })
                :
-               chunkMultimediaFilesProduct.map((multimediaFilesProductList) => {
+               chunksMultimediaFilesProduct.map((multimediaFilesProductList) => {
                     return (
-                         <Row key={self.crypto.randomUUID()} >
+                         <Row key={self.crypto.randomUUID()}>
                               {
                                    multimediaFilesProductList.map((multimediaFile) => {
-                                        return (
-                                             <MultimediaFileProductItem key={self.crypto.randomUUID()} multimediaFileProduct={multimediaFile} reload={reload} />
-                                        )
+                                        return <MultimediaFileProductItem key={multimediaFile.id} multimediaFileProduct={multimediaFile} reload={reload} />
                                    })
                               }
                          </Row>

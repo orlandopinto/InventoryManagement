@@ -7,8 +7,8 @@ import { CustomError } from "../../models/CustomError";
 import './ModalAddMediaFileProduct.css';
 
 function ModalAddMediaFileProduct(props: any) {
+
      //VARIABLES
-     const imageName: string = ''
      const { show, handleClose, productId, initializeImage, setInitializeImage, initializeVideo, setInitializeVideo, typeFile } = props
      const controller = ProductsController();
      const fileInputRef = useRef<HTMLInputElement>({} as HTMLInputElement);
@@ -22,6 +22,7 @@ function ModalAddMediaFileProduct(props: any) {
      const [bodyText, setBodyText] = useState('')
      const [showAlert, setShowAlert] = useState(false);
 
+     //FUNCTIONS
      const handleFileInput = (e: any) => {
           setInitializeImage(false)
           setInitializeVideo(false)
@@ -30,7 +31,7 @@ function ModalAddMediaFileProduct(props: any) {
           if (e.target.files.length > 0) {
                const objectUrl = URL.createObjectURL(e.target.files[0])
                const extensionFile = e.target.files[0].type.split('/')[1] as string
-               formData.append('file', e.target.files[0], imageName + '.' + extensionFile);
+               formData.append('file', e.target.files[0], `image.${extensionFile}`);
                setImage(formData);
                setSelectedFile(objectUrl)
                setSelectedVideoFile(objectUrl)
@@ -44,9 +45,7 @@ function ModalAddMediaFileProduct(props: any) {
           setInitializeVideo(false)
           setSelectedFile('')
           setSelectedVideoFile('')
-
           buttonInputRef.current.disabled = true;
-          //console.log('productId: ', productId)
           fileInputRef.current.click();
      }
 
@@ -62,6 +61,7 @@ function ModalAddMediaFileProduct(props: any) {
 
      const UploadMedia = async () => {
           await controller.UploadMedia(productId, image, true).then((response) => {
+               props.setMultimediaFilesProduct(response)
                handleClose(false)
           }).catch(err => {
                showCustomError(err);

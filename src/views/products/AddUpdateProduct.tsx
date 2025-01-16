@@ -9,7 +9,7 @@ import ModalAddMediaFileProduct from "./ModalAddMediaFileProduct";
 import { ProductsController } from "../../controllers/ProductsController";
 import useAddEditEntity from "../../hooks/useAddEditEntity";
 import useLoadListsForProduct from "../../hooks/useLoadListsForProduct";
-import { initializeProductViewModel } from "../../types/Products.types.d";
+import { initializeProductViewModel, MultimediaFilesProduct } from "../../types/Products.types.d";
 import MultimediaFileProductList from "./MultimediaFileProductList";
 
 function AddUpdateProduct() {
@@ -23,6 +23,7 @@ function AddUpdateProduct() {
      const [initializeImage, setInitializeImage] = useState(true)
      const [initializeVideo, setInitializeVideo] = useState(true)
      const [typeFile, setTypeFile] = useState<'image' | 'video'>('image')
+     const [multimediaFilesProduct, setMultimediaFilesProduct] = useState({} as MultimediaFilesProduct)
 
      //NOTA: Mantener este orden en que se van a mostrar los mensajes en el Custom Hook
      const messages: string[] = [
@@ -264,7 +265,7 @@ function AddUpdateProduct() {
                                                             </Col>
                                                        </Row>
                                                        <hr className="pb-2" />
-                                                       <MultimediaFileProductList productId={formData.id} />
+                                                       <MultimediaFileProductList multimediaFilesProduct={multimediaFilesProduct} productId={formData.id} />
                                                   </div>
                                                   :
                                                   null
@@ -272,7 +273,7 @@ function AddUpdateProduct() {
                                    </div>
                               </Card>
                          </Form>
-                         <ModalAddMediaFileProduct show={showModalAddMediaFileProduct} handleClose={handleClose} productId={formData.id} initializeImage={initializeImage} initializeVideo={initializeVideo} setInitializeVideo={setInitializeVideo} setInitializeImage={setInitializeImage} typeFile={typeFile} />
+                         <ModalAddMediaFileProduct multimediaFilesProduct={multimediaFilesProduct} setMultimediaFilesProduct={setMultimediaFilesProduct} show={showModalAddMediaFileProduct} handleClose={handleClose} productId={formData.id} initializeImage={initializeImage} initializeVideo={initializeVideo} setInitializeVideo={setInitializeVideo} setInitializeImage={setInitializeImage} typeFile={typeFile} />
                     </div>
                     <CustomModalAlert show={showAlert} headerText={'Error'} bodyText={bodyText} handleClose={handleCloseAlert} hasUrlToRedirect={hasUrlToRedirect} urlToRedirect={urlToRedirect} />
                </div>
