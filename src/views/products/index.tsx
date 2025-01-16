@@ -74,7 +74,7 @@ function index() {
                     <DataTable data={dataViewModel} options={dataTableOptions}>
                          <DataColumn field="id" header="id" visibility={false} />
                          <DataColumn field="productName" header={t('ProductName')} isHeaderCentered={true} />
-                         <DataColumn field="productDescription" header={t('ProductDescription')} isHeaderCentered={true} isFieldCentered={true} />
+                         <DataColumn field="productDescription" header={t('ProductDescription')} isHeaderCentered={true} />
                          <DataColumn field="cost" header={t('Cost')} isHeaderCentered={true} isFieldCentered={true} />
                          <DataColumn field="price" header={t('Price')} isHeaderCentered={true} isFieldCentered={true} />
                          <DataColumn field="quantity" header={t('Quantity')} isHeaderCentered={true} isFieldCentered={true} />

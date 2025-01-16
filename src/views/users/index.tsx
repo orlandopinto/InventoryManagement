@@ -50,11 +50,10 @@ function index() {
           setSearchFilter(e.target.value);
      };
 
-     const filteredData = searchFilter === '' ? data :
-          data.filter(
-               (item) => item.email?.toLowerCase().includes(searchFilter.toLowerCase())
-                    || item.firstName?.toLowerCase().includes(searchFilter.toLowerCase())
-                    || item.lastName?.toLowerCase().includes(searchFilter.toLowerCase())
+     const filteredData = searchFilter === '' ? data.filter(filter => filter.isAdmin === false) :
+          data.filter((item) => !item.isAdmin && (item.email?.toLowerCase().includes(searchFilter.toLowerCase())
+               || item.firstName?.toLowerCase().includes(searchFilter.toLowerCase())
+               || item.lastName?.toLowerCase().includes(searchFilter.toLowerCase()))
           );
 
 

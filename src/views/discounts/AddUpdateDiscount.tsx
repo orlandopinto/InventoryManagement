@@ -156,7 +156,7 @@ function AddUpdateDiscount() {
                                              <Col md={2} sm={12}>
                                                   <Form.Group className="mb-3">
                                                        <Form.Label>{t('Discount')}</Form.Label>
-                                                       <Form.Control type="number" id="discount" name="discount" value={formData.discount} onChange={handleChange} min="1" required />
+                                                       <Form.Control type="number" id="discount" name="discount" value={formData.discount} onChange={handleChange} min="0" required />
                                                   </Form.Group>
                                              </Col>
                                              <Col md={2} sm={12}>

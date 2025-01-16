@@ -80,11 +80,11 @@ const MultimediaFileProductItem = ({ multimediaFileProduct, reload }: Props) => 
           <>
                <Col xl={4} md={6} sm={12} className='p-3'>
                     <article>
-                         <figure style={{ height: '260px' }}>
+                         <figure style={{ height: '100%' }}>
                               {
                                    multimediaFileProduct.type === 'image'
                                         ?
-                                        <Image src={multimediaFileProduct.secureUrl} className="w-100" style={{ height: '260px' }} />
+                                        <Image src={multimediaFileProduct.secureUrl} className="w-100" style={{ height: '100%' }} />
                                         :
                                         <video autoPlay={true} loop muted src={multimediaFileProduct.secureUrl} className="w-100" style={{ height: '260px' }} />
                               }
